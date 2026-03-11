@@ -3,66 +3,32 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PayPulse - 市場の脈動を、すべての人へ</title>
+<title>PayPulse - 年収診断アンケート</title>
+<link rel="stylesheet" href="brand.css">
 <style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+/* ── HEADER / リセット / 変数 は brand.css に統合 ── */
 
-:root {
-  --bg: #f2ecd8;
-  --blue: #1a5fad;
-  --blue-dark: #0d3b6e;
-  --orange: #f97316;
-  --text: #1a2e4a;
-  --text-light: #64748b;
-  --white: #ffffff;
-  --grid: rgba(80,130,200,0.1);
-  --border: rgba(26,95,173,0.35);
-}
-
+/* survey特有: フォントをモノスペースに上書き・グリッド背景 */
 body {
-  font-family: 'Courier New', Courier, monospace;
-  background-color: var(--bg);
+  font-family: var(--font-mono);
   background-image:
     linear-gradient(var(--grid) 1px, transparent 1px),
     linear-gradient(90deg, var(--grid) 1px, transparent 1px);
   background-size: 28px 28px;
-  color: var(--text);
-  min-height: 100vh;
 }
 
-/* ---- HEADER ---- */
-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 16px;
-  background: var(--bg);
-  border-bottom: 1px solid var(--border);
-  position: sticky;
-  top: 0;
-  z-index: 100;
-}
-@media(min-width:480px){header{padding:12px 20px}}
-.logo {
-  font-size: 18px;
-  font-weight: 900;
-  letter-spacing: 1.5px;
-  color: var(--text);
-  cursor: pointer;
-  border-bottom: 3px solid var(--blue);
-  padding-bottom: 2px;
-}
-@media(min-width:480px){.logo{font-size:22px;letter-spacing:2px}}
-.nav-links { display: flex; gap: 16px; font-size: 13px; font-weight: 600; }
-.nav-link {
+/* survey内部ナビ（JS制御によるセクション切り替え用） */
+.survey-nav { display: flex; gap: 16px; font-size: 13px; font-weight: 600; }
+.survey-nav-item {
   color: var(--text);
   cursor: pointer;
   padding: 4px 8px;
   border-bottom: 2px solid transparent;
   transition: color 0.2s, border-color 0.2s;
+  white-space: nowrap;
 }
-.nav-link:hover { color: var(--blue); }
-.nav-link.active { color: var(--blue); border-bottom-color: var(--blue); }
+.survey-nav-item:hover { color: var(--blue); }
+.survey-nav-item.active { color: var(--blue); border-bottom-color: var(--blue); }
 
 /* ---- MAIN ---- */
 .container { max-width: 680px; margin: 0 auto; padding: 16px 12px 60px; }
@@ -310,12 +276,15 @@ footer {
 
 <!-- ===== HEADER ===== -->
 <header>
-  <a class="logo" href="index.html" style="text-decoration:none">PAYPULSE</a>
-  <div class="nav-links">
-    <span class="nav-link active" id="nav-survey" onclick="showSection('survey')">年収調査</span>
-    <span class="nav-link" id="nav-dashboard" onclick="showSection('dashboard')" style="display:none">ダッシュボード</span>
-    <!-- TESTボタン: ?debug=true の時のみ表示 (JS側で制御) -->
-    <button id="btn-test" onclick="fillTestData()" style="display:none;background:#f97316;color:#fff;border:none;border-radius:4px;padding:5px 12px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;letter-spacing:1px" title="テストデータを自動入力してSTEP4へジャンプ">🧪 TEST</button>
+  <a class="logo" href="index.html">PAYPULSE</a>
+  <div class="nav-group">
+    <!-- survey内部ナビ（通常は年収調査のみ表示） -->
+    <div class="survey-nav">
+      <span class="survey-nav-item active" id="nav-survey" onclick="showSection('survey')">年収調査</span>
+      <span class="survey-nav-item" id="nav-dashboard" onclick="showSection('dashboard')" style="display:none">ダッシュボード</span>
+      <!-- TESTボタン: ?debug=true の時のみ表示 (JS側で制御) -->
+      <button id="btn-test" onclick="fillTestData()" style="display:none;background:var(--orange);color:#fff;border:none;border-radius:4px;padding:5px 12px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;letter-spacing:1px" title="テストデータを自動入力してSTEP4へジャンプ">🧪 TEST</button>
+    </div>
   </div>
 </header>
 
@@ -945,7 +914,7 @@ let currentStep = 1;
 function showSection(s) {
   document.querySelectorAll('.section').forEach(el => el.classList.remove('active'));
   $('section-' + s).classList.add('active');
-  document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.survey-nav-item').forEach(el => el.classList.remove('active'));
   $('nav-' + s).classList.add('active');
   if (s === 'dashboard') renderDashboard();
   window.scrollTo(0, 0);

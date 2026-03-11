@@ -1,5 +1,5 @@
 /* ============================================================
-   PayPulse — ブランド共通スタイル (Mobile-First v2)
+   PayPulse — ブランド共通スタイル (Mobile-First v3)
    全HTMLページからリンクして使用する。
    ページ固有のスタイルは各ファイルの <style> で上書き可。
    ============================================================ */
@@ -51,7 +51,10 @@ header {
   z-index: 100;
 }
 
-.logo {
+/* ── ロゴ ── */
+.logo,
+.logo:link,
+.logo:visited {
   font-family: var(--font-mono);
   font-size: 18px;
   font-weight: 900;
@@ -61,43 +64,62 @@ header {
   border-bottom: 3px solid var(--blue);
   padding-bottom: 2px;
   flex-shrink: 0;
+  white-space: nowrap;
 }
 
-/* ── テキストナビリンク（モバイルでは非表示） ── */
-.nav-text-link {
-  display: none;
-  font-size: 14px;
+/* ── ナビグループ（ヘッダー右側コンテナ） ── */
+.nav-group {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+/* ── テキストナビリンク（モバイルでも常に表示） ── */
+/* :link / :visited を明示してブラウザデフォルト(紫・青)を上書き */
+.nav-text-link,
+.nav-text-link:link,
+.nav-text-link:visited {
+  display: inline;
+  font-size: 12px;
   font-weight: 600;
   color: var(--text-light);
   text-decoration: none;
+  white-space: nowrap;
   transition: color .2s;
 }
 .nav-text-link:hover  { color: var(--blue); }
-.nav-text-link.active { color: var(--blue); }
+.nav-text-link.active,
+.nav-text-link.active:link,
+.nav-text-link.active:visited { color: var(--blue); }
 
 /* ── ヘッダー CTAボタン ── */
-.header-cta {
+/* inline-block で背景・padding が正しく適用されるようにする */
+.header-cta,
+.header-cta:link,
+.header-cta:visited {
+  display: inline-block;
   background: var(--orange);
   color: #fff;
   border: none;
   border-radius: 6px;
-  padding: 8px 14px;
-  font-size: 13px;
+  padding: 7px 12px;
+  font-size: 12px;
   font-weight: 700;
   cursor: pointer;
   font-family: inherit;
   letter-spacing: .3px;
   text-decoration: none;
-  transition: background .2s, transform .1s;
   white-space: nowrap;
+  transition: background .2s, transform .1s;
 }
 .header-cta:hover { background: #ea6a00; transform: translateY(-1px); }
 
-/* ── デスクトップヘッダー ── */
+/* ── デスクトップヘッダー（480px以上） ── */
 @media (min-width: 480px) {
   header         { padding: 14px 24px; }
   .logo          { font-size: 22px; letter-spacing: 2px; }
-  .nav-text-link { display: inline; }
+  .nav-group     { gap: 16px; }
+  .nav-text-link { font-size: 14px; }
   .header-cta    { padding: 9px 22px; font-size: 14px; }
 }
 
@@ -109,4 +131,6 @@ footer {
   color: var(--text-light);
   border-top: 1px solid var(--border);
 }
-footer a { color: inherit; opacity: .7; text-decoration: underline; }
+footer a,
+footer a:link,
+footer a:visited { color: inherit; opacity: .7; text-decoration: underline; }
