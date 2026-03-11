@@ -1,0 +1,81 @@
+/* ============================================================
+   PayPulse — ブランド共通スタイル
+   全HTMLページからリンクして使用する。
+   ページ固有のスタイルは各ファイルの <style> で上書き可。
+   ============================================================ */
+
+/* ── リセット ── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ── ブランドカラー変数 ── */
+:root {
+  /* メインカラー */
+  --blue:        #1a5fad;
+  --blue-dark:   #0d3b6e;
+  --orange:      #f97316;
+
+  /* テキスト */
+  --text:        #1a2e4a;
+  --text-light:  #64748b;
+  --white:       #ffffff;
+
+  /* 背景・ボーダー */
+  --bg:          #f2ecd8;
+  --border:      rgba(26, 95, 173, 0.25);
+  --grid:        rgba(80, 130, 200, 0.1);
+
+  /* フォント */
+  --font-sans:   -apple-system, BlinkMacSystemFont, 'Hiragino Sans', 'Yu Gothic', sans-serif;
+  --font-mono:   'Courier New', Courier, monospace;
+}
+
+/* ── ベース ── */
+body {
+  font-family: var(--font-sans);
+  color: var(--text);
+  background: var(--bg);
+  min-height: 100vh;
+  line-height: 1.6;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* ── 共通ヘッダー ── */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 24px;
+  background: rgba(242, 236, 216, 0.95);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.logo {
+  font-family: var(--font-mono);
+  font-size: 22px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  color: var(--text);
+  text-decoration: none;
+  border-bottom: 3px solid var(--blue);
+  padding-bottom: 2px;
+}
+
+/* ── 共通フッター ── */
+footer {
+  text-align: center;
+  padding: 20px;
+  font-size: 12px;
+  color: var(--text-light);
+  border-top: 1px solid var(--border);
+}

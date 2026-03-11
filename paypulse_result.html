@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PayPulse - 年収診断結果</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --blue:#3b82f6;--blue-dark:#1e40af;--gold:#f59e0b;
+  --red:#ef4444;--dark:#1e293b;--mid:#334155;
+  --text:#1e293b;--muted:#64748b;--light:#f8fafc;--white:#fff;
+}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--light);color:var(--text);min-height:100vh}
+
+/* ── HEADER ── */
+header{display:flex;justify-content:space-between;align-items:center;padding:14px 24px;background:var(--white);border-bottom:1px solid #e2e8f0;position:sticky;top:0;z-index:100}
+.logo{font-size:20px;font-weight:900;letter-spacing:2px;color:var(--text);text-decoration:none;font-family:'Courier New',monospace;border-bottom:2px solid var(--blue);padding-bottom:2px}
+.back-link{font-size:13px;color:var(--blue);text-decoration:none;display:flex;align-items:center;gap:4px}
+.back-link:hover{text-decoration:underline}
+
+/* ── LOADING / ERROR ── */
+.state-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:60vh;gap:16px;text-align:center;padding:40px}
+.spinner{width:48px;height:48px;border:4px solid #e2e8f0;border-top-color:var(--blue);border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.state-title{font-size:18px;font-weight:700;color:var(--text)}
+.state-sub{font-size:14px;color:var(--muted);line-height:1.6}
+
+/* ── HERO (dark section) ── */
+.hero{background:var(--dark);color:var(--white);padding:48px 24px 56px;text-align:center}
+.hero-peer{font-size:14px;color:#94a3b8;margin-bottom:16px;letter-spacing:.5px}
+.hero-peer strong{color:var(--white);font-size:17px}
+.hero-direction{font-size:22px;font-weight:700;color:#94a3b8;margin-bottom:4px}
+.hero-pct{font-size:88px;font-weight:900;line-height:1;letter-spacing:-4px;color:var(--white)}
+.hero-pct sup{font-size:32px;font-weight:700;letter-spacing:0;vertical-align:super}
+.hero-msg{font-size:18px;color:#94a3b8;margin-top:12px;margin-bottom:36px}
+
+/* gauge */
+.gauge-wrap{max-width:520px;margin:0 auto 32px}
+.gauge-labels-top{display:flex;justify-content:space-between;font-size:11px;color:#64748b;margin-bottom:6px}
+.gauge-track{position:relative;height:8px;background:#334155;border-radius:4px;margin-bottom:6px}
+.gauge-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,#475569,var(--blue))}
+.gauge-dot{position:absolute;top:50%;transform:translate(-50%,-50%);width:20px;height:20px;background:var(--blue);border-radius:50%;border:3px solid var(--white);box-shadow:0 0 0 2px var(--blue)}
+.gauge-ticks{display:flex;justify-content:space-between;font-size:11px;color:#64748b}
+.gauge-labels-side{display:flex;justify-content:space-between;font-size:12px;color:#94a3b8;margin-top:4px}
+
+/* income box */
+.income-box{display:inline-flex;gap:36px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:20px 36px;margin-top:8px}
+.income-item{text-align:center}
+.income-label{font-size:12px;color:#94a3b8;margin-bottom:6px}
+.income-val{font-size:32px;font-weight:700;color:var(--white)}
+.income-val span{font-size:16px;font-weight:400;color:#94a3b8;margin-left:3px}
+
+/* ── CONTENT ── */
+.content{max-width:720px;margin:0 auto;padding:32px 20px 60px}
+.card{background:var(--white);border-radius:12px;box-shadow:0 1px 4px rgba(0,0,0,.08);padding:28px 24px;margin-bottom:20px}
+.card-title{font-size:15px;font-weight:700;color:var(--muted);margin-bottom:20px;letter-spacing:.5px}
+
+/* percentile table */
+.pct-table{width:100%;border-collapse:collapse;font-size:14px}
+.pct-table th{text-align:left;font-size:12px;color:var(--muted);font-weight:500;padding:8px 12px;border-bottom:1px solid #e2e8f0}
+.pct-table th:last-child{text-align:right}
+.pct-table td{padding:14px 12px;border-bottom:1px solid #f1f5f9;vertical-align:middle}
+.pct-table td:last-child{text-align:right;font-weight:700;font-size:16px}
+.pct-table tr.user-row{background:#eff6ff}
+.pct-table tr.user-row td{color:var(--blue);font-weight:700}
+.pct-label{display:flex;align-items:center;gap:6px;font-weight:600}
+.crown{color:var(--gold)}
+.lock-badge{display:inline-flex;align-items:center;gap:4px;font-size:12px;color:var(--red);font-weight:600;background:#fef2f2;padding:3px 8px;border-radius:99px}
+.pct-pos{font-size:12px;color:var(--muted)}
+
+/* chart */
+.chart-wrap{position:relative;height:260px}
+
+/* relaxation notice */
+.relax-notice{background:#fefce8;border:1px solid #fde68a;border-radius:8px;padding:14px 16px;font-size:13px;color:#92400e;line-height:1.8}
+.relax-notice strong{display:block;margin-bottom:4px;font-weight:700}
+
+/* footer */
+footer{text-align:center;padding:24px;font-size:12px;color:var(--muted);border-top:1px solid #e2e8f0}
+</style>
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="logo">PAYPULSE</a>
+  <a href="index.html" class="back-link">← アンケートに戻る</a>
+</header>
+
+<!-- Loading -->
+<div id="screen-loading" class="state-screen">
+  <div class="spinner"></div>
+  <div class="state-title">診断結果を取得中...</div>
+  <div class="state-sub">しばらくお待ちください</div>
+</div>
+
+<!-- Error -->
+<div id="screen-error" class="state-screen" style="display:none">
+  <div style="font-size:48px">⚠️</div>
+  <div class="state-title">結果を取得できませんでした</div>
+  <div class="state-sub" id="error-msg">しばらく経ってから再度お試しください</div>
+  <a href="index.html" style="margin-top:16px;background:var(--blue);color:#fff;padding:12px 28px;border-radius:8px;text-decoration:none;font-weight:600">アンケートに戻る</a>
+</div>
+
+<!-- Result (hidden until loaded) -->
+<div id="screen-result" style="display:none">
+
+  <!-- HERO -->
+  <section class="hero" id="hero"></section>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <!-- Percentile table -->
+    <div class="card">
+      <div class="card-title">パーセンタイル詳細</div>
+      <table class="pct-table">
+        <thead>
+          <tr>
+            <th style="width:80px">統計位置</th>
+            <th></th>
+            <th style="width:120px">解除必要数</th>
+            <th style="width:110px">年収</th>
+          </tr>
+        </thead>
+        <tbody id="pct-tbody"></tbody>
+      </table>
+    </div>
+
+    <!-- Histogram -->
+    <div class="card">
+      <div class="card-title">年収分布</div>
+      <div class="chart-wrap"><canvas id="chart-hist"></canvas></div>
+      <div style="font-size:11px;color:var(--muted);margin-top:8px;text-align:right">横軸（万円）</div>
+    </div>
+
+    <!-- Career trend -->
+    <div class="card">
+      <div class="card-title">キャリア年次別推移</div>
+      <div class="chart-wrap"><canvas id="chart-career"></canvas></div>
+      <div style="font-size:11px;color:var(--muted);margin-top:8px">※ 社会人歴は「年齢 − 22」で近似（大卒22歳モデル）　　全データ対象</div>
+    </div>
+
+    <!-- Relaxation notice -->
+    <div class="relax-notice" id="relax-notice" style="display:none">
+      <strong>条件を自動緩和してデータを取得しました：</strong>
+      <span id="relax-steps"></span>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  PayPulse 年収調査 © 2026　|
+  <a href="privacy.html" style="color:inherit;text-decoration:underline;opacity:0.7">プライバシーポリシー</a>
+</footer>
+
+<script>
+// ============================================================
+// ★ GASデプロイ後にこのURLを書き換えてください
+// ============================================================
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbyb_pPzQQ_6IxVJALU_ry3Q_uVmCpIbMxPNA-axOL1St86uRuKxTHumASg43PPsVGdp/exec';
+
+// ── URLからIDを取得 ──
+const id = new URLSearchParams(window.location.search).get('id');
+
+// ── GAS fetch（credentials:omit でマルチアカウントリダイレクトを回避）──
+async function fetchFromGAS(id) {
+  const url = `${GAS_URL}?action=result&id=${encodeURIComponent(id)}`;
+  // credentials:'omit' でCookieを送らない → Googleのアカウント認証リダイレクトを回避
+  const res = await fetch(url, { credentials: 'omit' });
+  if (!res.ok) throw new Error('HTTP ' + res.status);
+  const data = await res.json();
+  return data;
+}
+
+// ── JSONP呼び出し（フォールバック）──
+function jsonp(url) {
+  return new Promise((resolve, reject) => {
+    const cb = 'pp_cb_' + Date.now();
+    window[cb] = data => { cleanup(); resolve(data); };
+    const s = document.createElement('script');
+    s.src = url + (url.includes('?') ? '&' : '?') + 'callback=' + cb;
+    s.onerror = () => { cleanup(); reject(new Error('Network error')); };
+    document.head.appendChild(s);
+    function cleanup() { delete window[cb]; s.remove(); }
+  });
+}
+
+// ── 単一リクエスト試行（fetch → JSONP の順）──
+async function tryOnce(id) {
+  try {
+    return await fetchFromGAS(id);      // まず fetch(credentials:omit)
+  } catch (_) {}
+  return jsonp(`${GAS_URL}?action=result&id=${encodeURIComponent(id)}`); // フォールバック
+}
+
+// ── リトライ付きフェッチ ──
+async function fetchResult(id, retries = 3, delayMs = 1500) {
+  const wait = () => new Promise(r => setTimeout(r, delayMs));
+  let lastErr;
+  for (let i = 0; i < retries; i++) {
+    try {
+      const data = await tryOnce(id);
+      if (data.success) return data;
+      if (data.error === 'ID not found' && i < retries - 1) { await wait(); continue; }
+      throw new Error(data.error || '結果が見つかりません');
+    } catch (err) {
+      lastErr = err;
+      if (i < retries - 1) await wait();
+    }
+  }
+  throw lastErr || new Error('Network error');
+}
+
+// ── ローカルフォールバック計算（GAS接続不可時） ──
+// ※ GoogleマルチアカウントによるリダイレクトでJSONPが失敗した場合に使用
+function computeLocalResult(submittedId, payload) {
+  const inc  = payload.income || {};
+  const bas  = payload.basic  || {};
+  const c1   = payload.case1  || {};
+
+  const userIncome = parseFloat(inc.total) || 0;
+  const userAge    = parseInt(bas.age)     || 30;
+
+  // 年齢帯ごとの参照用収入分布（建設施工管理者・合成データ）
+  const REF = {
+    '20代': [340,370,390,410,440,460,490,510,530],
+    '30代': [450,490,530,570,610,650,690,730,780,830],
+    '40代': [560,610,660,720,780,840,900,960,1030,1100],
+    '50代以上': [650,720,800,870,950,1020,1100,1180,1280]
+  };
+  const ageBand = a => a < 30 ? '20代' : a < 40 ? '30代' : a < 50 ? '40代' : '50代以上';
+  const band    = ageBand(userAge);
+
+  // 同年代グループ + 全体をマージして比較
+  const peerRaw  = REF[band] || REF['30代'];
+  const allRaw   = Object.values(REF).flat();
+
+  function pct(arr, p) {
+    const s = [...arr].sort((a,b)=>a-b);
+    const idx=(p/100)*(s.length-1), lo=Math.floor(idx), hi=Math.ceil(idx);
+    return lo===hi ? s[lo] : s[lo]+(s[hi]-s[lo])*(idx-lo);
+  }
+
+  const below      = peerRaw.filter(v => v < userIncome).length;
+  const userPctile = peerRaw.length ? Math.round((below/peerRaw.length)*1000)/10 : 50;
+
+  const pctTable = [
+    {pct:99,label:'TOP 1%', crown:true},
+    {pct:90,label:'TOP 10%',crown:true},
+    {pct:75,label:'TOP 25%',crown:true},
+    {pct:50,label:'中央値',  crown:false},
+    {pct:25,label:'25%ile', crown:false},
+    {pct:10,label:'10%ile', crown:false}
+  ].map(row => ({
+    ...row,
+    value: Math.round(pct(peerRaw, row.pct)),
+    unlocked: row.pct !== 99,
+    needed: 0
+  }));
+
+  const histRanges = [
+    ['〜299',0,299],['300-399',300,399],['400-499',400,499],
+    ['500-599',500,599],['600-699',600,699],['700-799',700,799],
+    ['800-899',800,899],['900-999',900,999],['1000+',1000,99999]
+  ];
+  const histogram = histRanges.map(([label,min,max]) => ({
+    label,
+    count:  allRaw.filter(v=>v>=min&&v<=max).length,
+    isUser: userIncome>=min&&userIncome<=max
+  }));
+
+  const careerBands = [
+    ['5-9年',5,9],['10-14年',10,14],['15-19年',15,19],
+    ['20-24年',20,24],['25年以上',25,99]
+  ];
+  const careerTrend = careerBands.map(([label,minY,maxY]) => {
+    const inc2 = allRaw.slice(minY*2, maxY*2+2);
+    const r = v => Math.round(v);
+    return {label, count: inc2.length,
+      p10:r(pct(inc2,10)), p25:r(pct(inc2,25)), p50:r(pct(inc2,50)),
+      p75:r(pct(inc2,75)), p90:r(pct(inc2,90))};
+  });
+
+  return {
+    success: true,
+    isLocalMode: true,   // ← ローカルモードフラグ
+    userIncome, userPctile,
+    peerCount:    peerRaw.length,
+    totalCount:   allRaw.length,
+    relaxApplied: ['ローカル推定モード（参考値）'],
+    median:       Math.round(pct(peerRaw, 50)),
+    pctTable, histogram, careerTrend,
+    userCareerYears: userAge - 22,
+    userAge, userRole: c1.role || '', userType: c1.type || '', userPref: bas.pref || ''
+  };
+}
+
+// ── ローディング / エラー切り替え ──
+function show(screenId) {
+  ['loading','error','result'].forEach(s =>
+    document.getElementById('screen-' + s).style.display = s === screenId ? '' : 'none'
+  );
+}
+function showError(msg) {
+  document.getElementById('error-msg').textContent = msg;
+  show('error');
+}
+
+// ── メッセージ ──
+function getMessage(pct) {
+  if (pct >= 90) return 'あなたはトップクラスです！';
+  if (pct >= 75) return '相当高い水準にいます';
+  if (pct >= 50) return '平均以上です';
+  if (pct >= 15) return 'あなたはもう少しです';
+  if (pct > 0)   return '改善の余地があります';
+  return 'このグループで最も低い水準です';
+}
+
+// ── ヒーロー描画 ──
+function renderHero(d) {
+  const isUpper = d.userPctile >= 50;
+  // 上位・下位ともに「自分より上の人が何%いるか」で統一表示
+  // 上位20% = 20人が自分より上 / 下位80% = 80人が自分より上
+  const displayPct = (100 - d.userPctile).toFixed(1);
+  const direction  = isUpper ? '上位' : '下位';
+  const gaugeLeft  = Math.min(Math.max(d.userPctile, 2), 98);
+
+  document.getElementById('hero').innerHTML = `
+    <div class="hero-peer">同条件の <strong>${d.peerCount}人</strong> と比較</div>
+    <div class="hero-direction">${direction}</div>
+    <div class="hero-pct">${displayPct}<sup>%</sup></div>
+    <div class="hero-msg">${getMessage(d.userPctile)}</div>
+
+    <div class="gauge-wrap">
+      <div class="gauge-labels-top"><span>低収入側</span><span>高収入側</span></div>
+      <div class="gauge-track">
+        <div class="gauge-fill" style="width:${gaugeLeft}%"></div>
+        <div class="gauge-dot" style="left:${gaugeLeft}%"></div>
+      </div>
+      <div class="gauge-ticks">
+        <span>0%</span><span>25%</span><span>50%</span><span>75%</span><span>100%</span>
+      </div>
+    </div>
+
+    <div class="income-box">
+      <div class="income-item">
+        <div class="income-label">あなたの年収</div>
+        <div class="income-val">${d.userIncome.toLocaleString()}<span>万円</span></div>
+      </div>
+      <div class="income-item">
+        <div class="income-label">中央値</div>
+        <div class="income-val">${d.median ? d.median.toLocaleString() : '—'}<span>万円</span></div>
+      </div>
+    </div>
+  `;
+}
+
+// ── パーセンタイルテーブル描画 ──
+function renderPctTable(d) {
+  const tbody   = document.getElementById('pct-tbody');
+  const userPct = Math.round(d.userPctile);
+
+  // ユーザー行をどこに挿入するか判断
+  let rows = [...d.pctTable];
+  let inserted = false;
+  let html = '';
+
+  rows.forEach((row, i) => {
+    // ユーザー行の挿入タイミング
+    const nextRow = rows[i + 1];
+    const userAbove = !inserted && row.pct >= userPct && (!nextRow || nextRow.pct < userPct);
+    if (userAbove && row.pct !== userPct) {
+      html += `<tr class="user-row">
+        <td class="pct-pos">${userPct}%ile</td>
+        <td><div class="pct-label">👤 あなたの位置</div></td>
+        <td>—</td>
+        <td>${d.userIncome.toLocaleString()} 万円</td>
+      </tr>`;
+      inserted = true;
+    }
+
+    const isUserPct = Math.round(row.pct) === userPct;
+    const crowns    = row.crown ? `<span class="crown">🏆</span> ` : '';
+    let valueCell;
+
+    if (!row.unlocked) {
+      valueCell = `<span class="lock-badge">あと${row.needed}件 🔒</span>`;
+    } else if (!row.value) {
+      valueCell = '—';
+    } else {
+      valueCell = `${row.value.toLocaleString()} 万円`;
+    }
+
+    html += `<tr ${isUserPct ? 'class="user-row"' : ''}>
+      <td class="pct-pos">${row.pct}%ile</td>
+      <td><div class="pct-label">${crowns}${row.label}${isUserPct ? ' <span style="font-size:12px;color:var(--blue)">← あなた</span>' : ''}</div></td>
+      <td>${row.unlocked ? '—' : `<span class="lock-badge">あと${row.needed}件</span>`}</td>
+      <td>${!row.unlocked ? '<span style="color:#94a3b8">🔒 未開放</span>' : row.value ? `${row.value.toLocaleString()} 万円` : '—'}</td>
+    </tr>`;
+  });
+
+  if (!inserted) {
+    html += `<tr class="user-row">
+      <td class="pct-pos">${userPct}%ile</td>
+      <td><div class="pct-label">👤 あなたの位置</div></td>
+      <td>—</td>
+      <td>${d.userIncome.toLocaleString()} 万円</td>
+    </tr>`;
+  }
+
+  tbody.innerHTML = html;
+}
+
+// ── ヒストグラム描画 ──
+function renderHistogram(d) {
+  const ctx    = document.getElementById('chart-hist').getContext('2d');
+  const labels = d.histogram.map(h => h.label);
+  const counts = d.histogram.map(h => h.count);
+  const colors = d.histogram.map(h => h.isUser ? '#3b82f6' : '#bfdbfe');
+
+  // ユーザーのバーにラベル追加
+  const p10val = d.pctTable.find(r=>r.pct===10)?.value;
+  const p25val = d.pctTable.find(r=>r.pct===25)?.value;
+  const p50val = d.pctTable.find(r=>r.pct===50)?.value;
+  const p75val = d.pctTable.find(r=>r.pct===75)?.value;
+  const p90val = d.pctTable.find(r=>r.pct===90)?.value;
+
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [{
+        data: counts,
+        backgroundColor: colors,
+        borderRadius: 4,
+        borderSkipped: false,
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: ctx => `${ctx.parsed.y}人`
+          }
+        }
+      },
+      scales: {
+        x: { grid: { display: false }, ticks: { font: { size: 10 }, maxRotation: 45 } },
+        y: { beginAtZero: true, ticks: { stepSize: 1, font: { size: 11 } }, grid: { color: '#f1f5f9' } }
+      }
+    }
+  });
+}
+
+// ── キャリアトレンド描画 ──
+function renderCareerTrend(d) {
+  const ctx    = document.getElementById('chart-career').getContext('2d');
+  const labels = d.careerTrend.map(c => c.label);
+  const make   = (key, label, color, width = 1.5) => ({
+    label, data: d.careerTrend.map(c => c[key]),
+    borderColor: color, backgroundColor: 'transparent',
+    borderWidth: width, pointRadius: 4, pointBackgroundColor: color,
+    tension: 0.1
+  });
+
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [
+        make('p10', '10%ile',  '#cbd5e1'),
+        make('p25', '25%ile',  '#93c5fd'),
+        make('p50', '中央値',  '#3b82f6', 2.5),
+        make('p75', '75%ile',  '#64748b'),
+        make('p90', '90%ile',  '#1e293b'),
+        {
+          label: 'あなたの年収',
+          data: d.careerTrend.map(() => d.userIncome),
+          borderColor: '#3b82f6', backgroundColor: 'transparent',
+          borderWidth: 2, borderDash: [6, 4],
+          pointRadius: 0, tension: 0
+        }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          display: true,
+          position: 'top',
+          labels: { font: { size: 11 }, boxWidth: 20, padding: 12 }
+        },
+        tooltip: {
+          callbacks: { label: ctx => `${ctx.dataset.label}: ${ctx.parsed.y ? ctx.parsed.y.toLocaleString() + '万円' : '—'}` }
+        }
+      },
+      scales: {
+        x: { grid: { display: false }, ticks: { font: { size: 11 } } },
+        y: { beginAtZero: false, ticks: { font: { size: 11 }, callback: v => v + '万' }, grid: { color: '#f1f5f9' } }
+      }
+    }
+  });
+}
+
+// ── 緩和通知 ──
+function renderRelax(d) {
+  if (!d.relaxApplied || d.relaxApplied.length === 0) return;
+  const el = document.getElementById('relax-notice');
+  el.style.display = '';
+  document.getElementById('relax-steps').textContent =
+    d.relaxApplied.join(' → ');
+}
+
+// ── ローカルモード用バナー ──
+function showLocalBanner() {
+  const banner = document.createElement('div');
+  banner.id = 'local-mode-banner';
+  banner.style.cssText = 'background:#fef3c7;border:1px solid #f59e0b;color:#92400e;padding:10px 20px;font-size:13px;text-align:center;position:sticky;top:56px;z-index:90';
+  banner.innerHTML = '⚠️ <strong>オフラインモード（参考値）</strong> — GASへの接続に失敗しました。実際の比較データと異なる場合があります。';
+  document.body.insertBefore(banner, document.body.children[1]);
+}
+
+// ── メイン ──
+async function init() {
+  if (!id) { showError('URLにIDが含まれていません'); return; }
+  if (GAS_URL === 'YOUR_GAS_URL_HERE') { showError('GAS_URL が設定されていません。HTMLファイルを編集してください。'); return; }
+
+  try {
+    const data = await fetchResult(id);
+    show('result');
+    renderHero(data);
+    renderPctTable(data);
+    renderHistogram(data);
+    renderCareerTrend(data);
+    renderRelax(data);
+  } catch (e) {
+    // GAS接続失敗 → localStorageのキャッシュでローカル計算を試みる
+    try {
+      const cached = localStorage.getItem('pp_payload_' + id);
+      if (cached) {
+        const { payload } = JSON.parse(cached);
+        const localData = computeLocalResult(id, payload);
+        show('result');
+        showLocalBanner();
+        renderHero(localData);
+        renderPctTable(localData);
+        renderHistogram(localData);
+        renderCareerTrend(localData);
+        renderRelax(localData);
+      } else {
+        showError(e.message || '結果を取得できませんでした');
+      }
+    } catch (e2) {
+      showError(e.message || '結果を取得できませんでした');
+    }
+  }
+}
+
+init();
+</script>
+</body>
+</html>

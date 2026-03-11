@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PayPulseについて — 年収の相場を、すべての現場へ</title>
+<meta name="description" content="PayPulseはゼネコン建築施工管理者のための年収データベースサービスです。これまでブラックボックスだった年収情報をオープンにし、すべての施工管理者がより良いキャリアの意思決定ができる未来を目指します。">
+<link rel="stylesheet" href="brand.css">
+<style>
+body{
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:28px 28px;
+}
+
+/* ── HEADER ── */
+header{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:14px 24px;background:rgba(242,236,216,0.95);backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;
+}
+.logo{font-family:'Courier New',Courier,monospace;font-size:22px;font-weight:900;letter-spacing:2px;color:var(--text);text-decoration:none;border-bottom:3px solid var(--blue);padding-bottom:2px}
+.nav-links{display:flex;gap:20px;align-items:center}
+.nav-link{font-size:14px;font-weight:600;color:var(--text-light);text-decoration:none;transition:color .2s}
+.nav-link:hover,.nav-link.active{color:var(--blue)}
+.header-cta{background:var(--orange);color:#fff;border:none;border-radius:6px;padding:9px 22px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;letter-spacing:.5px;text-decoration:none;transition:background .2s,transform .1s}
+.header-cta:hover{background:#ea6a00;transform:translateY(-1px)}
+
+/* ── MISSION HERO ── */
+.mission-hero{
+  background:var(--blue-dark);color:#fff;
+  padding:88px 24px 80px;text-align:center;
+  position:relative;overflow:hidden;
+}
+.mission-hero::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(26,95,173,.35) 0%,transparent 55%),
+             radial-gradient(ellipse at 75% 40%,rgba(249,115,22,.15) 0%,transparent 55%);
+}
+.mission-inner{max-width:640px;margin:0 auto;position:relative;z-index:1}
+.mission-tag{
+  display:inline-block;background:rgba(249,115,22,.18);color:#fbbf24;
+  border:1px solid rgba(249,115,22,.3);font-size:11px;font-weight:700;
+  letter-spacing:2px;padding:5px 16px;border-radius:20px;margin-bottom:32px;
+}
+.mission-eyebrow{
+  font-size:clamp(15px,2.5vw,20px);font-weight:700;
+  color:#64748b;letter-spacing:1px;margin-bottom:12px;
+}
+.mission-eyebrow span{color:#94a3b8}
+.mission-title{
+  font-family:'Courier New',Courier,monospace;
+  font-size:clamp(38px,8vw,68px);font-weight:900;line-height:1.0;
+  letter-spacing:-2px;color:#fff;margin-bottom:28px;
+}
+.mission-title em{color:var(--orange);font-style:normal}
+.mission-sub{
+  font-size:clamp(15px,2vw,17px);color:#94a3b8;line-height:1.95;
+  max-width:480px;margin:0 auto;
+}
+.mission-sub strong{color:#e2e8f0}
+
+/* ── SECTION COMMON ── */
+section{padding:76px 24px}
+.section-inner{max-width:700px;margin:0 auto}
+.label-tag{
+  display:inline-block;font-size:11px;font-weight:700;letter-spacing:2px;
+  text-transform:uppercase;color:var(--blue);margin-bottom:14px;
+}
+.section-heading{
+  font-family:'Courier New',Courier,monospace;
+  font-size:clamp(22px,4vw,32px);font-weight:900;line-height:1.2;
+  margin-bottom:10px;
+}
+.section-lead{font-size:16px;color:var(--text-light);line-height:1.8;margin-bottom:40px}
+
+/* ── PROBLEM SECTION ── */
+.problem-bg{background:var(--white);border-top:1px solid var(--border)}
+
+/* Question cards */
+.questions{display:flex;flex-direction:column;gap:14px;margin-bottom:40px}
+.q-card{
+  background:var(--bg);
+  border-radius:14px;padding:24px 28px 24px 64px;
+  position:relative;
+  transition:transform .2s,box-shadow .2s;
+}
+.q-card:hover{transform:translateX(4px)}
+.q-card-num{
+  position:absolute;left:20px;top:50%;transform:translateY(-50%);
+  font-family:'Courier New',Courier,monospace;
+  font-size:28px;font-weight:900;color:rgba(26,95,173,.2);line-height:1;
+}
+.q-card-text{
+  font-size:16px;line-height:1.7;color:var(--text);font-weight:500;
+}
+.q-card-text::before{content:'\201C';color:var(--blue);font-weight:900;font-size:20px;margin-right:2px}
+.q-card-text::after{content:'\201D';color:var(--blue);font-weight:900;font-size:20px;margin-left:2px}
+
+/* Insight box */
+.insight-box{
+  background:var(--blue-dark);border-radius:14px;padding:28px 32px;
+  border-left:4px solid var(--orange);
+}
+.insight-box p{
+  font-size:16px;line-height:1.9;color:#cbd5e1;
+}
+.insight-box strong{color:#fff;font-weight:700}
+
+/* ── SOLUTION SECTION ── */
+.solution-bg{background:rgba(26,95,173,.03);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+
+/* Numbered solution points */
+.sol-points{display:flex;flex-direction:column;gap:0;position:relative;margin-bottom:48px}
+.sol-points::before{
+  content:'';position:absolute;left:23px;top:44px;bottom:44px;
+  width:2px;background:var(--border);
+}
+.sol-point{display:flex;gap:24px;align-items:flex-start;padding-bottom:32px}
+.sol-point:last-child{padding-bottom:0}
+.sol-num{
+  flex-shrink:0;width:48px;height:48px;border-radius:50%;
+  background:var(--blue-dark);color:#fff;
+  font-family:'Courier New',Courier,monospace;font-size:16px;font-weight:900;
+  display:flex;align-items:center;justify-content:center;
+  position:relative;z-index:1;
+  box-shadow:0 0 0 4px var(--bg);
+}
+.sol-body{padding-top:10px}
+.sol-title{font-size:17px;font-weight:700;margin-bottom:6px;color:var(--text)}
+.sol-desc{font-size:14px;color:var(--text-light);line-height:1.75}
+.sol-tag{
+  display:inline-block;font-size:11px;font-weight:700;
+  background:rgba(249,115,22,.1);color:var(--orange);
+  padding:2px 8px;border-radius:4px;margin-bottom:6px;
+}
+
+/* Trust note */
+.trust-note{
+  padding:22px 26px;
+  background:var(--white);border-radius:12px;
+  border:1px solid var(--border);
+  border-left:4px solid var(--blue);
+}
+.trust-note-title{font-size:13px;font-weight:700;color:var(--blue);margin-bottom:7px}
+.trust-note-body{font-size:14px;color:var(--text-light);line-height:1.8}
+.trust-note-body strong{color:var(--text)}
+
+/* ── DATA MODEL ── */
+.data-bg{background:var(--white);border-top:1px solid var(--border)}
+.data-flow{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:0;
+  margin:40px 0 32px;position:relative;
+}
+.data-flow::before{
+  content:'';position:absolute;top:28px;left:60px;right:60px;height:2px;
+  background:linear-gradient(90deg,var(--blue),var(--orange));
+  z-index:0;
+}
+@media(max-width:560px){
+  .data-flow{grid-template-columns:1fr 1fr;gap:20px}
+  .data-flow::before{display:none}
+}
+.df-item{text-align:center;position:relative;z-index:1}
+.df-circle{
+  width:56px;height:56px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 12px;
+  border:2px solid var(--border);
+  background:var(--white);
+  transition:transform .2s;
+}
+.df-circle:hover{transform:scale(1.08)}
+.df-circle.highlight{background:var(--orange);border-color:var(--orange)}
+.df-label{font-size:12px;font-weight:700;color:var(--text);line-height:1.4;margin-bottom:3px}
+.df-sub{font-size:11px;color:var(--text-light)}
+.data-note{
+  font-size:15px;line-height:1.9;color:var(--text-light);
+  background:rgba(26,95,173,.04);border-radius:10px;padding:20px 24px;
+}
+.data-note strong{color:var(--text)}
+
+/* ── VISION ── */
+.vision-bg{
+  background:var(--blue-dark);
+  border-top:1px solid rgba(255,255,255,.06);
+  padding:88px 24px;text-align:center;
+}
+.vision-inner{max-width:640px;margin:0 auto}
+.vision-label{font-size:11px;font-weight:700;letter-spacing:2px;color:#475569;text-transform:uppercase;margin-bottom:28px}
+.vision-quote{
+  font-family:'Courier New',Courier,monospace;
+  font-size:clamp(20px,3.5vw,30px);font-weight:900;
+  color:#fff;line-height:1.55;margin-bottom:28px;
+}
+.vision-quote em{color:var(--orange);font-style:normal}
+.vision-divider{width:40px;height:3px;background:var(--orange);margin:0 auto 28px;border-radius:2px}
+.vision-body{font-size:16px;color:#94a3b8;line-height:2;max-width:500px;margin:0 auto}
+.vision-body strong{color:#e2e8f0}
+
+/* ── CTA ── */
+.cta-section{background:var(--bg);border-top:1px solid var(--border);padding:72px 24px;text-align:center}
+.cta-title{font-family:'Courier New',Courier,monospace;font-size:clamp(22px,4vw,34px);font-weight:900;margin-bottom:14px;color:var(--text)}
+.cta-sub{font-size:15px;color:var(--text-light);margin-bottom:28px;line-height:1.85}
+.btn-primary{background:var(--orange);color:#fff;border:none;border-radius:8px;padding:16px 36px;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit;letter-spacing:.5px;text-decoration:none;transition:background .2s,transform .15s,box-shadow .15s;box-shadow:0 4px 16px rgba(249,115,22,.35);display:inline-block}
+.btn-primary:hover{background:#ea6a00;transform:translateY(-2px);box-shadow:0 8px 24px rgba(249,115,22,.4)}
+.btn-text{display:inline-block;margin-left:16px;font-size:14px;color:var(--text-light);text-decoration:underline;text-underline-offset:3px}
+
+@media(max-width:480px){.btn-text{display:block;margin:14px auto 0}}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <a class="logo" href="index.html">PAYPULSE</a>
+  <div class="nav-links">
+    <a class="nav-link" href="index.html">ホーム</a>
+    <a class="nav-link active" href="about.html">About</a>
+    <a class="header-cta" href="survey.html">診断を始める →</a>
+  </div>
+</header>
+
+<!-- MISSION HERO -->
+<div class="mission-hero">
+  <div class="mission-inner">
+    <div class="mission-tag">ゼネコン建築施工管理者のための年収データベース</div>
+    <p class="mission-eyebrow">年収市場を、透明に。<span> / </span>キャリアをもっと自由に。</p>
+    <h1 class="mission-title">
+      現場の年収を、<br><em>オープンに。</em>
+    </h1>
+    <p class="mission-sub">
+      PayPulseはゼネコン建築施工管理者に向けた、<strong>年収データベースサービス</strong>です。<br>
+      現場で働くすべての人が、正しい情報をもとに<br>キャリアを選べる社会を目指しています。
+    </p>
+  </div>
+</div>
+
+<!-- THE PROBLEM -->
+<section class="problem-bg">
+  <div class="section-inner">
+    <div class="label-tag">The Problem</div>
+    <h2 class="section-heading">日本の建設業には、年収情報をめぐる大きな〝不均衡〟があります。</h2>
+    <p class="section-lead">現場で働きながら、こんな疑問を感じたことはないでしょうか。</p>
+
+    <div class="questions">
+      <div class="q-card">
+        <span class="q-card-num">01</span>
+        <span class="q-card-text">自分の年収は、同じ経験年数・同じ役職の人たちと比べて適正なのか？</span>
+      </div>
+      <div class="q-card">
+        <span class="q-card-num">02</span>
+        <span class="q-card-text">規模の大きい案件を担当するようになれば、もっと年収は上がるものなのか？</span>
+      </div>
+      <div class="q-card">
+        <span class="q-card-num">03</span>
+        <span class="q-card-text">転職を考えているが、いくら要求すれば市場価値に見合うのか？</span>
+      </div>
+    </div>
+
+    <div class="insight-box">
+      <p>
+        これらは当然の疑問です。しかし、答えを出せるだけの情報がどこにもない。転職サイトの「平均年収」は職種・規模・経験を無視した粗いデータ。同僚との年収の話はタブー。<strong>多くの施工管理者が、「なんとなく適正だろう」という感覚だけを頼りに、キャリアの大きな意思決定をせざるを得ない状況が続いています。</strong>
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- THE SOLUTION -->
+<section class="solution-bg">
+  <div class="section-inner">
+    <div class="label-tag">Our Approach</div>
+    <h2 class="section-heading">PayPulseはこの不均衡を、<br>「年収情報の透明化」によって解決します。</h2>
+    <p class="section-lead">ブラックボックスになっていた年収情報をオープンにすることで、公正な評価の実現と、より自由なキャリア構築につながると確信しているからです。</p>
+
+    <div class="sol-points">
+      <div class="sol-point">
+        <div class="sol-num">1</div>
+        <div class="sol-body">
+          <span class="sol-tag">一次情報</span>
+          <div class="sol-title">現場のプロから、直接収集する</div>
+          <p class="sol-desc">担当した案件の規模・工種・役職、保有資格、年齢と年収を、実際に現場で働くプロから直接収集します。推計や加工を挟まず、現場の声をそのまま蓄積します。</p>
+        </div>
+      </div>
+      <div class="sol-point">
+        <div class="sol-num">2</div>
+        <div class="sol-body">
+          <span class="sol-tag">構造化</span>
+          <div class="sol-title">「同じ条件」で比較できる形に整える</div>
+          <p class="sol-desc">職種・地域・経験年数・案件規模ごとにデータを構造化することで、「自分と同じ条件の人たちはどの水準にいるか」が、はじめて数字で確認できるようになります。</p>
+        </div>
+      </div>
+      <div class="sol-point">
+        <div class="sol-num">3</div>
+        <div class="sol-body">
+          <span class="sol-tag">透明化</span>
+          <div class="sol-title">誰もが使えるデータへ、無料で届ける</div>
+          <p class="sol-desc">収集・構造化されたデータは、登録不要・無料で利用できる年収診断として提供されます。これまで一部の組織だけが参照できたベンチマークを、すべての人へ。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="trust-note">
+      <div class="trust-note-title">💡 一般的な「年収診断サービス」との違いについて</div>
+      <div class="trust-note-body">
+        世に出回っている年収診断の多くは、転職支援を事業とする組織が提供しており、診断結果が「転職を促す方向に引っ張られやすい」構造があります。PayPulseはそうした組織と<strong>一切の関係を持たず、完全に独立して運営</strong>されています。私たちの価値はデータの精度のみに依存するため、特定の行動へ誘導するインセンティブが構造上ありません。
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DATA MODEL -->
+<section class="data-bg">
+  <div class="section-inner">
+    <div class="label-tag">Data Model</div>
+    <h2 class="section-heading">データが蓄積されるほど、<br>診断の精度は高まります。</h2>
+
+    <div class="data-flow">
+      <div class="df-item">
+        <div class="df-circle">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="8" r="4" stroke="#1a5fad" stroke-width="2"/>
+            <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke="#1a5fad" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="df-label">あなたが回答</div>
+        <div class="df-sub">年収・職歴を入力</div>
+      </div>
+      <div class="df-item">
+        <div class="df-circle">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+            <rect x="3" y="3" width="7" height="7" rx="1" stroke="#1a5fad" stroke-width="2"/>
+            <rect x="14" y="3" width="7" height="7" rx="1" stroke="#1a5fad" stroke-width="2"/>
+            <rect x="3" y="14" width="7" height="7" rx="1" stroke="#f97316" stroke-width="2"/>
+            <rect x="14" y="14" width="7" height="7" rx="1" stroke="#1a5fad" stroke-width="2"/>
+          </svg>
+        </div>
+        <div class="df-label">データが充実</div>
+        <div class="df-sub">同条件グループが拡大</div>
+      </div>
+      <div class="df-item">
+        <div class="df-circle highlight">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="df-label">精度が上がる</div>
+        <div class="df-sub">比較がより正確に</div>
+      </div>
+      <div class="df-item">
+        <div class="df-circle">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+            <path d="M12 2L2 7l10 5 10-5-10-5z" stroke="#1a5fad" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M2 17l10 5 10-5" stroke="#f97316" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M2 12l10 5 10-5" stroke="#1a5fad" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="df-label">全員が恩恵を受ける</div>
+        <div class="df-sub">市場全体が透明に</div>
+      </div>
+    </div>
+
+    <div class="data-note">
+      あなたの回答ひとつが、次に診断を受けるすべての施工管理者の精度を底上げします。<strong>一人ひとりの参加が、業界全体の情報格差を縮めていく</strong>——そういう仕組みです。
+    </div>
+  </div>
+</section>
+
+<!-- VISION -->
+<div class="vision-bg">
+  <div class="vision-inner">
+    <div class="vision-label">Our Vision</div>
+    <p class="vision-quote">
+      目指すのは、年収市場を透明化し、<br>
+      <em>すべてのゼネコン建築施工管理者が</em><br>
+      より良いキャリアの意思決定ができる未来。
+    </p>
+    <div class="vision-divider"></div>
+    <p class="vision-body">
+      適正な評価を受けられるかどうかは、<strong>情報を持っているかどうか</strong>で大きく変わります。<br>
+      PayPulseはその格差をなくし、現場で誠実に働くすべての人が、<br>正しい根拠をもってキャリアを選べる社会をつくります。
+    </p>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="cta-section">
+  <h2 class="cta-title">まず、自分の立ち位置を<br>確かめてみる。</h2>
+  <p class="cta-sub">
+    転職する・しないに関わらず、<strong>正しい情報を持つ側</strong>にいることには意味があります。<br>
+    登録不要・無料・約5分。
+  </p>
+  <a class="btn-primary" href="survey.html" style="font-size:17px;padding:18px 44px">無料で診断を始める →</a>
+  <a class="btn-text" href="index.html">診断の内容を見る</a>
+  <p style="font-size:12px;color:#94a3b8;margin-top:32px">© 2026 PayPulse運営事務局　|　<a href="privacy.html" style="color:#94a3b8">プライバシーポリシー</a>　|　<a href="mailto:contact.fairbase@gmail.com" style="color:#94a3b8">お問い合わせ</a></p>
+</div>
+
+</body>
+</html>

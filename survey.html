@@ -1,0 +1,1366 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PayPulse - 市場の脈動を、すべての人へ</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #f2ecd8;
+  --blue: #1a5fad;
+  --blue-dark: #0d3b6e;
+  --orange: #f97316;
+  --text: #1a2e4a;
+  --text-light: #64748b;
+  --white: #ffffff;
+  --grid: rgba(80,130,200,0.1);
+  --border: rgba(26,95,173,0.35);
+}
+
+body {
+  font-family: 'Courier New', Courier, monospace;
+  background-color: var(--bg);
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 28px 28px;
+  color: var(--text);
+  min-height: 100vh;
+}
+
+/* ---- HEADER ---- */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.logo {
+  font-size: 22px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  color: var(--text);
+  cursor: pointer;
+  border-bottom: 3px solid var(--blue);
+  padding-bottom: 2px;
+}
+.nav-links { display: flex; gap: 16px; font-size: 13px; font-weight: 600; }
+.nav-link {
+  color: var(--text);
+  cursor: pointer;
+  padding: 4px 8px;
+  border-bottom: 2px solid transparent;
+  transition: color 0.2s, border-color 0.2s;
+}
+.nav-link:hover { color: var(--blue); }
+.nav-link.active { color: var(--blue); border-bottom-color: var(--blue); }
+
+/* ---- MAIN ---- */
+.container { max-width: 680px; margin: 0 auto; padding: 20px 16px 60px; }
+
+/* ---- STEP INDICATOR ---- */
+.steps-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 16px 8px;
+}
+.step-item { display: flex; flex-direction: column; align-items: center; }
+.step-dot {
+  width: 42px; height: 42px;
+  border-radius: 50%;
+  border: 2px solid #bbb;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 16px;
+  background: var(--bg); color: #aaa;
+  transition: all 0.3s; z-index: 1;
+}
+.step-dot.active  { background: var(--orange); border-color: var(--orange); color: #fff; box-shadow: 0 0 0 4px rgba(249,115,22,0.18); }
+.step-dot.done    { background: var(--blue);   border-color: var(--blue);   color: #fff; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.step-connector {
+  flex: 1; height: 2px; background: #ccc;
+  min-width: 36px; max-width: 110px;
+  transition: background 0.3s;
+}
+.step-connector.done { background: var(--blue); }
+
+/* ---- BLUEPRINT CARD ---- */
+.bp-card {
+  position: relative;
+  background: var(--white);
+  border: 1px solid var(--border);
+  padding: 28px 24px;
+  margin-bottom: 20px;
+}
+.bp-card::before {
+  content: ''; position: absolute;
+  top: -2px; left: -2px; width: 22px; height: 22px;
+  border-top: 3px solid var(--blue); border-left: 3px solid var(--blue);
+}
+.bp-card::after {
+  content: ''; position: absolute;
+  bottom: -2px; right: -2px; width: 22px; height: 22px;
+  border-bottom: 3px solid var(--blue); border-right: 3px solid var(--blue);
+}
+.card-title   { font-size: 20px; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 4px; }
+.card-subtitle { font-size: 12px; color: var(--text-light); margin-bottom: 22px; }
+
+/* ---- INFO BOX ---- */
+.info-box {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  padding: 14px 16px;
+  font-size: 12px; line-height: 1.9;
+  margin-bottom: 22px;
+}
+
+/* ---- SUB CARD (案件1, 案件2) ---- */
+.sub-card {
+  position: relative;
+  border: 2px solid var(--blue);
+  padding: 20px 18px;
+  margin-bottom: 22px;
+}
+.sub-card::before {
+  content: ''; position: absolute;
+  top: -3px; left: -3px; width: 14px; height: 14px;
+  border-top: 3px solid var(--blue); border-left: 3px solid var(--blue);
+}
+.sub-card::after {
+  content: ''; position: absolute;
+  bottom: -3px; right: -3px; width: 14px; height: 14px;
+  border-bottom: 3px solid var(--blue); border-right: 3px solid var(--blue);
+}
+.sub-title {
+  font-size: 17px; font-weight: 700;
+  margin-bottom: 20px; padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+/* ---- FORM ELEMENTS ---- */
+.field { margin-bottom: 22px; }
+.field-label {
+  display: block;
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  margin-bottom: 7px;
+}
+.bp-input, .bp-select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 2px solid var(--blue);
+  background: var(--bg);
+  font-family: 'Courier New', monospace;
+  font-size: 14px; color: var(--text);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  -webkit-appearance: none; appearance: none;
+}
+.bp-input:focus, .bp-select:focus {
+  border-color: var(--blue-dark);
+  box-shadow: 0 0 0 2px rgba(26,95,173,0.15);
+}
+.bp-input::placeholder { color: #bbb; }
+.bp-select {
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%231a5fad' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 34px;
+}
+.input-row { display: flex; align-items: center; gap: 8px; }
+.input-row .bp-input { flex: 1; }
+.unit { font-size: 13px; color: var(--text-light); white-space: nowrap; min-width: 55px; }
+.double-field { display: flex; flex-direction: column; gap: 8px; }
+.floors-block { display: flex; flex-direction: column; gap: 8px; }
+.floor-row { display: flex; align-items: center; gap: 8px; }
+.floor-row .bp-input { max-width: 120px; }
+.floor-lbl { font-size: 12px; color: var(--text-light); min-width: 28px; }
+.field-note { font-size: 11px; color: var(--text-light); margin-top: 6px; line-height: 1.6; }
+
+/* ---- CHECKBOXES ---- */
+.check-group { display: flex; flex-direction: column; gap: 10px; margin-top: 8px; }
+.check-item { display: flex; align-items: center; gap: 10px; cursor: pointer; font-size: 13px; }
+.check-item input[type="checkbox"] {
+  width: 18px; height: 18px;
+  border: 2px solid var(--blue);
+  -webkit-appearance: none; appearance: none;
+  cursor: pointer; background: var(--white);
+  flex-shrink: 0; position: relative;
+}
+.check-item input[type="checkbox"]:checked { background: var(--blue); }
+.check-item input[type="checkbox"]:checked::after {
+  content: '✓';
+  position: absolute; top: -2px; left: 2px;
+  color: white; font-size: 12px; font-weight: 700;
+}
+
+/* ---- BUTTONS ---- */
+.btn-row { display: flex; justify-content: flex-end; gap: 12px; margin-top: 28px; }
+.btn {
+  padding: 12px 30px;
+  font-family: 'Courier New', monospace;
+  font-size: 14px; font-weight: 600;
+  cursor: pointer; border: 2px solid;
+  transition: all 0.2s; letter-spacing: 0.5px;
+}
+.btn-primary { background: var(--blue); color: white; border-color: var(--blue); }
+.btn-primary:hover { background: var(--blue-dark); border-color: var(--blue-dark); }
+.btn-secondary { background: transparent; color: var(--orange); border-color: var(--orange); }
+.btn-secondary:hover { background: rgba(249,115,22,0.06); }
+
+/* ---- CONFIRM STEP ---- */
+.confirm-hd { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+.confirm-title { font-size: 15px; font-weight: 700; }
+.btn-edit {
+  padding: 5px 14px; font-size: 12px;
+  background: transparent; color: var(--blue);
+  border: 1px solid var(--blue); cursor: pointer;
+  font-family: 'Courier New', monospace;
+}
+.confirm-body { font-size: 13px; line-height: 2; }
+.crow { display: flex; gap: 8px; margin-bottom: 2px; }
+.ckey { color: var(--text-light); min-width: 140px; flex-shrink: 0; }
+.cval { font-weight: 600; }
+.tag {
+  display: inline-block; background: var(--blue); color: white;
+  font-size: 11px; padding: 2px 8px; margin: 2px 2px 2px 0; border-radius: 2px;
+}
+.email-box {
+  background: var(--bg); border: 1px solid var(--border);
+  padding: 16px 18px; margin-bottom: 20px;
+  position: relative;
+}
+.email-box::before {
+  content: ''; position: absolute;
+  top: -2px; left: -2px; width: 14px; height: 14px;
+  border-top: 2px solid var(--blue); border-left: 2px solid var(--blue);
+}
+.email-note { font-size: 12px; color: var(--text-light); margin-bottom: 10px; }
+
+/* ---- SUCCESS ---- */
+.success-wrap { text-align: center; padding: 40px 16px; }
+.success-icon { font-size: 52px; color: var(--blue); margin-bottom: 16px; }
+.success-title { font-size: 22px; font-weight: 700; color: var(--blue); margin-bottom: 12px; }
+.success-desc { font-size: 14px; color: var(--text-light); line-height: 1.8; }
+
+/* ---- DASHBOARD ---- */
+.dash-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+.dash-title { font-size: 20px; font-weight: 700; }
+.stats-row { display: flex; gap: 14px; margin-bottom: 22px; flex-wrap: wrap; }
+.stat-card {
+  flex: 1; min-width: 140px;
+  background: white; border: 1px solid var(--border);
+  padding: 16px; text-align: center; position: relative;
+}
+.stat-card::before {
+  content: ''; position: absolute;
+  top: -2px; left: -2px; width: 12px; height: 12px;
+  border-top: 2px solid var(--blue); border-left: 2px solid var(--blue);
+}
+.stat-num { font-size: 30px; font-weight: 700; color: var(--blue); }
+.stat-lbl { font-size: 11px; color: var(--text-light); margin-top: 4px; }
+.diagnosis-banner {
+  background: rgba(249,115,22,0.07);
+  border: 1px dashed var(--orange);
+  padding: 12px 16px; margin-bottom: 20px;
+  font-size: 12px; color: var(--orange); font-weight: 600; line-height: 1.6;
+}
+.table-wrap { overflow-x: auto; background: white; border: 1px solid var(--border); }
+.data-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.data-table th {
+  background: var(--blue); color: white;
+  padding: 10px 12px; text-align: left; white-space: nowrap; font-weight: 600;
+}
+.data-table td { padding: 9px 12px; border-bottom: 1px solid #f0f0f0; white-space: nowrap; }
+.data-table tr:last-child td { border-bottom: none; }
+.data-table tr:hover td { background: rgba(26,95,173,0.03); }
+.empty-msg { text-align: center; padding: 44px 20px; color: var(--text-light); font-size: 14px; }
+
+/* ---- SECTION VISIBILITY ---- */
+.section { display: none; }
+.section.active { display: block; }
+
+/* ---- FOOTER ---- */
+footer {
+  text-align: center; padding: 20px;
+  font-size: 12px; color: var(--text-light);
+  border-top: 1px solid var(--border);
+}
+</style>
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header>
+  <a class="logo" href="index.html" style="text-decoration:none">PAYPULSE</a>
+  <div class="nav-links">
+    <span class="nav-link active" id="nav-survey" onclick="showSection('survey')">年収調査</span>
+    <span class="nav-link" id="nav-dashboard" onclick="showSection('dashboard')" style="display:none">ダッシュボード</span>
+    <!-- TESTボタン: ?debug=true の時のみ表示 (JS側で制御) -->
+    <button id="btn-test" onclick="fillTestData()" style="display:none;background:#f97316;color:#fff;border:none;border-radius:4px;padding:5px 12px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;letter-spacing:1px" title="テストデータを自動入力してSTEP4へジャンプ">🧪 TEST</button>
+  </div>
+</header>
+
+<!-- ===== SURVEY SECTION ===== -->
+<div id="section-survey" class="section active">
+  <div class="container">
+
+    <!-- Step indicator -->
+    <div class="steps-row">
+      <div class="step-item"><div class="step-dot active" id="dot-1">1</div></div>
+      <div class="step-connector" id="conn-12"></div>
+      <div class="step-item"><div class="step-dot" id="dot-2">2</div></div>
+      <div class="step-connector" id="conn-23"></div>
+      <div class="step-item"><div class="step-dot" id="dot-3">3</div></div>
+      <div class="step-connector" id="conn-34"></div>
+      <div class="step-item"><div class="step-dot" id="dot-4">4</div></div>
+    </div>
+
+    <!-- ===== STEP 1: 案件情報 ===== -->
+    <div id="step-1">
+      <div class="bp-card">
+        <div class="card-title">案件情報</div>
+        <div class="card-subtitle">ステップ 1 / 4</div>
+
+        <div class="info-box">
+          案件を二つご入力ください。<br>
+          案件1：最も規模が大きい（または受注金額が大きい）案件<br>
+          案件2：最も難易度が高い（または責任が重かった）案件<br>
+          ※改修は「一括請負でワンフロア改修（部分改修は除く）」のみ対象<br>
+          ※ゼネコン（元請A工事）の施工管理経験を対象（B/C工事は対象外）
+        </div>
+
+        <!-- 案件1 -->
+        <div class="sub-card">
+          <div class="sub-title">案件1</div>
+          <div class="field">
+            <label class="field-label">工事分類</label>
+            <select class="bp-select" id="c1-type">
+              <option value="">工事分類を選択</option>
+              <option>新築</option><option>改修</option>
+            </select>
+          </div>
+          <div class="field">
+            <label class="field-label">役職</label>
+            <select class="bp-select" id="c1-role">
+              <option value="">役職を選択</option>
+              <option>係員</option><option>主任</option><option>所長</option>
+            </select>
+          </div>
+          <div class="field">
+            <label class="field-label">建物用途</label>
+            <select class="bp-select" id="c1-bldg">
+              <option value="">建物用途を選択</option>
+              <option>集合住宅</option><option>戸建て住宅</option><option>事務所（オフィス）</option>
+              <option>ホテル</option><option>複合施設（商業施設）</option><option>学校</option>
+              <option>飲食店</option><option>工場</option><option>老人ホーム</option>
+              <option>倉庫</option><option>データセンター</option><option>官庁</option><option>その他</option>
+            </select>
+          </div>
+          <div class="field">
+            <label class="field-label">受注金額（概算OK）</label>
+            <div class="double-field">
+              <div class="input-row">
+                <input type="number" class="bp-input" id="c1-oku" placeholder="0" min="0">
+                <span class="unit">億円</span>
+              </div>
+              <div class="input-row">
+                <input type="number" class="bp-input" id="c1-man" placeholder="0" min="0">
+                <span class="unit">万円</span>
+              </div>
+            </div>
+          </div>
+          <div class="field">
+            <label class="field-label">階数</label>
+            <div class="floors-block">
+              <div class="floor-row">
+                <span class="floor-lbl">地上</span>
+                <input type="number" class="bp-input" id="c1-fab" placeholder="0" min="0">
+                <span class="unit">階</span>
+              </div>
+              <div class="floor-row">
+                <span class="floor-lbl">地下</span>
+                <input type="number" class="bp-input" id="c1-fbl" placeholder="0" min="0">
+                <span class="unit">階</span>
+              </div>
+            </div>
+          </div>
+          <div class="field">
+            <label class="field-label">延床面積（概算OK）</label>
+            <div class="input-row">
+              <input type="number" class="bp-input" id="c1-area" placeholder="0" min="0">
+              <span class="unit">m²</span>
+            </div>
+            <div class="field-note">改修の場合は、工事区画面積（ワンフロア・㎡）<br>※正確な数値でなくて大丈夫です。分かる範囲で概算で入力してください。</div>
+          </div>
+          <div class="field">
+            <label class="field-label">経験業務範囲</label>
+            <div class="check-group" id="c1-scope">
+              <label class="check-item"><input type="checkbox" value="工程表作成"><span>工程表作成</span></label>
+              <label class="check-item"><input type="checkbox" value="工程表進捗確認兼調整"><span>工程表進捗確認兼調整</span></label>
+              <label class="check-item"><input type="checkbox" value="発注・納期管理"><span>発注・納期管理</span></label>
+              <label class="check-item"><input type="checkbox" value="自主検査"><span>自主検査</span></label>
+              <label class="check-item"><input type="checkbox" value="施工図チェック"><span>施工図チェック</span></label>
+              <label class="check-item"><input type="checkbox" value="施工計画書の作成・確認"><span>施工計画書の作成・確認</span></label>
+              <label class="check-item"><input type="checkbox" value="安全書類の整備・確認"><span>安全書類の整備・確認</span></label>
+              <label class="check-item"><input type="checkbox" value="危険箇所是正"><span>危険箇所是正</span></label>
+              <label class="check-item"><input type="checkbox" value="下請けとの工事契約"><span>下請けとの工事契約</span></label>
+              <label class="check-item"><input type="checkbox" value="請求処理"><span>請求処理</span></label>
+              <label class="check-item"><input type="checkbox" value="見積書取得・査定（単価見積）"><span>見積書取得・査定（単価見積）</span></label>
+              <label class="check-item"><input type="checkbox" value="見積書取得・査定（工事見積）"><span>見積書取得・査定（工事見積）</span></label>
+              <label class="check-item"><input type="checkbox" value="見積書取得"><span>見積書取得</span></label>
+              <label class="check-item"><input type="checkbox" value="見積査定"><span>見積査定</span></label>
+              <label class="check-item"><input type="checkbox" value="作業員との工事打合せ"><span>作業員との工事打合せ</span></label>
+              <label class="check-item"><input type="checkbox" value="協力業者との工事打合せ"><span>協力業者との工事打合せ</span></label>
+              <label class="check-item"><input type="checkbox" value="施主・設計者との打合わせ"><span>施主・設計者との打合わせ</span></label>
+            </div>
+          </div>
+          <div class="field">
+            <label class="field-label">構造種別</label>
+            <select class="bp-select" id="c1-struct">
+              <option value="">構造種別を選択</option>
+              <option>木造</option><option>S造</option><option>RC造</option><option>SRC造</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- 案件2 -->
+        <div class="sub-card">
+          <div class="sub-title">案件2</div>
+          <div class="field">
+            <label class="field-label">工事分類</label>
+            <select class="bp-select" id="c2-type">
+              <option value="">工事分類を選択</option>
+              <option>新築</option><option>改修</option>
+            </select>
+          </div>
+          <div class="field">
+            <label class="field-label">役職</label>
+            <select class="bp-select" id="c2-role">
+              <option value="">役職を選択</option>
+              <option>係員</option><option>主任</option><option>所長</option>
+            </select>
+          </div>
+          <div class="field">
+            <label class="field-label">建物用途</label>
+            <select class="bp-select" id="c2-bldg">
+              <option value="">建物用途を選択</option>
+              <option>集合住宅</option><option>戸建て住宅</option><option>事務所（オフィス）</option>
+              <option>ホテル</option><option>複合施設（商業施設）</option><option>学校</option>
+              <option>飲食店</option><option>工場</option><option>老人ホーム</option>
+              <option>倉庫</option><option>データセンター</option><option>官庁</option><option>その他</option>
+            </select>
+          </div>
+          <div class="field">
+            <label class="field-label">受注金額（概算OK）</label>
+            <div class="double-field">
+              <div class="input-row">
+                <input type="number" class="bp-input" id="c2-oku" placeholder="0" min="0">
+                <span class="unit">億円</span>
+              </div>
+              <div class="input-row">
+                <input type="number" class="bp-input" id="c2-man" placeholder="0" min="0">
+                <span class="unit">万円</span>
+              </div>
+            </div>
+          </div>
+          <div class="field">
+            <label class="field-label">階数</label>
+            <div class="floors-block">
+              <div class="floor-row">
+                <span class="floor-lbl">地上</span>
+                <input type="number" class="bp-input" id="c2-fab" placeholder="0" min="0">
+                <span class="unit">階</span>
+              </div>
+              <div class="floor-row">
+                <span class="floor-lbl">地下</span>
+                <input type="number" class="bp-input" id="c2-fbl" placeholder="0" min="0">
+                <span class="unit">階</span>
+              </div>
+            </div>
+          </div>
+          <div class="field">
+            <label class="field-label">延床面積（概算OK）</label>
+            <div class="input-row">
+              <input type="number" class="bp-input" id="c2-area" placeholder="0" min="0">
+              <span class="unit">m²</span>
+            </div>
+            <div class="field-note">改修の場合は、工事区画面積（ワンフロア・㎡）<br>※正確な数値でなくて大丈夫です。分かる範囲で概算で入力してください。</div>
+          </div>
+          <div class="field">
+            <label class="field-label">経験業務範囲</label>
+            <div class="check-group" id="c2-scope">
+              <label class="check-item"><input type="checkbox" value="工程表作成"><span>工程表作成</span></label>
+              <label class="check-item"><input type="checkbox" value="工程表進捗確認兼調整"><span>工程表進捗確認兼調整</span></label>
+              <label class="check-item"><input type="checkbox" value="発注・納期管理"><span>発注・納期管理</span></label>
+              <label class="check-item"><input type="checkbox" value="自主検査"><span>自主検査</span></label>
+              <label class="check-item"><input type="checkbox" value="施工図チェック"><span>施工図チェック</span></label>
+              <label class="check-item"><input type="checkbox" value="施工計画書の作成・確認"><span>施工計画書の作成・確認</span></label>
+              <label class="check-item"><input type="checkbox" value="安全書類の整備・確認"><span>安全書類の整備・確認</span></label>
+              <label class="check-item"><input type="checkbox" value="危険箇所是正"><span>危険箇所是正</span></label>
+              <label class="check-item"><input type="checkbox" value="下請けとの工事契約"><span>下請けとの工事契約</span></label>
+              <label class="check-item"><input type="checkbox" value="請求処理"><span>請求処理</span></label>
+              <label class="check-item"><input type="checkbox" value="見積書取得・査定（単価見積）"><span>見積書取得・査定（単価見積）</span></label>
+              <label class="check-item"><input type="checkbox" value="見積書取得・査定（工事見積）"><span>見積書取得・査定（工事見積）</span></label>
+              <label class="check-item"><input type="checkbox" value="見積書取得"><span>見積書取得</span></label>
+              <label class="check-item"><input type="checkbox" value="見積査定"><span>見積査定</span></label>
+              <label class="check-item"><input type="checkbox" value="作業員との工事打合せ"><span>作業員との工事打合せ</span></label>
+              <label class="check-item"><input type="checkbox" value="協力業者との工事打合せ"><span>協力業者との工事打合せ</span></label>
+              <label class="check-item"><input type="checkbox" value="施主・設計者との打合わせ"><span>施主・設計者との打合わせ</span></label>
+            </div>
+          </div>
+          <div class="field">
+            <label class="field-label">構造種別</label>
+            <select class="bp-select" id="c2-struct">
+              <option value="">構造種別を選択</option>
+              <option>木造</option><option>S造</option><option>RC造</option><option>SRC造</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn btn-primary" onclick="goStep(2)">▶ 次へ</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== STEP 2: 年収・働き方 ===== -->
+    <div id="step-2" style="display:none">
+      <div class="bp-card">
+        <div class="card-title">年収・働き方</div>
+        <div class="card-subtitle">ステップ 2 / 4</div>
+
+        <div class="field">
+          <label class="field-label">前年の総支給年収</label>
+          <div class="input-row">
+            <input type="number" class="bp-input" id="inc-total" placeholder="" min="0">
+            <span class="unit">万円（概算OK）</span>
+          </div>
+          <div class="field-note">前年の総支給年収を入力してください（賞与・手当・残業代を含む）<br>※交通費・出張旅費などの実費精算は含めないでください</div>
+        </div>
+
+        <div class="field">
+          <label class="field-label">前年の賞与</label>
+          <div class="input-row">
+            <input type="number" class="bp-input" id="inc-bonus" placeholder="" min="0">
+            <span class="unit">万円（概算OK）</span>
+          </div>
+          <div class="field-note">前年の賞与総額を入力してください</div>
+        </div>
+
+        <div class="field">
+          <label class="field-label">前年の手当（月額）</label>
+          <div class="input-row">
+            <input type="number" class="bp-input" id="inc-allow" placeholder="" min="0">
+            <span class="unit">万円/月（概算OK）</span>
+          </div>
+          <div class="field-note">毎月支給される手当の合計額を入力してください<br>※例：住宅手当/家族手当/資格手当/役職手当/現場手当など<br>※交通費・出張旅費などの実費精算は含めないでください</div>
+        </div>
+
+        <div class="field">
+          <label class="field-label">残業代の扱い（制度）</label>
+          <select class="bp-select" id="inc-ottype">
+            <option value="">残業代の扱いに最も近いものを選んでください</option>
+            <option>残業代は実績に応じて支給（みなし残業なし）</option>
+            <option>みなし残業（固定残業）あり</option>
+            <option>管理監督者等で残業代の支給なし（またはほぼなし）</option>
+            <option>その他/わからない</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label class="field-label">実残業時間（月平均）</label>
+          <div class="input-row">
+            <input type="number" class="bp-input" id="inc-othrs" placeholder="" min="0">
+            <span class="unit">時間/月（概算OK）</span>
+          </div>
+          <div class="field-note">直近3か月の実残業時間（月平均）を入力してください</div>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn btn-secondary" onclick="goStep(1)">▶ 前へ</button>
+          <button class="btn btn-primary" onclick="goStep(3)">▶ 次へ</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== STEP 3: 基本情報 ===== -->
+    <div id="step-3" style="display:none">
+      <div class="bp-card">
+        <div class="card-title">基本情報</div>
+        <div class="card-subtitle">ステップ 3 / 4</div>
+
+        <div class="field">
+          <label class="field-label">年齢</label>
+          <div class="input-row">
+            <input type="number" class="bp-input" id="bas-age" placeholder="" min="18" max="80" style="max-width:120px">
+            <span class="unit">歳</span>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="field-label">性別</label>
+          <select class="bp-select" id="bas-gender">
+            <option value="">性別を選択</option>
+            <option>男性</option><option>女性</option><option>その他</option><option>回答しない</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label class="field-label">最終学歴</label>
+          <select class="bp-select" id="bas-edu">
+            <option value="">最終学歴を選択</option>
+            <option>中学卒</option><option>高校卒</option><option>専門学校卒</option>
+            <option>短大卒</option><option>大学卒</option><option>大学院卒（修士）</option><option>大学院卒（博士）</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label class="field-label">勤務地</label>
+          <select class="bp-select" id="bas-pref">
+            <option value="">都道府県を選択</option>
+            <option>北海道</option><option>青森県</option><option>岩手県</option><option>宮城県</option>
+            <option>秋田県</option><option>山形県</option><option>福島県</option><option>茨城県</option>
+            <option>栃木県</option><option>群馬県</option><option>埼玉県</option><option>千葉県</option>
+            <option>東京都</option><option>神奈川県</option><option>新潟県</option><option>富山県</option>
+            <option>石川県</option><option>福井県</option><option>山梨県</option><option>長野県</option>
+            <option>岐阜県</option><option>静岡県</option><option>愛知県</option><option>三重県</option>
+            <option>滋賀県</option><option>京都府</option><option>大阪府</option><option>兵庫県</option>
+            <option>奈良県</option><option>和歌山県</option><option>鳥取県</option><option>島根県</option>
+            <option>岡山県</option><option>広島県</option><option>山口県</option><option>徳島県</option>
+            <option>香川県</option><option>愛媛県</option><option>高知県</option><option>福岡県</option>
+            <option>佐賀県</option><option>長崎県</option><option>熊本県</option><option>大分県</option>
+            <option>宮崎県</option><option>鹿児島県</option><option>沖縄県</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label class="field-label">保有資格</label>
+          <div class="check-group" id="bas-quals">
+            <label class="check-item"><input type="checkbox" value="1級建築士"><span>1級建築士</span></label>
+            <label class="check-item"><input type="checkbox" value="2級建築士"><span>2級建築士</span></label>
+            <label class="check-item"><input type="checkbox" value="1級建築施工管理技士"><span>1級建築施工管理技士</span></label>
+            <label class="check-item"><input type="checkbox" value="2級建築施工管理技士"><span>2級建築施工管理技士</span></label>
+            <label class="check-item"><input type="checkbox" value="1級管工事施工管理技士"><span>1級管工事施工管理技士</span></label>
+            <label class="check-item"><input type="checkbox" value="2級管工事施工管理技士"><span>2級管工事施工管理技士</span></label>
+            <label class="check-item"><input type="checkbox" value="1級電気工事施工管理技士"><span>1級電気工事施工管理技士</span></label>
+            <label class="check-item"><input type="checkbox" value="2級電気工事施工管理技士"><span>2級電気工事施工管理技士</span></label>
+            <label class="check-item"><input type="checkbox" value="宅地建物取引士"><span>宅地建物取引士</span></label>
+            <label class="check-item"><input type="checkbox" value="インテリアコーディネーター"><span>インテリアコーディネーター</span></label>
+            <label class="check-item"><input type="checkbox" value="その他"><span>その他</span></label>
+          </div>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn btn-secondary" onclick="goStep(2)">▶ 前へ</button>
+          <button class="btn btn-primary" onclick="goStep(4)">▶ 次へ</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== STEP 4: 確認 ===== -->
+    <div id="step-4" style="display:none">
+      <div class="bp-card">
+        <div class="card-title">確認</div>
+        <div class="card-subtitle">ステップ 4 / 4</div>
+
+        <div class="email-box">
+          <div class="email-note">（回答が十分に集まり次第）適性年収診断結果を受け取る</div>
+          <input type="email" class="bp-input" id="conf-email" placeholder="example@email.com">
+        </div>
+
+        <div class="sub-card">
+          <div class="confirm-hd">
+            <div class="confirm-title">案件1</div>
+            <button class="btn-edit" onclick="goStep(1)">▶ 編集</button>
+          </div>
+          <div class="confirm-body" id="cd-case1"></div>
+        </div>
+
+        <div class="sub-card">
+          <div class="confirm-hd">
+            <div class="confirm-title">案件2</div>
+            <button class="btn-edit" onclick="goStep(1)">▶ 編集</button>
+          </div>
+          <div class="confirm-body" id="cd-case2"></div>
+        </div>
+
+        <div class="sub-card">
+          <div class="confirm-hd">
+            <div class="confirm-title">年収・働き方</div>
+            <button class="btn-edit" onclick="goStep(2)">▶ 編集</button>
+          </div>
+          <div class="confirm-body" id="cd-income"></div>
+        </div>
+
+        <div class="sub-card">
+          <div class="confirm-hd">
+            <div class="confirm-title">基本情報</div>
+            <button class="btn-edit" onclick="goStep(3)">▶ 編集</button>
+          </div>
+          <div class="confirm-body" id="cd-basic"></div>
+        </div>
+
+        <div style="margin:20px 0 8px;font-size:13px;color:var(--text-light)">
+          <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;line-height:1.5">
+            <input type="checkbox" id="agree-privacy" style="margin-top:3px;flex-shrink:0;accent-color:var(--blue)">
+            <span><a href="privacy.html" target="_blank" style="color:var(--blue)">プライバシーポリシー</a>を読み、個人情報の取り扱いに同意します</span>
+          </label>
+          <div id="agree-error" style="color:#ef4444;font-size:12px;margin-top:6px;margin-left:24px;display:none">同意いただいた上で送信してください</div>
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-secondary" onclick="goStep(3)">▶ 前へ</button>
+          <button class="btn btn-primary" onclick="submitWithCheck()">▶ 送信する</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== 送信完了 ===== -->
+    <div id="step-done" style="display:none">
+      <div class="bp-card">
+        <div class="success-wrap">
+          <div class="success-icon">✓</div>
+          <div class="success-title">送信が完了しました</div>
+          <div class="success-desc">
+            ご回答ありがとうございます。<br>
+            回答が十分に集まり次第、年収診断結果をお送りします。<br><br>
+            <button class="btn btn-primary" onclick="resetForm()" style="margin-top:16px">新しい回答を入力する</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===== DASHBOARD SECTION ===== -->
+<div id="section-dashboard" class="section">
+  <div class="container">
+
+    <!-- パスワードゲート -->
+    <div id="dash-gate" style="max-width:400px;margin:60px auto;text-align:center">
+      <div class="card" style="padding:32px">
+        <div style="font-size:32px;margin-bottom:12px">🔐</div>
+        <div style="font-size:18px;font-weight:700;margin-bottom:8px">管理者ログイン</div>
+        <div style="font-size:13px;color:var(--text-light);margin-bottom:20px">ダッシュボードはパスワードが必要です</div>
+        <input id="dash-pw" type="password" class="bp-input" placeholder="パスワードを入力" style="width:100%;box-sizing:border-box;margin-bottom:12px" onkeydown="if(event.key==='Enter')dashLogin()">
+        <button class="btn btn-primary" onclick="dashLogin()" style="width:100%">ログイン</button>
+        <div id="dash-pw-err" style="color:#ef4444;font-size:13px;margin-top:10px;display:none">パスワードが違います</div>
+      </div>
+    </div>
+
+    <!-- ダッシュボード本体（認証後に表示） -->
+    <div id="dash-body" style="display:none">
+      <div class="dash-header">
+        <div class="dash-title">ダッシュボード</div>
+        <div style="display:flex;gap:10px">
+          <button class="btn btn-primary" onclick="refreshDashboard()" style="padding:10px 20px;font-size:13px">🔄 更新</button>
+          <button class="btn btn-primary" onclick="downloadCSV()" style="padding:10px 20px;font-size:13px">⬇ CSVダウンロード</button>
+        </div>
+      </div>
+
+      <div class="diagnosis-banner">
+        ⚡ 年収診断機能は現在準備中です。回答データが集まり次第、入力情報をもとに適性年収診断結果を提供予定です。
+      </div>
+
+      <div id="dash-loading" style="text-align:center;padding:40px;display:none">
+        <div style="font-size:28px;animation:spin 1s linear infinite;display:inline-block">⚙</div>
+        <div style="margin-top:8px;color:var(--text-light)">データを読み込み中…</div>
+      </div>
+
+      <div class="stats-row" id="dash-stats"></div>
+
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead id="tbl-head"></thead>
+          <tbody id="tbl-body"></tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  PayPulse 年収調査 © 2026　|
+  <a href="privacy.html" style="color:inherit;text-decoration:underline;opacity:0.7">プライバシーポリシー</a>
+  <span id="admin-link" style="display:none">　|　<span onclick="showSection('dashboard')" style="cursor:pointer;opacity:0.4;font-size:11px">管理</span></span>
+</footer>
+
+<script>
+// ============================================================
+// ★ GASデプロイ後にこのURLを書き換えてください
+// ============================================================
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbyb_pPzQQ_6IxVJALU_ry3Q_uVmCpIbMxPNA-axOL1St86uRuKxTHumASg43PPsVGdp/exec';
+const GAS_CONFIGURED = GAS_URL !== 'YOUR_GAS_URL_HERE' && GAS_URL.startsWith('https://');
+
+// ============================================================
+// DEBUG MODE: ?debug=true の時のみTESTボタン・管理リンクを表示
+// ============================================================
+(function() {
+  const isDebug = new URLSearchParams(window.location.search).get('debug') === 'true';
+  if (isDebug) {
+    document.addEventListener('DOMContentLoaded', () => {
+      const btn = document.getElementById('btn-test');
+      const nav = document.getElementById('nav-dashboard');
+      const adm = document.getElementById('admin-link');
+      if (btn) btn.style.display = '';
+      if (nav) nav.style.display = '';
+      if (adm) adm.style.display = '';
+    });
+  }
+})();
+
+// 管理者リンク（フッターから直アクセス用）
+function showAdminDirect() {
+  document.getElementById('nav-dashboard').style.display = '';
+  document.getElementById('admin-link').style.display = '';
+  showSection('dashboard');
+}
+
+// ============================================================
+// TEST MODE: サンプルデータ一括入力
+// ============================================================
+function fillTestData() {
+  // 案件1: 新築・主任・事務所ビル
+  document.getElementById('c1-type').value = '新築';
+  document.getElementById('c1-role').value = '主任';
+  document.getElementById('c1-bldg').value = '事務所（オフィス）';
+  document.getElementById('c1-oku').value = '3';
+  document.getElementById('c1-man').value = '0';
+  document.getElementById('c1-fab').value = '15';
+  document.getElementById('c1-fbl').value = '1';
+  document.getElementById('c1-area').value = '12000';
+  ['工程表作成', '施工図チェック', '自主検査', '発注・納期管理', '施主・設計者との打合わせ'].forEach(v => {
+    const cb = document.querySelector('#c1-scope input[value="'+v+'"]');
+    if (cb) cb.checked = true;
+  });
+  document.getElementById('c1-struct').value = 'RC造';
+
+  // 案件2: 改修・係員・集合住宅
+  document.getElementById('c2-type').value = '改修';
+  document.getElementById('c2-role').value = '係員';
+  document.getElementById('c2-bldg').value = '集合住宅';
+  document.getElementById('c2-oku').value = '0';
+  document.getElementById('c2-man').value = '5000';
+  document.getElementById('c2-fab').value = '8';
+  document.getElementById('c2-fbl').value = '0';
+  document.getElementById('c2-area').value = '4000';
+  ['発注・納期管理', '安全書類の整備・確認', '作業員との工事打合せ'].forEach(v => {
+    const cb = document.querySelector('#c2-scope input[value="'+v+'"]');
+    if (cb) cb.checked = true;
+  });
+  document.getElementById('c2-struct').value = 'S造';
+
+  // 年収・働き方
+  document.getElementById('inc-total').value = '650';
+  document.getElementById('inc-bonus').value = '60';
+  document.getElementById('inc-allow').value = '3';
+  document.getElementById('inc-ottype').value = 'みなし残業（固定残業）あり';
+  document.getElementById('inc-othrs').value = '40';
+
+  // 基本情報
+  document.getElementById('bas-age').value = '34';
+  document.getElementById('bas-gender').value = '男性';
+  document.getElementById('bas-edu').value = '大学卒';
+  document.getElementById('bas-pref').value = '東京都';
+  const qual = document.querySelector('#bas-quals input[value="1級建築施工管理技士"]');
+  if (qual) qual.checked = true;
+
+  // メールアドレス
+  document.getElementById('conf-email').value = 'test@example.com';
+
+  // テストモードでは同意チェックも自動でオン
+  const agreeBox = document.getElementById('agree-privacy');
+  if (agreeBox) agreeBox.checked = true;
+
+  // STEP4（確認画面）へジャンプ
+  showSection('survey');
+  goStep(4);
+
+  // 完了トースト表示
+  const toast = document.createElement('div');
+  toast.style.cssText = 'position:fixed;top:64px;right:16px;background:#10b981;color:white;padding:10px 18px;border-radius:6px;font-size:13px;font-weight:700;z-index:9999;box-shadow:0 4px 16px rgba(0,0,0,0.18);letter-spacing:0.5px';
+  toast.textContent = '✓ テストデータを入力しました — 内容を確認して「送信する」を押してください';
+  document.body.appendChild(toast);
+  setTimeout(() => toast.remove(), 3500);
+}
+
+// ============================================================
+// UTILITIES
+// ============================================================
+const $ = id => document.getElementById(id);
+const val = id => ($( id) ? $(id).value : '');
+const checked = groupId =>
+  Array.from(document.querySelectorAll('#' + groupId + ' input[type="checkbox"]:checked')).map(c => c.value);
+
+function generateUUID() {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+    const r = Math.random() * 16 | 0;
+    return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+  });
+}
+
+// JSONP helper（管理ダッシュボード用）
+function jsonp(url) {
+  return new Promise((resolve, reject) => {
+    const cb = 'pp_cb_' + Date.now();
+    window[cb] = data => { delete window[cb]; s.remove(); resolve(data); };
+    const s = document.createElement('script');
+    s.src = url;
+    s.onerror = () => { delete window[cb]; s.remove(); reject(new Error('Network error')); };
+    document.head.appendChild(s);
+  });
+}
+
+// フォールバック用（GAS未設定時）
+function getSubs() {
+  try { return JSON.parse(localStorage.getItem('pp_subs') || '[]'); } catch(e) { return []; }
+}
+function saveSubs(d) { localStorage.setItem('pp_subs', JSON.stringify(d)); }
+
+// ============================
+// SECTION / STEP NAVIGATION
+// ============================
+let currentStep = 1;
+
+function showSection(s) {
+  document.querySelectorAll('.section').forEach(el => el.classList.remove('active'));
+  $('section-' + s).classList.add('active');
+  document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
+  $('nav-' + s).classList.add('active');
+  if (s === 'dashboard') renderDashboard();
+  window.scrollTo(0, 0);
+}
+
+function goStep(n) {
+  // Hide all step containers
+  [$('step-1'),$('step-2'),$('step-3'),$('step-4'),$('step-done')].forEach(el => {
+    if (el) el.style.display = 'none';
+  });
+
+  if (n === 4) buildConfirmation();
+
+  const target = $('step-' + n);
+  if (target) target.style.display = 'block';
+  currentStep = n;
+  updateDots();
+  window.scrollTo(0, 0);
+}
+
+function updateDots() {
+  for (let i = 1; i <= 4; i++) {
+    const d = $('dot-' + i);
+    d.className = 'step-dot';
+    if (i < currentStep)      { d.classList.add('done');   d.textContent = '✓'; }
+    else if (i === currentStep){ d.classList.add('active'); d.textContent = i; }
+    else                       { d.textContent = i; }
+  }
+  const pairs = [['conn-12',1],['conn-23',2],['conn-34',3]];
+  pairs.forEach(([id, n]) => {
+    const el = $(id);
+    el.className = 'step-connector' + (n < currentStep ? ' done' : '');
+  });
+}
+
+// ============================
+// READ FORM DATA
+// ============================
+function readCase(p) {
+  return {
+    type: val(p+'-type'), role: val(p+'-role'), bldg: val(p+'-bldg'),
+    oku: val(p+'-oku')||'0', man: val(p+'-man')||'0',
+    fab: val(p+'-fab')||'0', fbl: val(p+'-fbl')||'0',
+    area: val(p+'-area')||'0',
+    scope: checked(p+'-scope'),
+    struct: val(p+'-struct')
+  };
+}
+function readIncome() {
+  return {
+    total: val('inc-total'), bonus: val('inc-bonus'), allow: val('inc-allow'),
+    ottype: val('inc-ottype'), othrs: val('inc-othrs')
+  };
+}
+function readBasic() {
+  return {
+    age: val('bas-age'), gender: val('bas-gender'),
+    edu: val('bas-edu'), pref: val('bas-pref'),
+    quals: checked('bas-quals')
+  };
+}
+
+// ============================
+// BUILD CONFIRMATION (Step 4)
+// ============================
+function caseHtml(c, label) {
+  if (!c.type && !c.role && !c.bldg) {
+    return '<span style="color:var(--text-light)">' + label + 'のデータがありません</span>';
+  }
+  const amount = (c.oku !== '0' ? c.oku + '億円' : '') + (c.man !== '0' ? c.man + '万円' : '') || '未入力';
+  const rows = [
+    ['工事分類', c.type], ['役職', c.role], ['建物用途', c.bldg],
+    ['受注金額', amount],
+    ['階数', '地上 ' + c.fab + '階 / 地下 ' + c.fbl + '階'],
+    ['延床面積', c.area + ' m²'], ['構造種別', c.struct]
+  ];
+  let h = rows.map(([k,v]) =>
+    '<div class="crow"><span class="ckey">'+k+'：</span><span class="cval">'+(v||'未入力')+'</span></div>'
+  ).join('');
+  if (c.scope.length)
+    h += '<div class="crow"><span class="ckey">経験業務：</span><span>'+c.scope.map(s=>'<span class="tag">'+s+'</span>').join('')+'</span></div>';
+  return h;
+}
+
+function buildConfirmation() {
+  const c1 = readCase('c1'), c2 = readCase('c2');
+  const inc = readIncome(), bas = readBasic();
+
+  $('cd-case1').innerHTML = caseHtml(c1, '案件1');
+  $('cd-case2').innerHTML = caseHtml(c2, '案件2');
+
+  $('cd-income').innerHTML = [
+    ['前年の総支給年収', inc.total ? inc.total + ' 万円' : '未入力'],
+    ['賞与', inc.bonus ? inc.bonus + ' 万円' : '未入力'],
+    ['手当（月額）', inc.allow ? inc.allow + ' 万円/月' : '未入力'],
+    ['残業代の扱い', inc.ottype || '未入力'],
+    ['実残業時間', inc.othrs ? inc.othrs + ' 時間/月' : '未入力']
+  ].map(([k,v]) => '<div class="crow"><span class="ckey">'+k+'：</span><span class="cval">'+v+'</span></div>').join('');
+
+  let bh = [
+    ['年齢', bas.age ? bas.age + ' 歳' : '未入力'],
+    ['性別', bas.gender || '未入力'],
+    ['最終学歴', bas.edu || '未入力'],
+    ['都道府県', bas.pref || '未入力']
+  ].map(([k,v]) => '<div class="crow"><span class="ckey">'+k+'：</span><span class="cval">'+v+'</span></div>').join('');
+  if (bas.quals.length)
+    bh += '<div class="crow"><span class="ckey">保有資格：</span><span>'+bas.quals.map(q=>'<span class="tag">'+q+'</span>').join('')+'</span></div>';
+  $('cd-basic').innerHTML = bh;
+}
+
+// ============================
+// SUBMIT
+// ============================
+function submitWithCheck() {
+  const cb  = document.getElementById('agree-privacy');
+  const err = document.getElementById('agree-error');
+  if (!cb.checked) {
+    err.style.display = 'block';
+    cb.closest('label').style.color = '#ef4444';
+    return;
+  }
+  err.style.display = 'none';
+  submitForm();
+}
+
+async function submitForm() {
+  const id = generateUUID();
+  const payload = {
+    email: val('conf-email'),
+    case1: readCase('c1'), case2: readCase('c2'),
+    income: readIncome(), basic: readBasic()
+  };
+
+  // ローカルキャッシュに保存（result.html のオフラインフォールバック用）
+  try {
+    localStorage.setItem('pp_payload_' + id, JSON.stringify({ payload, savedAt: Date.now() }));
+  } catch(e) {}
+
+  if (GAS_CONFIGURED) {
+    // GAS に no-cors POST → リダイレクト
+    try {
+      fetch(GAS_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain' },
+        body: JSON.stringify({ action: 'submit', id, payload })
+      }).catch(() => {});
+    } catch(e) {}
+
+    // 送信完了表示
+    [$('step-1'),$('step-2'),$('step-3'),$('step-4')].forEach(el => { if(el) el.style.display='none'; });
+    $('step-done').style.display = 'block';
+    for (let i=1;i<=4;i++) { const d=$('dot-'+i); d.className='step-dot done'; d.textContent='✓'; }
+    ['conn-12','conn-23','conn-34'].forEach(id => $(id).className='step-connector done');
+    window.scrollTo(0,0);
+
+    // 2秒後に診断結果ページへ
+    setTimeout(() => {
+      window.location.href = 'paypulse_result.html?id=' + encodeURIComponent(id);
+    }, 2000);
+
+  } else {
+    // フォールバック: localStorage に保存してステップ完了表示
+    const entry = {
+      id: Date.now(),
+      submittedAt: new Date().toLocaleString('ja-JP'),
+      email: payload.email,
+      case1: payload.case1, case2: payload.case2,
+      income: payload.income, basic: payload.basic
+    };
+    const subs = getSubs();
+    subs.push(entry);
+    saveSubs(subs);
+
+    [$('step-1'),$('step-2'),$('step-3'),$('step-4')].forEach(el => { if(el) el.style.display='none'; });
+    $('step-done').style.display = 'block';
+    for (let i=1;i<=4;i++) { const d=$('dot-'+i); d.className='step-dot done'; d.textContent='✓'; }
+    ['conn-12','conn-23','conn-34'].forEach(id => $(id).className='step-connector done');
+    window.scrollTo(0,0);
+  }
+}
+
+function resetForm() {
+  document.querySelectorAll('.bp-input, .bp-select').forEach(el => {
+    el.tagName === 'SELECT' ? (el.selectedIndex = 0) : (el.value = '');
+  });
+  document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+  $('conf-email').value = '';
+  goStep(1);
+}
+
+// ============================
+// DASHBOARD & ADMIN AUTH
+// ============================
+let _adminPw = null;   // セッション中パスワードをキャッシュ
+let _gasData  = null;  // 最後に取得したGASデータ
+
+function renderDashboard() {
+  if (!GAS_CONFIGURED) {
+    // GAS未設定: localStorage フォールバック表示
+    $('dash-gate').style.display = 'none';
+    $('dash-body').style.display = 'block';
+    renderTableFromRows(_localFallbackRows());
+    return;
+  }
+  // パスワード済みかチェック
+  if (_adminPw) {
+    $('dash-gate').style.display = 'none';
+    $('dash-body').style.display = 'block';
+    if (!_gasData) loadGasData();
+  } else {
+    $('dash-gate').style.display = 'block';
+    $('dash-body').style.display = 'none';
+  }
+}
+
+async function dashLogin() {
+  const pw = $('dash-pw').value.trim();
+  if (!pw) return;
+  $('dash-pw-err').style.display = 'none';
+
+  if (!GAS_CONFIGURED) {
+    _adminPw = 'local';
+    $('dash-gate').style.display = 'none';
+    $('dash-body').style.display = 'block';
+    renderTableFromRows(_localFallbackRows());
+    return;
+  }
+
+  // GASで認証確認
+  try {
+    const cb = 'pp_cb_' + Date.now();
+    const url = GAS_URL + '?action=admin&password=' + encodeURIComponent(pw) + '&callback=' + cb;
+    const data = await jsonp(url);
+    if (data && data.success) {
+      _adminPw = pw;
+      _gasData = data;
+      $('dash-gate').style.display = 'none';
+      $('dash-body').style.display = 'block';
+      renderTableFromGas(data);
+    } else {
+      $('dash-pw-err').style.display = 'block';
+    }
+  } catch(e) {
+    $('dash-pw-err').textContent = 'エラー: ' + e.message;
+    $('dash-pw-err').style.display = 'block';
+  }
+}
+
+async function loadGasData() {
+  $('dash-loading').style.display = 'block';
+  try {
+    const cb = 'pp_cb_' + Date.now();
+    const url = GAS_URL + '?action=admin&password=' + encodeURIComponent(_adminPw) + '&callback=' + cb;
+    const data = await jsonp(url);
+    if (data && data.success) {
+      _gasData = data;
+      renderTableFromGas(data);
+    }
+  } catch(e) {
+    $('tbl-body').innerHTML = '<tr><td colspan="20" style="text-align:center;color:#ef4444">データ取得エラー: ' + e.message + '</td></tr>';
+  } finally {
+    $('dash-loading').style.display = 'none';
+  }
+}
+
+function refreshDashboard() {
+  _gasData = null;
+  if (_adminPw) loadGasData();
+}
+
+function renderTableFromGas(data) {
+  $('dash-loading').style.display = 'none';
+  const headers = data.headers || [];
+  const rows    = data.rows    || [];
+
+  // スプレッドシートの列インデックス
+  const hi = name => headers.indexOf(name);
+
+  const cols = [
+    '送信日時','メール',
+    '案件1_工事分類','案件1_役職','案件1_建物用途',
+    '案件1_受注金額_億円','案件1_受注金額_万円',
+    '案件2_工事分類','案件2_役職','案件2_建物用途',
+    '案件2_受注金額_億円','案件2_受注金額_万円',
+    '年収_総支給年収','年収_賞与','年収_手当',
+    '年収_残業代制度','年収_実残業時間',
+    '基本_年齢','基本_性別','基本_最終学歴','基本_勤務地'
+  ];
+
+  $('tbl-head').innerHTML = '<tr>' + cols.map(c => '<th>'+c+'</th>').join('') + '</tr>';
+
+  const count  = rows.length;
+  const totals = rows.map(r => parseFloat(r[hi('年収_総支給年収')])||0).filter(v=>v>0);
+  const avgInc = totals.length ? Math.round(totals.reduce((s,v)=>s+v,0)/totals.length) : 0;
+  const lastDate = count ? (rows[count-1][hi('送信日時')]||'—') : '—';
+
+  $('dash-stats').innerHTML = `
+    <div class="stat-card"><div class="stat-num">${count}</div><div class="stat-lbl">回答数</div></div>
+    <div class="stat-card"><div class="stat-num">${avgInc>0?avgInc+'万':'—'}</div><div class="stat-lbl">平均年収</div></div>
+    <div class="stat-card"><div class="stat-num" style="font-size:18px">${lastDate}</div><div class="stat-lbl">最終回答日</div></div>
+  `;
+
+  if (!count) {
+    $('tbl-body').innerHTML = '<tr><td colspan="'+cols.length+'"><div class="empty-msg">まだ回答データがありません。</div></td></tr>';
+    return;
+  }
+
+  $('tbl-body').innerHTML = rows.map(r => {
+    const cells = cols.map(c => {
+      const idx = hi(c);
+      return idx >= 0 ? (r[idx] !== undefined && r[idx] !== '' ? r[idx] : '—') : '—';
+    });
+    return '<tr>' + cells.map(c => '<td>'+c+'</td>').join('') + '</tr>';
+  }).join('');
+}
+
+function _localFallbackRows() {
+  return getSubs().map(r => ({
+    submittedAt: r.submittedAt, email: r.email||'—',
+    c1: r.case1||{}, c2: r.case2||{}, inc: r.income||{}, bas: r.basic||{}
+  }));
+}
+
+function renderTableFromRows(subs) {
+  const cols = [
+    '送信日時','メール',
+    '案件1_工事分類','案件1_役職','案件1_建物用途','案件1_受注金額',
+    '案件2_工事分類','案件2_役職','案件2_建物用途','案件2_受注金額',
+    '年収(万)','賞与(万)','手当(万/月)','残業代制度','実残業(h/月)',
+    '年齢','性別','最終学歴','勤務地','保有資格'
+  ];
+  $('tbl-head').innerHTML = '<tr>' + cols.map(c => '<th>'+c+'</th>').join('') + '</tr>';
+  const count = subs.length;
+  const avgInc = count ? Math.round(subs.reduce((s,r) => s+(parseFloat(r.inc.total)||0),0)/count) : 0;
+  $('dash-stats').innerHTML = `
+    <div class="stat-card"><div class="stat-num">${count}</div><div class="stat-lbl">回答数</div></div>
+    <div class="stat-card"><div class="stat-num">${avgInc>0?avgInc+'万':'—'}</div><div class="stat-lbl">平均年収</div></div>
+    <div class="stat-card"><div class="stat-num">—</div><div class="stat-lbl">最終回答日</div></div>
+  `;
+  if (!count) {
+    $('tbl-body').innerHTML = '<tr><td colspan="'+cols.length+'"><div class="empty-msg">まだ回答データがありません。</div></td></tr>';
+    return;
+  }
+  const fmtAmt = c => ((c.oku&&c.oku!=='0'?c.oku+'億':'')+(c.man&&c.man!=='0'?c.man+'万':''))||'—';
+  $('tbl-body').innerHTML = subs.map(r => {
+    const cells = [
+      r.submittedAt, r.email,
+      r.c1.type||'—',r.c1.role||'—',r.c1.bldg||'—',fmtAmt(r.c1),
+      r.c2.type||'—',r.c2.role||'—',r.c2.bldg||'—',fmtAmt(r.c2),
+      r.inc.total||'—',r.inc.bonus||'—',r.inc.allow||'—',r.inc.ottype||'—',r.inc.othrs||'—',
+      r.bas.age||'—',r.bas.gender||'—',r.bas.edu||'—',r.bas.pref||'—',
+      (r.bas.quals||[]).join('・')||'—'
+    ];
+    return '<tr>'+cells.map(c=>'<td>'+c+'</td>').join('')+'</tr>';
+  }).join('');
+}
+
+// ============================
+// CSV DOWNLOAD
+// ============================
+async function downloadCSV() {
+  function triggerDownload(csvString) {
+    const blob = new Blob(['\uFEFF' + csvString], { type: 'text/csv;charset=utf-8;' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'paypulse_' + new Date().toISOString().slice(0,10) + '.csv';
+    a.click();
+    URL.revokeObjectURL(a.href);
+  }
+
+  if (GAS_CONFIGURED && _adminPw) {
+    // GASから全データ取得してCSV生成
+    try {
+      const cb  = 'pp_cb_' + Date.now();
+      const url = GAS_URL + '?action=admin&password=' + encodeURIComponent(_adminPw) + '&callback=' + cb;
+      const data = await jsonp(url);
+      if (!data || !data.success) { alert('データ取得に失敗しました'); return; }
+
+      const headers = data.headers || [];
+      const rows    = data.rows    || [];
+      const csv = [headers, ...rows]
+        .map(row => row.map(c => '"' + String(c===null||c===undefined?'':c).replace(/"/g,'""') + '"').join(','))
+        .join('\n');
+      triggerDownload(csv);
+
+    } catch(e) {
+      alert('CSVダウンロードエラー: ' + e.message);
+    }
+
+  } else {
+    // フォールバック: localStorage データをCSV化
+    const subs = getSubs();
+    const cols = [
+      '送信日時','メール',
+      '案件1_工事分類','案件1_役職','案件1_建物用途','案件1_受注金額(億円)','案件1_受注金額(万円)',
+      '案件1_地上階','案件1_地下階','案件1_延床面積(m2)','案件1_経験業務','案件1_構造種別',
+      '案件2_工事分類','案件2_役職','案件2_建物用途','案件2_受注金額(億円)','案件2_受注金額(万円)',
+      '案件2_地上階','案件2_地下階','案件2_延床面積(m2)','案件2_経験業務','案件2_構造種別',
+      '年収(万円)','賞与(万円)','手当(万円/月)','残業代制度','実残業時間(h/月)',
+      '年齢','性別','最終学歴','勤務地(都道府県)','保有資格'
+    ];
+    const rows = subs.map(r => [
+      r.submittedAt, r.email||'',
+      r.case1.type||'', r.case1.role||'', r.case1.bldg||'', r.case1.oku||'0', r.case1.man||'0',
+      r.case1.fab||'0', r.case1.fbl||'0', r.case1.area||'0',
+      (r.case1.scope||[]).join('|'), r.case1.struct||'',
+      r.case2.type||'', r.case2.role||'', r.case2.bldg||'', r.case2.oku||'0', r.case2.man||'0',
+      r.case2.fab||'0', r.case2.fbl||'0', r.case2.area||'0',
+      (r.case2.scope||[]).join('|'), r.case2.struct||'',
+      r.income.total||'', r.income.bonus||'', r.income.allow||'',
+      r.income.ottype||'', r.income.othrs||'',
+      r.basic.age||'', r.basic.gender||'', r.basic.edu||'', r.basic.pref||'',
+      (r.basic.quals||[]).join('|')
+    ]);
+    const csv = [cols, ...rows]
+      .map(row => row.map(c => '"' + String(c).replace(/"/g,'""') + '"').join(','))
+      .join('\n');
+    triggerDownload(csv);
+  }
+}
+
+// Init
+updateDots();
+</script>
+</body>
+</html>
