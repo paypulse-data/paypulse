@@ -163,45 +163,6 @@ section { padding: 52px 16px; }
 }
 
 /* ══════════════════════════════════════════
-   THE PROBLEM — コンパクトに
-   ══════════════════════════════════════════ */
-.problem-bg { background: var(--white); border-top: 1px solid var(--border); }
-
-/* 3 pain point cards */
-.pain-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-  margin: 24px 0 28px;
-}
-@media (max-width: 560px) { .pain-grid { grid-template-columns: 1fr; gap: 8px; } }
-.pain-card {
-  background: var(--bg);
-  border-radius: 10px;
-  padding: 18px 16px;
-  border-left: 3px solid var(--blue);
-}
-.pain-icon { font-size: 22px; margin-bottom: 8px; }
-.pain-text {
-  font-size: 13px;
-  line-height: 1.7;
-  color: var(--text);
-  font-weight: 500;
-}
-
-/* Insight box */
-.insight-box {
-  background: var(--blue-dark);
-  border-radius: 12px;
-  padding: 20px 20px;
-  border-left: 4px solid var(--orange);
-}
-@media (min-width: 480px) { .insight-box { padding: 24px 28px; } }
-.insight-box p { font-size: 14px; line-height: 1.9; color: #cbd5e1; }
-@media (min-width: 480px) { .insight-box p { font-size: 15px; } }
-.insight-box strong { color: #fff; font-weight: 700; }
-
-/* ══════════════════════════════════════════
    OUR APPROACH — 3 ステップ＋アイコン
    ══════════════════════════════════════════ */
 .solution-bg {
@@ -460,88 +421,70 @@ section { padding: 52px 16px; }
       </div>
     </div>
 
-    <!-- Right: Result preview illustration -->
+    <!-- Right: Market data illustration (salary range by experience) -->
     <div class="about-illus">
-      <svg viewBox="0 0 320 300" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <radialGradient id="bg3" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stop-color="#dbeafe" stop-opacity="0.5"/>
-            <stop offset="100%" stop-color="#f8fafc" stop-opacity="0"/>
-          </radialGradient>
-        </defs>
-        <!-- BG glow -->
-        <circle cx="160" cy="148" r="118" fill="url(#bg3)"/>
+      <svg viewBox="0 0 320 270" xmlns="http://www.w3.org/2000/svg">
+        <!-- Header bar -->
+        <rect x="0" y="0" width="320" height="36" fill="#f8fafc"/>
+        <text x="16" y="23" font-size="10" font-weight="700" fill="#94a3b8" font-family="sans-serif" letter-spacing="1.5">PAYPULSE MARKET DATA</text>
+        <circle cx="296" cy="18" r="5" fill="#22c55e"/>
+        <text x="283" y="22" text-anchor="end" font-size="9" fill="#22c55e" font-family="sans-serif">LIVE</text>
+        <line x1="0" y1="36" x2="320" y2="36" stroke="#e2e8f0" stroke-width="1"/>
 
-        <!-- Ring track -->
-        <circle cx="160" cy="148" r="90" fill="none" stroke="#e2e8f0" stroke-width="16"/>
-        <!-- Progress arc (~78% = upper 22%) circumference≈565, 78%≈441 -->
-        <circle cx="160" cy="148" r="90" fill="none" stroke="#1a5fad" stroke-width="16"
-          stroke-dasharray="441 565" stroke-dashoffset="141"
-          stroke-linecap="round" transform="rotate(-90 160 148)"/>
-        <!-- Orange indicator dot -->
-        <circle cx="249" cy="105" r="11" fill="#f97316" stroke="#fff" stroke-width="3"/>
+        <!-- Section title -->
+        <text x="16" y="58" font-size="11" font-weight="700" fill="#1e293b" font-family="sans-serif">経験年数別 年収レンジ</text>
+        <text x="304" y="58" text-anchor="end" font-size="10" fill="#94a3b8" font-family="sans-serif">n=16</text>
 
-        <!-- Center text -->
-        <text x="160" y="133" text-anchor="middle" font-size="12" fill="#94a3b8" font-weight="600" font-family="sans-serif">上位</text>
-        <text x="160" y="167" text-anchor="middle" font-family="Courier New" font-size="46" font-weight="900" fill="#1e293b">22</text>
-        <text x="160" y="187" text-anchor="middle" font-family="Courier New" font-size="20" font-weight="700" fill="#1a5fad">%</text>
+        <!-- Row 1: 3〜5年 -->
+        <text x="16" y="84" font-size="10" fill="#94a3b8" font-family="sans-serif">3〜5年</text>
+        <rect x="64" y="72" width="176" height="18" rx="4" fill="#eff6ff"/>
+        <rect x="64" y="72" width="108" height="18" rx="4" fill="#93c5fd"/>
+        <text x="246" y="85" font-size="10" fill="#64748b" font-family="Courier New" font-weight="700">600-720万</text>
 
-        <!-- Tick labels -->
-        <text x="62" y="178" text-anchor="middle" font-size="10" fill="#94a3b8">低</text>
-        <text x="258" y="178" text-anchor="middle" font-size="10" fill="#94a3b8">高</text>
+        <!-- Row 2: 5〜8年 -->
+        <text x="16" y="118" font-size="10" fill="#94a3b8" font-family="sans-serif">5〜8年</text>
+        <rect x="64" y="106" width="176" height="18" rx="4" fill="#eff6ff"/>
+        <rect x="64" y="106" width="134" height="18" rx="4" fill="#3b82f6"/>
+        <text x="246" y="119" font-size="10" fill="#64748b" font-family="Courier New" font-weight="700">680-850万</text>
 
-        <!-- Bottom stat cards -->
-        <rect x="10" y="248" width="90" height="44" rx="8" fill="#fff" stroke="#e0eeff" stroke-width="1.5"/>
-        <text x="55" y="265" text-anchor="middle" font-family="Courier New" font-size="14" font-weight="900" fill="#f97316">650万</text>
-        <text x="55" y="280" text-anchor="middle" font-size="9" fill="#94a3b8">あなたの年収</text>
+        <!-- Row 3: 8〜12年 — highlighted orange "あなた" -->
+        <rect x="8" y="133" width="304" height="26" rx="6" fill="#fff7ed"/>
+        <text x="16" y="152" font-size="10" fill="#f97316" font-weight="700" font-family="sans-serif">8〜12年　← あなた</text>
+        <rect x="64" y="140" width="176" height="18" rx="4" fill="#fed7aa"/>
+        <rect x="64" y="140" width="158" height="18" rx="4" fill="#f97316"/>
+        <text x="246" y="153" font-size="10" fill="#ea580c" font-family="Courier New" font-weight="700">750-950万</text>
 
-        <rect x="115" y="248" width="90" height="44" rx="8" fill="#fff" stroke="#e0eeff" stroke-width="1.5"/>
-        <text x="160" y="265" text-anchor="middle" font-family="Courier New" font-size="14" font-weight="900" fill="#1a5fad">720万</text>
-        <text x="160" y="280" text-anchor="middle" font-size="9" fill="#94a3b8">同条件の中央値</text>
+        <!-- Row 4: 12年以上 -->
+        <text x="16" y="186" font-size="10" fill="#94a3b8" font-family="sans-serif">12年以上</text>
+        <rect x="64" y="174" width="176" height="18" rx="4" fill="#eff6ff"/>
+        <rect x="64" y="174" width="168" height="18" rx="4" fill="#1a5fad"/>
+        <text x="246" y="187" font-size="10" fill="#64748b" font-family="Courier New" font-weight="700">850-1050万</text>
 
-        <rect x="220" y="248" width="90" height="44" rx="8" fill="#1a5fad"/>
-        <text x="265" y="264" text-anchor="middle" font-size="9" fill="rgba(255,255,255,0.65)">同条件の</text>
-        <text x="265" y="278" text-anchor="middle" font-family="Courier New" font-size="11" font-weight="900" fill="#fff">5人と比較</text>
+        <!-- X-axis ticks -->
+        <line x1="64" y1="200" x2="240" y2="200" stroke="#e2e8f0" stroke-width="1"/>
+        <text x="64" y="214" font-size="9" fill="#94a3b8" font-family="sans-serif">500万</text>
+        <text x="152" y="214" text-anchor="middle" font-size="9" fill="#94a3b8" font-family="sans-serif">750万</text>
+        <text x="240" y="214" text-anchor="end" font-size="9" fill="#94a3b8" font-family="sans-serif">1,100万</text>
+
+        <!-- Bottom note -->
+        <rect x="8" y="222" width="304" height="24" rx="6" fill="#f1f5f9"/>
+        <text x="160" y="238" text-anchor="middle" font-size="10" fill="#64748b" font-family="sans-serif">条件でフィルタして、より詳しく比較できます</text>
+
+        <!-- SAMPLE watermark -->
+        <text x="160" y="260" text-anchor="middle" font-size="9" fill="#cbd5e1" font-weight="700" font-family="sans-serif" letter-spacing="3">— SAMPLE DATA —</text>
       </svg>
-      <div class="about-illus-label">診断結果サンプル</div>
+      <div class="about-illus-label">市場データサンプル</div>
     </div>
 
   </div>
 </div>
 
-<!-- ══ THE PROBLEM ══ -->
-<section class="problem-bg">
-  <div class="section-inner">
-    <div class="label-tag">The Problem</div>
-    <h2 class="section-heading">施工管理者には、<br>年収を「確かめる手段」がない。</h2>
-
-    <div class="pain-grid">
-      <div class="pain-card">
-        <div class="pain-icon">🤔</div>
-        <div class="pain-text">自分の年収は同じ経験・役職の人と比べて適正なのか</div>
-      </div>
-      <div class="pain-card">
-        <div class="pain-icon">📐</div>
-        <div class="pain-text">規模の大きい案件を担えば、年収はどう変わるのか</div>
-      </div>
-      <div class="pain-card">
-        <div class="pain-icon">💬</div>
-        <div class="pain-text">転職時にいくら要求すれば市場価値に見合うのか</div>
-      </div>
-    </div>
-
-    <div class="insight-box">
-      <p>転職サイトの「平均年収」は職種・規模・経験を無視した粗いデータ。同僚との年収の話はタブー。<strong>多くの施工管理者が、根拠のない感覚だけを頼りに、キャリアの大きな意思決定を続けています。</strong></p>
-    </div>
-  </div>
-</section>
-
 <!-- ══ OUR APPROACH ══ -->
 <section class="solution-bg">
   <div class="section-inner">
     <div class="label-tag">Our Approach</div>
-    <h2 class="section-heading">PayPulseはこの不均衡を、<br>「年収情報の透明化」で解決します。</h2>
-    <p class="section-lead">ブラックボックスになっていた年収情報をオープンにすることで、公正な評価と、自由なキャリア構築につながると確信しています。</p>
+    <h2 class="section-heading">どうやって、<br>ブラックボックスをなくすのか。</h2>
+    <p class="section-lead">現場のリアルなデータを収集し、構造化し、誰もが使えるかたちで届ける——PayPulseが実践する3つのアプローチです。</p>
 
     <div class="sol-points">
 
