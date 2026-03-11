@@ -564,8 +564,79 @@ function showLocalBanner() {
   document.body.insertBefore(banner, document.body.children[1]);
 }
 
+// ── デモモード用サンプルデータ ──
+function getDemoData() {
+  return {
+    success: true,
+    isDemo: true,
+    userIncome: 720,
+    userPctile: 77.5,
+    peerCount: 12,
+    totalCount: 16,
+    relaxApplied: [],
+    median: 620,
+    userCareerYears: 10,
+    userAge: 32,
+    userRole: '主任・係長クラス',
+    userType: '建築（A工事）',
+    userPref: '東京都',
+    pctTable: [
+      { pct: 99, label: 'TOP 1%',  crown: true,  value: null, unlocked: false, needed: 38 },
+      { pct: 90, label: 'TOP 10%', crown: true,  value: 860,  unlocked: true,  needed: 0  },
+      { pct: 75, label: 'TOP 25%', crown: true,  value: 760,  unlocked: true,  needed: 0  },
+      { pct: 50, label: '中央値',   crown: false, value: 620,  unlocked: true,  needed: 0  },
+      { pct: 25, label: '25%ile',  crown: false, value: 510,  unlocked: true,  needed: 0  },
+      { pct: 10, label: '10%ile',  crown: false, value: 430,  unlocked: true,  needed: 0  }
+    ],
+    histogram: [
+      { label: '〜299',    count: 0, isUser: false },
+      { label: '300-399',  count: 0, isUser: false },
+      { label: '400-499',  count: 1, isUser: false },
+      { label: '500-599',  count: 2, isUser: false },
+      { label: '600-699',  count: 3, isUser: false },
+      { label: '700-799',  count: 4, isUser: true  },
+      { label: '800-899',  count: 2, isUser: false },
+      { label: '900-999',  count: 1, isUser: false },
+      { label: '1000-1099',count: 1, isUser: false },
+      { label: '1100-1199',count: 1, isUser: false },
+      { label: '1200-1299',count: 0, isUser: false },
+      { label: '1300-1399',count: 0, isUser: false },
+      { label: '1400-1499',count: 0, isUser: false },
+      { label: '1500+',    count: 0, isUser: false }
+    ],
+    careerTrend: [
+      { label: '5-9年',   count: 4, p10: 390, p25: 440, p50: 500, p75: 560, p90: 620 },
+      { label: '10-14年', count: 5, p10: 480, p25: 540, p50: 620, p75: 720, p90: 820 },
+      { label: '15-19年', count: 4, p10: 560, p25: 650, p50: 750, p75: 860, p90: 970 },
+      { label: '20-24年', count: 2, p10: 640, p25: 730, p50: 840, p75: 960, p90:1080 },
+      { label: '25年以上', count: 1, p10: 700, p25: 800, p50: 920, p75:1060, p90:1200 }
+    ]
+  };
+}
+
+// ── デモバナー表示 ──
+function showDemoBanner() {
+  const banner = document.createElement('div');
+  banner.style.cssText = 'background:#1a5fad;color:#fff;padding:10px 20px;font-size:13px;text-align:center;position:sticky;top:56px;z-index:90;font-weight:600;letter-spacing:.5px';
+  banner.innerHTML = '🔍 <strong>DEMOモード</strong> — これはサンプルデータです。実際の診断は <a href="survey.html" style="color:#fed7aa;text-decoration:underline">こちら</a> から。';
+  document.body.insertBefore(banner, document.body.children[1]);
+}
+
 // ── メイン ──
 async function init() {
+  // デモモード（?demo=1 または ?demo=true）
+  const isDemo = new URLSearchParams(window.location.search).get('demo');
+  if (isDemo === '1' || isDemo === 'true') {
+    const demoData = getDemoData();
+    show('result');
+    showDemoBanner();
+    renderHero(demoData);
+    renderPctTable(demoData);
+    renderHistogram(demoData);
+    renderCareerTrend(demoData);
+    return;
+  }
+
   if (!id) { showError('URLにIDが含まれていません'); return; }
   if (GAS_URL === 'YOUR_GAS_URL_HERE') { showError('GAS_URL が設定されていません。HTMLファイルを編集してください。'); return; }
 
