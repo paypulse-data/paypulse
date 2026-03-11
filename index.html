@@ -203,7 +203,7 @@ footer a{color:inherit;opacity:.7;text-decoration:underline}
 <div class="stats-wrap">
   <div class="stats-inner">
     <div>
-      <div class="stat-num">16<span style="font-size:20px">+</span></div>
+      <div class="stat-num" id="stat-count">16<span style="font-size:20px">+</span></div>
       <div class="stat-label">蓄積済み回答数<br>（随時更新）</div>
     </div>
     <div>
@@ -508,6 +508,36 @@ footer a{color:inherit;opacity:.7;text-decoration:underline}
   </a>
   <p class="cta-note">© 2026 PayPulse運営事務局　|　<a href="privacy.html">プライバシーポリシー</a>　|　<a href="mailto:contact.fairbase@gmail.com">お問い合わせ</a></p>
 </div>
+
+<!-- ── 蓄積回答数をGASから動的取得（JSONP） ── -->
+<script>
+(function () {
+  const GAS_URL = 'https://script.google.com/macros/s/AKfycbyb_pPzQQ_6IxVJALU_ry3Q_uVmCpIbMxPNA-axOL1St86uRuKxTHumASg43PPsVGdp/exec';
+  const el = document.getElementById('stat-count');
+  if (!el) return;
+
+  const cb = 'pp_count_' + Date.now();
+  const timer = setTimeout(function () { cleanup(); }, 5000); // 5秒でタイムアウト
+
+  function cleanup() {
+    clearTimeout(timer);
+    delete window[cb];
+  }
+
+  window[cb] = function (data) {
+    cleanup();
+    if (data && data.success && typeof data.count === 'number' && data.count > 0) {
+      el.innerHTML = data.count + '<span style="font-size:20px">+</span>';
+    }
+    // 取得失敗またはcount=0の場合はデフォルト値（16+）を維持
+  };
+
+  const s = document.createElement('script');
+  s.src = GAS_URL + '?action=count&callback=' + cb;
+  s.onerror = cleanup;
+  document.head.appendChild(s);
+})();
+</script>
 
 </body>
 </html>
