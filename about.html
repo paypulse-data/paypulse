@@ -4,215 +4,418 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PayPulseについて — 年収の相場を、すべての現場へ</title>
-<meta name="description" content="PayPulseはゼネコン建築施工管理者のための年収データベースサービスです。これまでブラックボックスだった年収情報をオープンにし、すべての施工管理者がより良いキャリアの意思決定ができる未来を目指します。">
+<meta name="description" content="PayPulseはゼネコン建築施工管理者のための年収データベースサービス。ブラックボックスだった年収情報をオープンにし、すべての施工管理者が正しい情報でキャリアを選べる未来を目指します。">
 <link rel="stylesheet" href="brand.css">
 <style>
-body{
-  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
-  background-size:28px 28px;
+body {
+  background-image: linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size: 28px 28px;
 }
 
-/* ── HEADER は brand.css に統合 ── */
+/* ══════════════════════════════════════════
+   ABOUT HERO — 白地 / 2カラム / PC でリッチに
+   ══════════════════════════════════════════ */
+.about-hero {
+  background: #fff;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+/* オレンジ → ブルーのグラデーションバー */
+.about-hero::before {
+  content: '';
+  display: block;
+  height: 5px;
+  background: linear-gradient(90deg, var(--orange) 0%, #fb923c 40%, var(--blue) 100%);
+}
+.about-hero-inner {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 56px 32px 64px;
+  display: flex;
+  gap: 64px;
+  align-items: center;
+}
+@media (max-width: 760px) {
+  .about-hero-inner { flex-direction: column; padding: 36px 16px 44px; gap: 36px; }
+}
 
-/* ── MISSION HERO ── */
-.mission-hero{
-  background:var(--blue-dark);color:#fff;
-  padding:52px 16px 48px;text-align:center;
-  position:relative;overflow:hidden;
+/* ─ Left text ─ */
+.about-text { flex: 1; min-width: 0; }
+.about-page-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--orange);
+  margin-bottom: 20px;
 }
-@media(min-width:640px){.mission-hero{padding:88px 24px 80px}}
-.mission-hero::before{
-  content:'';position:absolute;inset:0;
-  background:linear-gradient(135deg,rgba(26,95,173,.35) 0%,transparent 55%),
-             radial-gradient(ellipse at 75% 40%,rgba(249,115,22,.15) 0%,transparent 55%);
+.about-page-tag::before {
+  content: '';
+  display: inline-block;
+  width: 16px;
+  height: 2px;
+  background: var(--orange);
 }
-.mission-inner{max-width:640px;margin:0 auto;position:relative;z-index:1}
-.mission-tag{
-  display:inline-block;background:rgba(249,115,22,.18);color:#fbbf24;
-  border:1px solid rgba(249,115,22,.3);font-size:11px;font-weight:700;
-  letter-spacing:2px;padding:5px 16px;border-radius:20px;margin-bottom:32px;
+.about-h1 {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: clamp(34px, 5.5vw, 60px);
+  font-weight: 900;
+  line-height: 1.08;
+  letter-spacing: -2px;
+  color: var(--text);
+  margin-bottom: 22px;
 }
-.mission-eyebrow{
-  font-size:clamp(15px,2.5vw,20px);font-weight:700;
-  color:#64748b;letter-spacing:1px;margin-bottom:12px;
+.about-h1 em { color: var(--blue); font-style: normal; }
+.about-lead {
+  font-size: clamp(14px, 1.6vw, 16px);
+  color: var(--text-light);
+  line-height: 1.9;
+  margin-bottom: 36px;
+  max-width: 440px;
 }
-.mission-eyebrow span{color:#94a3b8}
-.mission-title{
-  font-family:'Courier New',Courier,monospace;
-  font-size:clamp(28px,9vw,68px);font-weight:900;line-height:1.05;
-  letter-spacing:-1.5px;color:#fff;margin-bottom:20px;
+/* 3 stat boxes */
+.about-stats {
+  display: flex;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  max-width: 400px;
+  background: var(--bg);
 }
-@media(min-width:480px){.mission-title{letter-spacing:-2px;margin-bottom:28px}}
-.mission-title em{color:var(--orange);font-style:normal}
-.mission-sub{
-  font-size:clamp(15px,2vw,17px);color:#94a3b8;line-height:1.95;
-  max-width:480px;margin:0 auto;
+.about-stat {
+  flex: 1;
+  padding: 14px 10px;
+  text-align: center;
 }
-.mission-sub strong{color:#e2e8f0}
+.about-stat + .about-stat { border-left: 1px solid var(--border); }
+.about-stat-num {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: clamp(20px, 3vw, 28px);
+  font-weight: 900;
+  color: var(--orange);
+  line-height: 1;
+}
+.about-stat-label {
+  font-size: 10px;
+  color: var(--text-light);
+  margin-top: 5px;
+  line-height: 1.4;
+}
 
-/* ── SECTION COMMON ── */
-section{padding:48px 16px}
-@media(min-width:640px){section{padding:76px 24px}}
-.section-inner{max-width:700px;margin:0 auto}
-.label-tag{
-  display:inline-block;font-size:11px;font-weight:700;letter-spacing:2px;
-  text-transform:uppercase;color:var(--blue);margin-bottom:14px;
+/* ─ Right illustration ─ */
+.about-illus {
+  flex-shrink: 0;
+  width: min(340px, 100%);
+  background: var(--bg);
+  border-radius: 16px;
+  padding: 12px;
+  box-shadow: 0 8px 40px rgba(26,95,173,.1), 0 2px 8px rgba(0,0,0,.05);
+  border: 1px solid rgba(26,95,173,.12);
+  position: relative;
 }
-.section-heading{
-  font-family:'Courier New',Courier,monospace;
-  font-size:clamp(22px,4vw,32px);font-weight:900;line-height:1.2;
-  margin-bottom:10px;
+.about-illus svg { display: block; width: 100%; height: auto; }
+/* SAMPLEウォーターマーク */
+.about-illus-label {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--text-light);
+  text-transform: uppercase;
+  opacity: 0.6;
 }
-.section-lead{font-size:16px;color:var(--text-light);line-height:1.8;margin-bottom:40px}
 
-/* ── PROBLEM SECTION ── */
-.problem-bg{background:var(--white);border-top:1px solid var(--border)}
+/* ══════════════════════════════════════════
+   SECTION COMMON
+   ══════════════════════════════════════════ */
+section { padding: 52px 16px; }
+@media (min-width: 640px) { section { padding: 80px 24px; } }
+.section-inner { max-width: 720px; margin: 0 auto; }
+.label-tag {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--blue);
+  margin-bottom: 12px;
+}
+.section-heading {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: clamp(22px, 3.5vw, 30px);
+  font-weight: 900;
+  line-height: 1.2;
+  margin-bottom: 12px;
+  color: var(--text);
+}
+.section-lead {
+  font-size: 15px;
+  color: var(--text-light);
+  line-height: 1.8;
+  margin-bottom: 36px;
+}
 
-/* Question cards */
-.questions{display:flex;flex-direction:column;gap:10px;margin-bottom:32px}
-@media(min-width:480px){.questions{gap:14px;margin-bottom:40px}}
-.q-card{
-  background:var(--bg);
-  border-radius:12px;padding:18px 18px 18px 52px;
-  position:relative;
-  transition:transform .2s,box-shadow .2s;
+/* ══════════════════════════════════════════
+   THE PROBLEM — コンパクトに
+   ══════════════════════════════════════════ */
+.problem-bg { background: var(--white); border-top: 1px solid var(--border); }
+
+/* 3 pain point cards */
+.pain-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin: 24px 0 28px;
 }
-@media(min-width:480px){.q-card{border-radius:14px;padding:24px 28px 24px 64px}}
-.q-card:hover{transform:translateX(4px)}
-.q-card-num{
-  position:absolute;left:14px;top:50%;transform:translateY(-50%);
-  font-family:'Courier New',Courier,monospace;
-  font-size:22px;font-weight:900;color:rgba(26,95,173,.2);line-height:1;
+@media (max-width: 560px) { .pain-grid { grid-template-columns: 1fr; gap: 8px; } }
+.pain-card {
+  background: var(--bg);
+  border-radius: 10px;
+  padding: 18px 16px;
+  border-left: 3px solid var(--blue);
 }
-@media(min-width:480px){.q-card-num{left:20px;font-size:28px}}
-.q-card-text{
-  font-size:14px;line-height:1.7;color:var(--text);font-weight:500;
+.pain-icon { font-size: 22px; margin-bottom: 8px; }
+.pain-text {
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--text);
+  font-weight: 500;
 }
-@media(min-width:480px){.q-card-text{font-size:16px}}
-.q-card-text::before{content:'\201C';color:var(--blue);font-weight:900;font-size:20px;margin-right:2px}
-.q-card-text::after{content:'\201D';color:var(--blue);font-weight:900;font-size:20px;margin-left:2px}
 
 /* Insight box */
-.insight-box{
-  background:var(--blue-dark);border-radius:12px;padding:20px 18px;
-  border-left:4px solid var(--orange);
+.insight-box {
+  background: var(--blue-dark);
+  border-radius: 12px;
+  padding: 20px 20px;
+  border-left: 4px solid var(--orange);
 }
-@media(min-width:480px){.insight-box{border-radius:14px;padding:28px 32px}}
-.insight-box p{
-  font-size:14px;line-height:1.9;color:#cbd5e1;
-}
-@media(min-width:480px){.insight-box p{font-size:16px}}
-.insight-box strong{color:#fff;font-weight:700}
+@media (min-width: 480px) { .insight-box { padding: 24px 28px; } }
+.insight-box p { font-size: 14px; line-height: 1.9; color: #cbd5e1; }
+@media (min-width: 480px) { .insight-box p { font-size: 15px; } }
+.insight-box strong { color: #fff; font-weight: 700; }
 
-/* ── SOLUTION SECTION ── */
-.solution-bg{background:rgba(26,95,173,.03);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
-
-/* Numbered solution points */
-.sol-points{display:flex;flex-direction:column;gap:0;position:relative;margin-bottom:48px}
-.sol-points::before{
-  content:'';position:absolute;left:23px;top:44px;bottom:44px;
-  width:2px;background:var(--border);
+/* ══════════════════════════════════════════
+   OUR APPROACH — 3 ステップ＋アイコン
+   ══════════════════════════════════════════ */
+.solution-bg {
+  background: rgba(26,95,173,.03);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
 }
-.sol-point{display:flex;gap:24px;align-items:flex-start;padding-bottom:32px}
-.sol-point:last-child{padding-bottom:0}
-.sol-num{
-  flex-shrink:0;width:48px;height:48px;border-radius:50%;
-  background:var(--blue-dark);color:#fff;
-  font-family:'Courier New',Courier,monospace;font-size:16px;font-weight:900;
-  display:flex;align-items:center;justify-content:center;
-  position:relative;z-index:1;
-  box-shadow:0 0 0 4px var(--bg);
+.sol-points {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  position: relative;
+  margin-bottom: 40px;
 }
-.sol-body{padding-top:10px}
-.sol-title{font-size:17px;font-weight:700;margin-bottom:6px;color:var(--text)}
-.sol-desc{font-size:14px;color:var(--text-light);line-height:1.75}
-.sol-tag{
-  display:inline-block;font-size:11px;font-weight:700;
-  background:rgba(249,115,22,.1);color:var(--orange);
-  padding:2px 8px;border-radius:4px;margin-bottom:6px;
+.sol-points::before {
+  content: '';
+  position: absolute;
+  left: 23px;
+  top: 44px;
+  bottom: 44px;
+  width: 2px;
+  background: var(--border);
 }
+@media (max-width: 480px) { .sol-points::before { display: none; } }
+.sol-point {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  padding-bottom: 32px;
+}
+.sol-point:last-child { padding-bottom: 0; }
+.sol-icon {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--blue-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+  box-shadow: 0 0 0 4px var(--bg);
+}
+.sol-body { padding-top: 10px; }
+.sol-tag {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  background: rgba(249,115,22,.1);
+  color: var(--orange);
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin-bottom: 6px;
+}
+.sol-title { font-size: 16px; font-weight: 700; margin-bottom: 6px; color: var(--text); }
+@media (min-width: 480px) { .sol-title { font-size: 17px; } }
+.sol-desc { font-size: 14px; color: var(--text-light); line-height: 1.75; }
 
 /* Trust note */
-.trust-note{
-  padding:22px 26px;
-  background:var(--white);border-radius:12px;
-  border:1px solid var(--border);
-  border-left:4px solid var(--blue);
+.trust-note {
+  padding: 20px 22px;
+  background: var(--white);
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--blue);
 }
-.trust-note-title{font-size:13px;font-weight:700;color:var(--blue);margin-bottom:7px}
-.trust-note-body{font-size:14px;color:var(--text-light);line-height:1.8}
-.trust-note-body strong{color:var(--text)}
+.trust-note-title { font-size: 13px; font-weight: 700; color: var(--blue); margin-bottom: 7px; }
+.trust-note-body { font-size: 14px; color: var(--text-light); line-height: 1.8; }
+.trust-note-body strong { color: var(--text); }
 
-/* ── DATA MODEL ── */
-.data-bg{background:var(--white);border-top:1px solid var(--border)}
-.data-flow{
-  display:grid;grid-template-columns:repeat(4,1fr);gap:0;
-  margin:40px 0 32px;position:relative;
+/* ══════════════════════════════════════════
+   DATA MODEL (flow)
+   ══════════════════════════════════════════ */
+.data-bg { background: var(--white); border-top: 1px solid var(--border); }
+.data-flow {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  margin: 36px 0 28px;
+  position: relative;
 }
-.data-flow::before{
-  content:'';position:absolute;top:28px;left:60px;right:60px;height:2px;
-  background:linear-gradient(90deg,var(--blue),var(--orange));
-  z-index:0;
+.data-flow::before {
+  content: '';
+  position: absolute;
+  top: 28px;
+  left: 60px;
+  right: 60px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--blue), var(--orange));
+  z-index: 0;
 }
-@media(max-width:560px){
-  .data-flow{grid-template-columns:1fr 1fr;gap:20px}
-  .data-flow::before{display:none}
+@media (max-width: 560px) {
+  .data-flow { grid-template-columns: 1fr 1fr; gap: 20px; }
+  .data-flow::before { display: none; }
 }
-.df-item{text-align:center;position:relative;z-index:1}
-.df-circle{
-  width:56px;height:56px;border-radius:50%;
-  display:flex;align-items:center;justify-content:center;
-  margin:0 auto 12px;
-  border:2px solid var(--border);
-  background:var(--white);
-  transition:transform .2s;
+.df-item { text-align: center; position: relative; z-index: 1; }
+.df-circle {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 12px;
+  border: 2px solid var(--border);
+  background: var(--white);
+  transition: transform .2s;
 }
-.df-circle:hover{transform:scale(1.08)}
-.df-circle.highlight{background:var(--orange);border-color:var(--orange)}
-.df-label{font-size:12px;font-weight:700;color:var(--text);line-height:1.4;margin-bottom:3px}
-.df-sub{font-size:11px;color:var(--text-light)}
-.data-note{
-  font-size:15px;line-height:1.9;color:var(--text-light);
-  background:rgba(26,95,173,.04);border-radius:10px;padding:20px 24px;
+.df-circle:hover { transform: scale(1.08); }
+.df-circle.highlight { background: var(--orange); border-color: var(--orange); }
+.df-label { font-size: 12px; font-weight: 700; color: var(--text); line-height: 1.4; margin-bottom: 3px; }
+.df-sub { font-size: 11px; color: var(--text-light); }
+.data-note {
+  font-size: 15px;
+  line-height: 1.9;
+  color: var(--text-light);
+  background: rgba(26,95,173,.04);
+  border-radius: 10px;
+  padding: 20px 24px;
 }
-.data-note strong{color:var(--text)}
+.data-note strong { color: var(--text); }
 
-/* ── VISION ── */
-.vision-bg{
-  background:var(--blue-dark);
-  border-top:1px solid rgba(255,255,255,.06);
-  padding:52px 16px;text-align:center;
+/* ══════════════════════════════════════════
+   VISION
+   ══════════════════════════════════════════ */
+.vision-bg {
+  background: var(--blue-dark);
+  border-top: 1px solid rgba(255,255,255,.06);
+  padding: 56px 16px;
+  text-align: center;
 }
-@media(min-width:640px){.vision-bg{padding:88px 24px}}
-.vision-inner{max-width:640px;margin:0 auto}
-.vision-label{font-size:11px;font-weight:700;letter-spacing:2px;color:#475569;text-transform:uppercase;margin-bottom:28px}
-.vision-quote{
-  font-family:'Courier New',Courier,monospace;
-  font-size:clamp(20px,3.5vw,30px);font-weight:900;
-  color:#fff;line-height:1.55;margin-bottom:28px;
+@media (min-width: 640px) { .vision-bg { padding: 96px 24px; } }
+.vision-inner { max-width: 640px; margin: 0 auto; }
+.vision-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: #475569;
+  text-transform: uppercase;
+  margin-bottom: 28px;
 }
-.vision-quote em{color:var(--orange);font-style:normal}
-.vision-divider{width:40px;height:3px;background:var(--orange);margin:0 auto 28px;border-radius:2px}
-.vision-body{font-size:16px;color:#94a3b8;line-height:2;max-width:500px;margin:0 auto}
-.vision-body strong{color:#e2e8f0}
+.vision-quote {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: clamp(19px, 3.2vw, 28px);
+  font-weight: 900;
+  color: #fff;
+  line-height: 1.6;
+  margin-bottom: 28px;
+}
+.vision-quote em { color: var(--orange); font-style: normal; }
+.vision-divider {
+  width: 40px;
+  height: 3px;
+  background: var(--orange);
+  margin: 0 auto 28px;
+  border-radius: 2px;
+}
+.vision-body { font-size: 15px; color: #94a3b8; line-height: 2; max-width: 500px; margin: 0 auto; }
+.vision-body strong { color: #e2e8f0; }
+@media (max-width: 480px) { .vision-body { font-size: 14px; } }
 
-/* ── CTA ── */
-.cta-section{background:var(--bg);border-top:1px solid var(--border);padding:48px 16px;text-align:center}
-@media(min-width:640px){.cta-section{padding:72px 24px}}
-.cta-title{font-family:'Courier New',Courier,monospace;font-size:clamp(20px,5vw,34px);font-weight:900;margin-bottom:12px;color:var(--text)}
-.cta-sub{font-size:14px;color:var(--text-light);margin-bottom:24px;line-height:1.85}
-@media(min-width:480px){.cta-sub{font-size:15px;margin-bottom:28px}}
-.btn-primary{background:var(--orange);color:#fff;border:none;border-radius:8px;padding:14px 28px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;letter-spacing:.5px;text-decoration:none;transition:background .2s,transform .15s,box-shadow .15s;box-shadow:0 4px 16px rgba(249,115,22,.35);display:inline-block}
-@media(min-width:480px){.btn-primary{padding:16px 36px;font-size:16px}}
-.btn-primary:hover{background:#ea6a00;transform:translateY(-2px);box-shadow:0 8px 24px rgba(249,115,22,.4)}
-.btn-text{display:inline-block;margin-left:12px;font-size:13px;color:var(--text-light);text-decoration:underline;text-underline-offset:3px}
-
-@media(max-width:480px){
-  .btn-text{display:block;margin:14px auto 0}
-  .mission-sub br{display:none}
-  .vision-body{font-size:14px}
-  .sol-points::before{display:none}
+/* ══════════════════════════════════════════
+   CTA
+   ══════════════════════════════════════════ */
+.cta-section {
+  background: var(--bg);
+  border-top: 1px solid var(--border);
+  padding: 52px 16px;
+  text-align: center;
 }
+@media (min-width: 640px) { .cta-section { padding: 80px 24px; } }
+.cta-title {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: clamp(20px, 4.5vw, 34px);
+  font-weight: 900;
+  margin-bottom: 12px;
+  color: var(--text);
+}
+.cta-sub {
+  font-size: 14px;
+  color: var(--text-light);
+  margin-bottom: 28px;
+  line-height: 1.85;
+}
+@media (min-width: 480px) { .cta-sub { font-size: 15px; } }
+.btn-primary {
+  background: var(--orange);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 14px 28px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  letter-spacing: .5px;
+  text-decoration: none;
+  transition: background .2s, transform .15s, box-shadow .15s;
+  box-shadow: 0 4px 16px rgba(249,115,22,.35);
+  display: inline-block;
+}
+.btn-primary:link,.btn-primary:visited { color: #fff; text-decoration: none; }
+@media (min-width: 480px) { .btn-primary { padding: 16px 40px; font-size: 16px; } }
+.btn-primary:hover { background: #ea6a00; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(249,115,22,.4); }
+.btn-text {
+  display: inline-block;
+  margin-left: 12px;
+  font-size: 13px;
+  color: var(--text-light);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+@media (max-width: 480px) { .btn-text { display: block; margin: 14px auto 0; } }
 </style>
 </head>
 <body>
@@ -226,95 +429,182 @@ section{padding:48px 16px}
   </div>
 </header>
 
-<!-- MISSION HERO -->
-<div class="mission-hero">
-  <div class="mission-inner">
-    <div class="mission-tag">ゼネコン建築施工管理者のための年収データベース</div>
-    <p class="mission-eyebrow">年収市場を、透明に。<span> / </span>キャリアをもっと自由に。</p>
-    <h1 class="mission-title">
-      現場の年収を、<br><em>オープンに。</em>
-    </h1>
-    <p class="mission-sub">
-      PayPulseはゼネコン建築施工管理者に向けた、<strong>年収データベースサービス</strong>です。<br>
-      現場で働くすべての人が、正しい情報をもとに<br>キャリアを選べる社会を目指しています。
-    </p>
+<!-- ══ ABOUT HERO ══ -->
+<div class="about-hero">
+  <div class="about-hero-inner">
+
+    <!-- Left: Text -->
+    <div class="about-text">
+      <div class="about-page-tag">About PayPulse</div>
+      <h1 class="about-h1">
+        年収情報の<br>
+        ブラックボックスを、<br>
+        <em>なくす。</em>
+      </h1>
+      <p class="about-lead">
+        ゼネコン建築施工管理者が「自分の年収は適正か」を確かめられる環境をつくるために、現場のリアルなデータを収集・公開しています。
+      </p>
+      <div class="about-stats">
+        <div class="about-stat">
+          <div class="about-stat-num">16+</div>
+          <div class="about-stat-label">蓄積回答数<br>(随時更新)</div>
+        </div>
+        <div class="about-stat">
+          <div class="about-stat-num">31</div>
+          <div class="about-stat-label">分析<br>データ軸</div>
+        </div>
+        <div class="about-stat">
+          <div class="about-stat-num">無料</div>
+          <div class="about-stat-label">登録<br>不要</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: Result preview illustration -->
+    <div class="about-illus">
+      <svg viewBox="0 0 320 300" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="bg3" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#dbeafe" stop-opacity="0.5"/>
+            <stop offset="100%" stop-color="#f8fafc" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <!-- BG glow -->
+        <circle cx="160" cy="148" r="118" fill="url(#bg3)"/>
+
+        <!-- Ring track -->
+        <circle cx="160" cy="148" r="90" fill="none" stroke="#e2e8f0" stroke-width="16"/>
+        <!-- Progress arc (~78% = upper 22%) circumference≈565, 78%≈441 -->
+        <circle cx="160" cy="148" r="90" fill="none" stroke="#1a5fad" stroke-width="16"
+          stroke-dasharray="441 565" stroke-dashoffset="141"
+          stroke-linecap="round" transform="rotate(-90 160 148)"/>
+        <!-- Orange indicator dot -->
+        <circle cx="249" cy="105" r="11" fill="#f97316" stroke="#fff" stroke-width="3"/>
+
+        <!-- Center text -->
+        <text x="160" y="133" text-anchor="middle" font-size="12" fill="#94a3b8" font-weight="600" font-family="sans-serif">上位</text>
+        <text x="160" y="167" text-anchor="middle" font-family="Courier New" font-size="46" font-weight="900" fill="#1e293b">22</text>
+        <text x="160" y="187" text-anchor="middle" font-family="Courier New" font-size="20" font-weight="700" fill="#1a5fad">%</text>
+
+        <!-- Tick labels -->
+        <text x="62" y="178" text-anchor="middle" font-size="10" fill="#94a3b8">低</text>
+        <text x="258" y="178" text-anchor="middle" font-size="10" fill="#94a3b8">高</text>
+
+        <!-- Bottom stat cards -->
+        <rect x="10" y="248" width="90" height="44" rx="8" fill="#fff" stroke="#e0eeff" stroke-width="1.5"/>
+        <text x="55" y="265" text-anchor="middle" font-family="Courier New" font-size="14" font-weight="900" fill="#f97316">650万</text>
+        <text x="55" y="280" text-anchor="middle" font-size="9" fill="#94a3b8">あなたの年収</text>
+
+        <rect x="115" y="248" width="90" height="44" rx="8" fill="#fff" stroke="#e0eeff" stroke-width="1.5"/>
+        <text x="160" y="265" text-anchor="middle" font-family="Courier New" font-size="14" font-weight="900" fill="#1a5fad">720万</text>
+        <text x="160" y="280" text-anchor="middle" font-size="9" fill="#94a3b8">同条件の中央値</text>
+
+        <rect x="220" y="248" width="90" height="44" rx="8" fill="#1a5fad"/>
+        <text x="265" y="264" text-anchor="middle" font-size="9" fill="rgba(255,255,255,0.65)">同条件の</text>
+        <text x="265" y="278" text-anchor="middle" font-family="Courier New" font-size="11" font-weight="900" fill="#fff">5人と比較</text>
+      </svg>
+      <div class="about-illus-label">診断結果サンプル</div>
+    </div>
+
   </div>
 </div>
 
-<!-- THE PROBLEM -->
+<!-- ══ THE PROBLEM ══ -->
 <section class="problem-bg">
   <div class="section-inner">
     <div class="label-tag">The Problem</div>
-    <h2 class="section-heading">日本の建設業には、年収情報をめぐる大きな〝不均衡〟があります。</h2>
-    <p class="section-lead">現場で働きながら、こんな疑問を感じたことはないでしょうか。</p>
+    <h2 class="section-heading">施工管理者には、<br>年収を「確かめる手段」がない。</h2>
 
-    <div class="questions">
-      <div class="q-card">
-        <span class="q-card-num">01</span>
-        <span class="q-card-text">自分の年収は、同じ経験年数・同じ役職の人たちと比べて適正なのか？</span>
+    <div class="pain-grid">
+      <div class="pain-card">
+        <div class="pain-icon">🤔</div>
+        <div class="pain-text">自分の年収は同じ経験・役職の人と比べて適正なのか</div>
       </div>
-      <div class="q-card">
-        <span class="q-card-num">02</span>
-        <span class="q-card-text">規模の大きい案件を担当するようになれば、もっと年収は上がるものなのか？</span>
+      <div class="pain-card">
+        <div class="pain-icon">📐</div>
+        <div class="pain-text">規模の大きい案件を担えば、年収はどう変わるのか</div>
       </div>
-      <div class="q-card">
-        <span class="q-card-num">03</span>
-        <span class="q-card-text">転職を考えているが、いくら要求すれば市場価値に見合うのか？</span>
+      <div class="pain-card">
+        <div class="pain-icon">💬</div>
+        <div class="pain-text">転職時にいくら要求すれば市場価値に見合うのか</div>
       </div>
     </div>
 
     <div class="insight-box">
-      <p>
-        これらは当然の疑問です。しかし、答えを出せるだけの情報がどこにもない。転職サイトの「平均年収」は職種・規模・経験を無視した粗いデータ。同僚との年収の話はタブー。<strong>多くの施工管理者が、「なんとなく適正だろう」という感覚だけを頼りに、キャリアの大きな意思決定をせざるを得ない状況が続いています。</strong>
-      </p>
+      <p>転職サイトの「平均年収」は職種・規模・経験を無視した粗いデータ。同僚との年収の話はタブー。<strong>多くの施工管理者が、根拠のない感覚だけを頼りに、キャリアの大きな意思決定を続けています。</strong></p>
     </div>
   </div>
 </section>
 
-<!-- THE SOLUTION -->
+<!-- ══ OUR APPROACH ══ -->
 <section class="solution-bg">
   <div class="section-inner">
     <div class="label-tag">Our Approach</div>
-    <h2 class="section-heading">PayPulseはこの不均衡を、<br>「年収情報の透明化」によって解決します。</h2>
-    <p class="section-lead">ブラックボックスになっていた年収情報をオープンにすることで、公正な評価の実現と、より自由なキャリア構築につながると確信しているからです。</p>
+    <h2 class="section-heading">PayPulseはこの不均衡を、<br>「年収情報の透明化」で解決します。</h2>
+    <p class="section-lead">ブラックボックスになっていた年収情報をオープンにすることで、公正な評価と、自由なキャリア構築につながると確信しています。</p>
 
     <div class="sol-points">
+
       <div class="sol-point">
-        <div class="sol-num">1</div>
+        <div class="sol-icon">
+          <!-- Person/collect icon -->
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="8" r="4" stroke="#fff" stroke-width="2"/>
+            <path d="M4 20c0-4 3.6-6 8-6s8 2 8 6" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
         <div class="sol-body">
           <span class="sol-tag">一次情報</span>
           <div class="sol-title">現場のプロから、直接収集する</div>
-          <p class="sol-desc">担当した案件の規模・工種・役職、保有資格、年齢と年収を、実際に現場で働くプロから直接収集します。推計や加工を挟まず、現場の声をそのまま蓄積します。</p>
+          <p class="sol-desc">担当した案件の規模・工種・役職、保有資格、年齢と年収を実際に現場で働くプロから直接収集。推計を挟まず、現場の声をそのまま蓄積します。</p>
         </div>
       </div>
+
       <div class="sol-point">
-        <div class="sol-num">2</div>
+        <div class="sol-icon">
+          <!-- Chart/structure icon -->
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+            <rect x="3" y="12" width="4" height="9" rx="1" fill="#fff" opacity="0.6"/>
+            <rect x="10" y="7" width="4" height="14" rx="1" fill="#fff"/>
+            <rect x="17" y="3" width="4" height="18" rx="1" fill="#fff" opacity="0.6"/>
+          </svg>
+        </div>
         <div class="sol-body">
           <span class="sol-tag">構造化</span>
           <div class="sol-title">「同じ条件」で比較できる形に整える</div>
-          <p class="sol-desc">職種・地域・経験年数・案件規模ごとにデータを構造化することで、「自分と同じ条件の人たちはどの水準にいるか」が、はじめて数字で確認できるようになります。</p>
+          <p class="sol-desc">職種・地域・経験年数・案件規模ごとにデータを構造化。「自分と同じ条件の人たちはどの水準にいるか」が、はじめて数字で確認できるようになります。</p>
         </div>
       </div>
+
       <div class="sol-point">
-        <div class="sol-num">3</div>
+        <div class="sol-icon">
+          <!-- Open/share icon -->
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+            <circle cx="18" cy="5" r="3" stroke="#fff" stroke-width="2"/>
+            <circle cx="6" cy="12" r="3" stroke="#fff" stroke-width="2"/>
+            <circle cx="18" cy="19" r="3" stroke="#fff" stroke-width="2"/>
+            <path d="M9 10.5l6-3M9 13.5l6 3" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
         <div class="sol-body">
           <span class="sol-tag">透明化</span>
           <div class="sol-title">誰もが使えるデータへ、無料で届ける</div>
-          <p class="sol-desc">収集・構造化されたデータは、登録不要・無料で利用できる年収診断として提供されます。これまで一部の組織だけが参照できたベンチマークを、すべての人へ。</p>
+          <p class="sol-desc">収集・構造化されたデータは、登録不要・無料の年収診断として提供。これまで一部の組織だけが参照できたベンチマークを、すべての人へ届けます。</p>
         </div>
       </div>
+
     </div>
 
     <div class="trust-note">
-      <div class="trust-note-title">💡 一般的な「年収診断サービス」との違いについて</div>
+      <div class="trust-note-title">💡 一般的な「年収診断サービス」との違い</div>
       <div class="trust-note-body">
-        世に出回っている年収診断の多くは、転職支援を事業とする組織が提供しており、診断結果が「転職を促す方向に引っ張られやすい」構造があります。PayPulseはそうした組織と<strong>一切の関係を持たず、完全に独立して運営</strong>されています。私たちの価値はデータの精度のみに依存するため、特定の行動へ誘導するインセンティブが構造上ありません。
+        多くの年収診断は転職支援事業者が提供しており、診断結果が「転職を促す方向」に誘導されやすい構造があります。PayPulseはそうした組織と<strong>一切の関係を持たず、完全に独立して運営</strong>。データの精度のみに価値が依存するため、特定の行動へ誘導するインセンティブが構造上ありません。
       </div>
     </div>
   </div>
 </section>
 
-<!-- DATA MODEL -->
+<!-- ══ DATA MODEL ══ -->
 <section class="data-bg">
   <div class="section-inner">
     <div class="label-tag">Data Model</div>
@@ -371,7 +661,7 @@ section{padding:48px 16px}
   </div>
 </section>
 
-<!-- VISION -->
+<!-- ══ VISION ══ -->
 <div class="vision-bg">
   <div class="vision-inner">
     <div class="vision-label">Our Vision</div>
@@ -382,13 +672,12 @@ section{padding:48px 16px}
     </p>
     <div class="vision-divider"></div>
     <p class="vision-body">
-      適正な評価を受けられるかどうかは、<strong>情報を持っているかどうか</strong>で大きく変わります。<br>
-      PayPulseはその格差をなくし、現場で誠実に働くすべての人が、<br>正しい根拠をもってキャリアを選べる社会をつくります。
+      適正な評価を受けられるかどうかは、<strong>情報を持っているかどうか</strong>で大きく変わります。PayPulseはその格差をなくし、現場で誠実に働くすべての人が、正しい根拠をもってキャリアを選べる社会をつくります。
     </p>
   </div>
 </div>
 
-<!-- CTA -->
+<!-- ══ CTA ══ -->
 <div class="cta-section">
   <h2 class="cta-title">まず、自分の立ち位置を<br>確かめてみる。</h2>
   <p class="cta-sub">
@@ -397,7 +686,11 @@ section{padding:48px 16px}
   </p>
   <a class="btn-primary" href="survey.html" style="font-size:17px;padding:18px 44px">無料で診断を始める →</a>
   <a class="btn-text" href="index.html">診断の内容を見る</a>
-  <p style="font-size:12px;color:#94a3b8;margin-top:32px">© 2026 PayPulse運営事務局　|　<a href="privacy.html" style="color:#94a3b8">プライバシーポリシー</a>　|　<a href="mailto:contact.fairbase@gmail.com" style="color:#94a3b8">お問い合わせ</a></p>
+  <p style="font-size:12px;color:#94a3b8;margin-top:32px">
+    © 2026 PayPulse運営事務局　|
+    <a href="privacy.html" style="color:#94a3b8">プライバシーポリシー</a>　|
+    <a href="mailto:contact.fairbase@gmail.com" style="color:#94a3b8">お問い合わせ</a>
+  </p>
 </div>
 
 </body>

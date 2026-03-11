@@ -109,6 +109,10 @@ header{display:flex;justify-content:space-between;align-items:center;padding:10p
 .relax-notice{background:#fefce8;border:1px solid #fde68a;border-radius:8px;padding:14px 16px;font-size:13px;color:#92400e;line-height:1.8}
 .relax-notice strong{display:block;margin-bottom:4px;font-weight:700}
 
+/* card subtitle */
+.card-subtitle{font-size:12px;color:var(--muted);font-weight:400;margin-top:-14px;margin-bottom:16px;line-height:1.6}
+@media(min-width:480px){.card-subtitle{font-size:13px;margin-top:-16px;margin-bottom:20px}}
+
 /* footer */
 footer{text-align:center;padding:24px;font-size:12px;color:var(--muted);border-top:1px solid #e2e8f0}
 </style>
@@ -117,7 +121,7 @@ footer{text-align:center;padding:24px;font-size:12px;color:var(--muted);border-t
 
 <header>
   <a href="index.html" class="logo">PAYPULSE</a>
-  <a href="index.html" class="back-link">← アンケートに戻る</a>
+  <a href="index.html" class="back-link">← ホームへ戻る</a>
 </header>
 
 <!-- Loading -->
@@ -146,14 +150,15 @@ footer{text-align:center;padding:24px;font-size:12px;color:var(--muted);border-t
 
     <!-- Percentile table -->
     <div class="card">
-      <div class="card-title">パーセンタイル詳細</div>
+      <div class="card-title">同条件グループ内での年収ランキング</div>
+      <div class="card-subtitle">同じ条件のプロが100人いたら、あなたは何番目？ 上位ほど高収入です。</div>
       <table class="pct-table">
         <thead>
           <tr>
-            <th style="width:80px">統計位置</th>
+            <th style="width:80px">グループ内の位置</th>
             <th></th>
-            <th style="width:120px">解除必要数</th>
-            <th style="width:110px">年収</th>
+            <th style="width:120px">表示に必要な回答数</th>
+            <th style="width:110px">目安の年収</th>
           </tr>
         </thead>
         <tbody id="pct-tbody"></tbody>
@@ -162,14 +167,16 @@ footer{text-align:center;padding:24px;font-size:12px;color:var(--muted);border-t
 
     <!-- Histogram -->
     <div class="card">
-      <div class="card-title">年収分布</div>
+      <div class="card-title">みんなの年収はどう分かれている？</div>
+      <div class="card-subtitle">同条件グループ全体の年収分布です。<span style="color:var(--blue);font-weight:600">青いバー</span>があなたの年収帯を示しています。</div>
       <div class="chart-wrap"><canvas id="chart-hist"></canvas></div>
-      <div style="font-size:11px;color:var(--muted);margin-top:8px;text-align:right">横軸（万円）</div>
+      <div style="font-size:11px;color:var(--muted);margin-top:8px;text-align:right">横軸 = 年収帯（万円）　縦軸 = 人数</div>
     </div>
 
     <!-- Career trend -->
     <div class="card">
-      <div class="card-title">キャリア年次別推移</div>
+      <div class="card-title">経験を積むと、年収はどう変わる？</div>
+      <div class="card-subtitle">社会人経験年数ごとの年収の広がりです。<span style="color:var(--blue);font-weight:600">点線</span>があなたの現在の年収水準を示しています。</div>
       <div class="chart-wrap"><canvas id="chart-career"></canvas></div>
       <div style="font-size:11px;color:var(--muted);margin-top:8px">※ 社会人歴は「年齢 − 22」で近似（大卒22歳モデル）　　全データ対象</div>
     </div>
