@@ -421,59 +421,130 @@ section { padding: 52px 16px; }
       </div>
     </div>
 
-    <!-- Right: Market data illustration (salary range by experience) -->
+    <!-- Right: Community data illustration -->
     <div class="about-illus">
-      <svg viewBox="0 0 320 270" xmlns="http://www.w3.org/2000/svg">
-        <!-- Header bar -->
-        <rect x="0" y="0" width="320" height="36" fill="#f8fafc"/>
-        <text x="16" y="23" font-size="10" font-weight="700" fill="#94a3b8" font-family="sans-serif" letter-spacing="1.5">PAYPULSE MARKET DATA</text>
-        <circle cx="296" cy="18" r="5" fill="#22c55e"/>
-        <text x="283" y="22" text-anchor="end" font-size="9" fill="#22c55e" font-family="sans-serif">LIVE</text>
-        <line x1="0" y1="36" x2="320" y2="36" stroke="#e2e8f0" stroke-width="1"/>
+      <svg viewBox="0 0 320 258" xmlns="http://www.w3.org/2000/svg">
 
-        <!-- Section title -->
-        <text x="16" y="58" font-size="11" font-weight="700" fill="#1e293b" font-family="sans-serif">経験年数別 年収レンジ</text>
-        <text x="304" y="58" text-anchor="end" font-size="10" fill="#94a3b8" font-family="sans-serif">n=16</text>
+        <!-- Background -->
+        <rect width="320" height="258" fill="#f8fafc" rx="4"/>
 
-        <!-- Row 1: 3〜5年 -->
-        <text x="16" y="84" font-size="10" fill="#94a3b8" font-family="sans-serif">3〜5年</text>
-        <rect x="64" y="72" width="176" height="18" rx="4" fill="#eff6ff"/>
-        <rect x="64" y="72" width="108" height="18" rx="4" fill="#93c5fd"/>
-        <text x="246" y="85" font-size="10" fill="#64748b" font-family="Courier New" font-weight="700">600-720万</text>
+        <!-- Decorative rings (centered on hub) -->
+        <circle cx="160" cy="102" r="92" fill="none" stroke="#f1f5f9" stroke-width="14"/>
+        <circle cx="160" cy="102" r="63" fill="none" stroke="#e2e8f0" stroke-width="1" stroke-dasharray="5 6"/>
 
-        <!-- Row 2: 5〜8年 -->
-        <text x="16" y="118" font-size="10" fill="#94a3b8" font-family="sans-serif">5〜8年</text>
-        <rect x="64" y="106" width="176" height="18" rx="4" fill="#eff6ff"/>
-        <rect x="64" y="106" width="134" height="18" rx="4" fill="#3b82f6"/>
-        <text x="246" y="119" font-size="10" fill="#64748b" font-family="Courier New" font-weight="700">680-850万</text>
+        <!-- Accent dots -->
+        <circle cx="110" cy="28"  r="2.5" fill="#fed7aa"/>
+        <circle cx="210" cy="28"  r="2.5" fill="#fed7aa"/>
+        <circle cx="42"  cy="84"  r="2"   fill="#bfdbfe"/>
+        <circle cx="278" cy="84"  r="2"   fill="#bfdbfe"/>
+        <circle cx="68"  cy="138" r="3"   fill="#dbeafe"/>
+        <circle cx="252" cy="138" r="3"   fill="#dbeafe"/>
 
-        <!-- Row 3: 8〜12年 — highlighted orange "あなた" -->
-        <rect x="8" y="133" width="304" height="26" rx="6" fill="#fff7ed"/>
-        <text x="16" y="152" font-size="10" fill="#f97316" font-weight="700" font-family="sans-serif">8〜12年　← あなた</text>
-        <rect x="64" y="140" width="176" height="18" rx="4" fill="#fed7aa"/>
-        <rect x="64" y="140" width="158" height="18" rx="4" fill="#f97316"/>
-        <text x="246" y="153" font-size="10" fill="#ea580c" font-family="Courier New" font-weight="700">750-950万</text>
+        <!-- ── Connection lines (dashed) ── -->
+        <!-- A → hub -->
+        <path d="M 83 82 C 108 82 135 98 142 101"
+              stroke="#93c5fd" stroke-width="2" fill="none"
+              stroke-dasharray="4 4" stroke-linecap="round"/>
+        <!-- arrowhead at hub end -->
+        <path d="M 140 97 L 146 101 L 140 105"
+              stroke="#93c5fd" stroke-width="1.5" fill="none"
+              stroke-linecap="round" stroke-linejoin="round"/>
 
-        <!-- Row 4: 12年以上 -->
-        <text x="16" y="186" font-size="10" fill="#94a3b8" font-family="sans-serif">12年以上</text>
-        <rect x="64" y="174" width="176" height="18" rx="4" fill="#eff6ff"/>
-        <rect x="64" y="174" width="168" height="18" rx="4" fill="#1a5fad"/>
-        <text x="246" y="187" font-size="10" fill="#64748b" font-family="Courier New" font-weight="700">850-1050万</text>
+        <!-- B → hub -->
+        <path d="M 237 82 C 212 82 185 98 178 101"
+              stroke="#93c5fd" stroke-width="2" fill="none"
+              stroke-dasharray="4 4" stroke-linecap="round"/>
+        <!-- arrowhead at hub end -->
+        <path d="M 180 97 L 174 101 L 180 105"
+              stroke="#93c5fd" stroke-width="1.5" fill="none"
+              stroke-linecap="round" stroke-linejoin="round"/>
 
-        <!-- X-axis ticks -->
-        <line x1="64" y1="200" x2="240" y2="200" stroke="#e2e8f0" stroke-width="1"/>
-        <text x="64" y="214" font-size="9" fill="#94a3b8" font-family="sans-serif">500万</text>
-        <text x="152" y="214" text-anchor="middle" font-size="9" fill="#94a3b8" font-family="sans-serif">750万</text>
-        <text x="240" y="214" text-anchor="end" font-size="9" fill="#94a3b8" font-family="sans-serif">1,100万</text>
+        <!-- C → hub (vertical upward) -->
+        <line x1="160" y1="154" x2="160" y2="130"
+              stroke="#fdba74" stroke-width="2"
+              stroke-dasharray="4 4" stroke-linecap="round"/>
+        <!-- arrowhead at hub end -->
+        <path d="M 157 132 L 160 127 L 163 132"
+              stroke="#fdba74" stroke-width="1.5" fill="none"
+              stroke-linecap="round" stroke-linejoin="round"/>
 
-        <!-- Bottom note -->
-        <rect x="8" y="222" width="304" height="24" rx="6" fill="#f1f5f9"/>
-        <text x="160" y="238" text-anchor="middle" font-size="10" fill="#64748b" font-family="sans-serif">条件でフィルタして、より詳しく比較できます</text>
+        <!-- ── Central hub (data aggregator) ── -->
+        <circle cx="160" cy="102" r="27" fill="#fff" stroke="#1a5fad" stroke-width="2.5"/>
+        <circle cx="160" cy="102" r="21" fill="#eff6ff"/>
+        <!-- Mini bar chart inside hub -->
+        <rect x="149" y="109" width="4" height="7"  rx="1" fill="#93c5fd"/>
+        <rect x="155" y="104" width="4" height="12" rx="1" fill="#1a5fad"/>
+        <rect x="161" y="101" width="4" height="15" rx="1" fill="#1e40af"/>
+        <rect x="167" y="106" width="4" height="10" rx="1" fill="#93c5fd"/>
 
-        <!-- SAMPLE watermark -->
-        <text x="160" y="260" text-anchor="middle" font-size="9" fill="#cbd5e1" font-weight="700" font-family="sans-serif" letter-spacing="3">— SAMPLE DATA —</text>
+        <!-- ── Person A (blue, left) ── -->
+        <!-- salary badge -->
+        <rect x="4" y="18" width="52" height="22" rx="7"
+              fill="#fff" stroke="#bfdbfe" stroke-width="1.5"/>
+        <text x="30" y="27" text-anchor="middle" font-size="7.5"
+              fill="#94a3b8" font-family="sans-serif">年収</text>
+        <text x="30" y="37" text-anchor="middle" font-family="Courier New"
+              font-size="11.5" font-weight="900" fill="#1a5fad">720万</text>
+        <!-- hard hat dome -->
+        <path d="M 58 54 Q 70 40 82 54 Z" fill="#1e40af"/>
+        <!-- hat brim -->
+        <rect x="56" y="52" width="28" height="6" rx="2" fill="#1a5fad"/>
+        <!-- head -->
+        <circle cx="70" cy="67" r="11" fill="#fde68a"/>
+        <!-- body -->
+        <rect x="57" y="78" width="26" height="22" rx="5" fill="#1a5fad"/>
+        <!-- legs -->
+        <rect x="58" y="99" width="10" height="13" rx="3" fill="#1e293b"/>
+        <rect x="72" y="99" width="10" height="13" rx="3" fill="#1e293b"/>
+
+        <!-- ── Person B (blue, right) ── -->
+        <!-- salary badge -->
+        <rect x="264" y="18" width="52" height="22" rx="7"
+              fill="#fff" stroke="#bfdbfe" stroke-width="1.5"/>
+        <text x="290" y="27" text-anchor="middle" font-size="7.5"
+              fill="#94a3b8" font-family="sans-serif">年収</text>
+        <text x="290" y="37" text-anchor="middle" font-family="Courier New"
+              font-size="11.5" font-weight="900" fill="#1a5fad">680万</text>
+        <!-- hard hat dome -->
+        <path d="M 238 54 Q 250 40 262 54 Z" fill="#1e40af"/>
+        <!-- hat brim -->
+        <rect x="236" y="52" width="28" height="6" rx="2" fill="#1a5fad"/>
+        <!-- head -->
+        <circle cx="250" cy="67" r="11" fill="#fde68a"/>
+        <!-- body -->
+        <rect x="237" y="78" width="26" height="22" rx="5" fill="#1a5fad"/>
+        <!-- legs -->
+        <rect x="238" y="99" width="10" height="13" rx="3" fill="#1e293b"/>
+        <rect x="252" y="99" width="10" height="13" rx="3" fill="#1e293b"/>
+
+        <!-- ── Person C (orange, center bottom = あなた) ── -->
+        <!-- hard hat dome -->
+        <path d="M 148 170 Q 160 155 172 170 Z" fill="#ea580c"/>
+        <!-- hat brim -->
+        <rect x="146" y="168" width="28" height="6" rx="2" fill="#f97316"/>
+        <!-- head -->
+        <circle cx="160" cy="182" r="11" fill="#fde68a"/>
+        <!-- body -->
+        <rect x="147" y="193" width="26" height="22" rx="5" fill="#f97316"/>
+        <!-- あなた label -->
+        <rect x="116" y="216" width="88" height="22" rx="7"
+              fill="#fff7ed" stroke="#fdba74" stroke-width="1.5"/>
+        <text x="160" y="231" text-anchor="middle" font-size="11"
+              font-weight="700" fill="#f97316" font-family="sans-serif">← あなた</text>
+        <!-- salary badge (right of person C) -->
+        <rect x="188" y="175" width="52" height="22" rx="7"
+              fill="#fff7ed" stroke="#fdba74" stroke-width="1.5"/>
+        <text x="214" y="184" text-anchor="middle" font-size="7.5"
+              fill="#f97316" font-family="sans-serif">年収</text>
+        <text x="214" y="194" text-anchor="middle" font-family="Courier New"
+              font-size="11.5" font-weight="900" fill="#f97316">650万</text>
+
+        <!-- Bottom tagline -->
+        <text x="160" y="248" text-anchor="middle" font-size="10.5"
+              font-weight="700" fill="#334155" font-family="sans-serif">みんなのデータが、あなたの基準になる。</text>
+
       </svg>
-      <div class="about-illus-label">市場データサンプル</div>
+      <div class="about-illus-label">コンセプトイメージ</div>
     </div>
 
   </div>
