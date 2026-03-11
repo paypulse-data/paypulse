@@ -12,25 +12,18 @@ body{
   background-size:28px 28px;
 }
 
-/* ── HEADER ── */
-header{
-  display:flex;justify-content:space-between;align-items:center;
-  padding:14px 24px;background:rgba(242,236,216,0.95);backdrop-filter:blur(8px);
-  border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;
-}
-.logo{font-family:'Courier New',Courier,monospace;font-size:22px;font-weight:900;letter-spacing:2px;color:var(--text);text-decoration:none;border-bottom:3px solid var(--blue);padding-bottom:2px}
-.nav-links{display:flex;gap:20px;align-items:center}
-.nav-link{font-size:14px;font-weight:600;color:var(--text-light);text-decoration:none;transition:color .2s}
-.nav-link:hover,.nav-link.active{color:var(--blue)}
-.header-cta{background:var(--orange);color:#fff;border:none;border-radius:6px;padding:9px 22px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;letter-spacing:.5px;text-decoration:none;transition:background .2s,transform .1s}
-.header-cta:hover{background:#ea6a00;transform:translateY(-1px)}
+/* ── HEADER は brand.css に統合 ── */
+/* ナビリンクのコンテナ */
+.nav-links{display:flex;gap:8px;align-items:center}
+@media(min-width:480px){.nav-links{gap:16px}}
 
 /* ── MISSION HERO ── */
 .mission-hero{
   background:var(--blue-dark);color:#fff;
-  padding:88px 24px 80px;text-align:center;
+  padding:52px 16px 48px;text-align:center;
   position:relative;overflow:hidden;
 }
+@media(min-width:640px){.mission-hero{padding:88px 24px 80px}}
 .mission-hero::before{
   content:'';position:absolute;inset:0;
   background:linear-gradient(135deg,rgba(26,95,173,.35) 0%,transparent 55%),
@@ -49,9 +42,10 @@ header{
 .mission-eyebrow span{color:#94a3b8}
 .mission-title{
   font-family:'Courier New',Courier,monospace;
-  font-size:clamp(38px,8vw,68px);font-weight:900;line-height:1.0;
-  letter-spacing:-2px;color:#fff;margin-bottom:28px;
+  font-size:clamp(28px,9vw,68px);font-weight:900;line-height:1.05;
+  letter-spacing:-1.5px;color:#fff;margin-bottom:20px;
 }
+@media(min-width:480px){.mission-title{letter-spacing:-2px;margin-bottom:28px}}
 .mission-title em{color:var(--orange);font-style:normal}
 .mission-sub{
   font-size:clamp(15px,2vw,17px);color:#94a3b8;line-height:1.95;
@@ -60,7 +54,8 @@ header{
 .mission-sub strong{color:#e2e8f0}
 
 /* ── SECTION COMMON ── */
-section{padding:76px 24px}
+section{padding:48px 16px}
+@media(min-width:640px){section{padding:76px 24px}}
 .section-inner{max-width:700px;margin:0 auto}
 .label-tag{
   display:inline-block;font-size:11px;font-weight:700;letter-spacing:2px;
@@ -77,33 +72,39 @@ section{padding:76px 24px}
 .problem-bg{background:var(--white);border-top:1px solid var(--border)}
 
 /* Question cards */
-.questions{display:flex;flex-direction:column;gap:14px;margin-bottom:40px}
+.questions{display:flex;flex-direction:column;gap:10px;margin-bottom:32px}
+@media(min-width:480px){.questions{gap:14px;margin-bottom:40px}}
 .q-card{
   background:var(--bg);
-  border-radius:14px;padding:24px 28px 24px 64px;
+  border-radius:12px;padding:18px 18px 18px 52px;
   position:relative;
   transition:transform .2s,box-shadow .2s;
 }
+@media(min-width:480px){.q-card{border-radius:14px;padding:24px 28px 24px 64px}}
 .q-card:hover{transform:translateX(4px)}
 .q-card-num{
-  position:absolute;left:20px;top:50%;transform:translateY(-50%);
+  position:absolute;left:14px;top:50%;transform:translateY(-50%);
   font-family:'Courier New',Courier,monospace;
-  font-size:28px;font-weight:900;color:rgba(26,95,173,.2);line-height:1;
+  font-size:22px;font-weight:900;color:rgba(26,95,173,.2);line-height:1;
 }
+@media(min-width:480px){.q-card-num{left:20px;font-size:28px}}
 .q-card-text{
-  font-size:16px;line-height:1.7;color:var(--text);font-weight:500;
+  font-size:14px;line-height:1.7;color:var(--text);font-weight:500;
 }
+@media(min-width:480px){.q-card-text{font-size:16px}}
 .q-card-text::before{content:'\201C';color:var(--blue);font-weight:900;font-size:20px;margin-right:2px}
 .q-card-text::after{content:'\201D';color:var(--blue);font-weight:900;font-size:20px;margin-left:2px}
 
 /* Insight box */
 .insight-box{
-  background:var(--blue-dark);border-radius:14px;padding:28px 32px;
+  background:var(--blue-dark);border-radius:12px;padding:20px 18px;
   border-left:4px solid var(--orange);
 }
+@media(min-width:480px){.insight-box{border-radius:14px;padding:28px 32px}}
 .insight-box p{
-  font-size:16px;line-height:1.9;color:#cbd5e1;
+  font-size:14px;line-height:1.9;color:#cbd5e1;
 }
+@media(min-width:480px){.insight-box p{font-size:16px}}
 .insight-box strong{color:#fff;font-weight:700}
 
 /* ── SOLUTION SECTION ── */
@@ -183,8 +184,9 @@ section{padding:76px 24px}
 .vision-bg{
   background:var(--blue-dark);
   border-top:1px solid rgba(255,255,255,.06);
-  padding:88px 24px;text-align:center;
+  padding:52px 16px;text-align:center;
 }
+@media(min-width:640px){.vision-bg{padding:88px 24px}}
 .vision-inner{max-width:640px;margin:0 auto}
 .vision-label{font-size:11px;font-weight:700;letter-spacing:2px;color:#475569;text-transform:uppercase;margin-bottom:28px}
 .vision-quote{
@@ -198,14 +200,22 @@ section{padding:76px 24px}
 .vision-body strong{color:#e2e8f0}
 
 /* ── CTA ── */
-.cta-section{background:var(--bg);border-top:1px solid var(--border);padding:72px 24px;text-align:center}
-.cta-title{font-family:'Courier New',Courier,monospace;font-size:clamp(22px,4vw,34px);font-weight:900;margin-bottom:14px;color:var(--text)}
-.cta-sub{font-size:15px;color:var(--text-light);margin-bottom:28px;line-height:1.85}
-.btn-primary{background:var(--orange);color:#fff;border:none;border-radius:8px;padding:16px 36px;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit;letter-spacing:.5px;text-decoration:none;transition:background .2s,transform .15s,box-shadow .15s;box-shadow:0 4px 16px rgba(249,115,22,.35);display:inline-block}
+.cta-section{background:var(--bg);border-top:1px solid var(--border);padding:48px 16px;text-align:center}
+@media(min-width:640px){.cta-section{padding:72px 24px}}
+.cta-title{font-family:'Courier New',Courier,monospace;font-size:clamp(20px,5vw,34px);font-weight:900;margin-bottom:12px;color:var(--text)}
+.cta-sub{font-size:14px;color:var(--text-light);margin-bottom:24px;line-height:1.85}
+@media(min-width:480px){.cta-sub{font-size:15px;margin-bottom:28px}}
+.btn-primary{background:var(--orange);color:#fff;border:none;border-radius:8px;padding:14px 28px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;letter-spacing:.5px;text-decoration:none;transition:background .2s,transform .15s,box-shadow .15s;box-shadow:0 4px 16px rgba(249,115,22,.35);display:inline-block}
+@media(min-width:480px){.btn-primary{padding:16px 36px;font-size:16px}}
 .btn-primary:hover{background:#ea6a00;transform:translateY(-2px);box-shadow:0 8px 24px rgba(249,115,22,.4)}
-.btn-text{display:inline-block;margin-left:16px;font-size:14px;color:var(--text-light);text-decoration:underline;text-underline-offset:3px}
+.btn-text{display:inline-block;margin-left:12px;font-size:13px;color:var(--text-light);text-decoration:underline;text-underline-offset:3px}
 
-@media(max-width:480px){.btn-text{display:block;margin:14px auto 0}}
+@media(max-width:480px){
+  .btn-text{display:block;margin:14px auto 0}
+  .mission-sub br{display:none}
+  .vision-body{font-size:14px}
+  .sol-points::before{display:none}
+}
 </style>
 </head>
 <body>
@@ -214,8 +224,8 @@ section{padding:76px 24px}
 <header>
   <a class="logo" href="index.html">PAYPULSE</a>
   <div class="nav-links">
-    <a class="nav-link" href="index.html">ホーム</a>
-    <a class="nav-link active" href="about.html">About</a>
+    <a class="nav-text-link" href="index.html">ホーム</a>
+    <a class="nav-text-link active" href="about.html">About</a>
     <a class="header-cta" href="survey.html">診断を始める →</a>
   </div>
 </header>

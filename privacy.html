@@ -7,12 +7,16 @@
 <link rel="stylesheet" href="brand.css">
 <style>
 body{line-height:1.8}
-header{display:flex;justify-content:space-between;align-items:center;padding:12px 24px;background:var(--white);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100}
-.logo{font-family:'Courier New',monospace;font-size:20px;font-weight:900;letter-spacing:2px;color:var(--text);text-decoration:none;border-bottom:3px solid var(--blue);padding-bottom:2px}
-.back-link{font-size:13px;color:var(--blue);text-decoration:none}
+header{display:flex;justify-content:space-between;align-items:center;padding:10px 16px;background:var(--white);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100}
+@media(min-width:480px){header{padding:12px 24px}}
+.logo{font-family:'Courier New',monospace;font-size:17px;font-weight:900;letter-spacing:1.5px;color:var(--text);text-decoration:none;border-bottom:3px solid var(--blue);padding-bottom:2px;flex-shrink:0}
+@media(min-width:480px){.logo{font-size:20px;letter-spacing:2px}}
+.back-link{font-size:12px;color:var(--blue);text-decoration:none;white-space:nowrap}
+@media(min-width:480px){.back-link{font-size:13px}}
 .back-link:hover{text-decoration:underline}
-.container{max-width:720px;margin:0 auto;padding:40px 20px 80px}
-h1{font-size:24px;font-weight:900;margin-bottom:8px;color:var(--text)}
+.container{max-width:720px;margin:0 auto;padding:24px 16px 60px}
+@media(min-width:480px){.container{padding:40px 20px 80px}}
+h1{font-size:clamp(20px,5vw,24px);font-weight:900;margin-bottom:8px;color:var(--text)}
 .updated{font-size:13px;color:var(--text-light);margin-bottom:40px}
 h2{font-size:17px;font-weight:700;margin:36px 0 10px;padding-left:12px;border-left:3px solid var(--blue);color:var(--text)}
 p{font-size:14px;color:var(--text);margin-bottom:12px}

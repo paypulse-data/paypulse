@@ -35,22 +35,24 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px 20px;
+  padding: 10px 16px;
   background: var(--bg);
   border-bottom: 1px solid var(--border);
   position: sticky;
   top: 0;
   z-index: 100;
 }
+@media(min-width:480px){header{padding:12px 20px}}
 .logo {
-  font-size: 22px;
+  font-size: 18px;
   font-weight: 900;
-  letter-spacing: 2px;
+  letter-spacing: 1.5px;
   color: var(--text);
   cursor: pointer;
   border-bottom: 3px solid var(--blue);
   padding-bottom: 2px;
 }
+@media(min-width:480px){.logo{font-size:22px;letter-spacing:2px}}
 .nav-links { display: flex; gap: 16px; font-size: 13px; font-weight: 600; }
 .nav-link {
   color: var(--text);
@@ -63,7 +65,8 @@ header {
 .nav-link.active { color: var(--blue); border-bottom-color: var(--blue); }
 
 /* ---- MAIN ---- */
-.container { max-width: 680px; margin: 0 auto; padding: 20px 16px 60px; }
+.container { max-width: 680px; margin: 0 auto; padding: 16px 12px 60px; }
+@media(min-width:480px){.container{padding:20px 16px 60px}}
 
 /* ---- STEP INDICATOR ---- */
 .steps-row {
@@ -97,9 +100,10 @@ header {
   position: relative;
   background: var(--white);
   border: 1px solid var(--border);
-  padding: 28px 24px;
-  margin-bottom: 20px;
+  padding: 20px 16px;
+  margin-bottom: 16px;
 }
+@media(min-width:480px){.bp-card{padding:28px 24px;margin-bottom:20px}}
 .bp-card::before {
   content: ''; position: absolute;
   top: -2px; left: -2px; width: 22px; height: 22px;
@@ -126,9 +130,10 @@ header {
 .sub-card {
   position: relative;
   border: 2px solid var(--blue);
-  padding: 20px 18px;
-  margin-bottom: 22px;
+  padding: 16px 14px;
+  margin-bottom: 16px;
 }
+@media(min-width:480px){.sub-card{padding:20px 18px;margin-bottom:22px}}
 .sub-card::before {
   content: ''; position: absolute;
   top: -3px; left: -3px; width: 14px; height: 14px;
@@ -204,14 +209,17 @@ header {
 }
 
 /* ---- BUTTONS ---- */
-.btn-row { display: flex; justify-content: flex-end; gap: 12px; margin-top: 28px; }
+.btn-row { display: flex; flex-direction: column-reverse; gap: 10px; margin-top: 24px; }
+@media(min-width:480px){ .btn-row { flex-direction: row; justify-content: flex-end; gap: 12px; margin-top: 28px; } }
 .btn {
-  padding: 12px 30px;
+  padding: 13px 20px;
   font-family: 'Courier New', monospace;
   font-size: 14px; font-weight: 600;
   cursor: pointer; border: 2px solid;
   transition: all 0.2s; letter-spacing: 0.5px;
+  width: 100%; text-align: center;
 }
+@media(min-width:480px){ .btn { width: auto; padding: 12px 30px; } }
 .btn-primary { background: var(--blue); color: white; border-color: var(--blue); }
 .btn-primary:hover { background: var(--blue-dark); border-color: var(--blue-dark); }
 .btn-secondary { background: transparent; color: var(--orange); border-color: var(--orange); }
@@ -226,9 +234,10 @@ header {
   border: 1px solid var(--blue); cursor: pointer;
   font-family: 'Courier New', monospace;
 }
-.confirm-body { font-size: 13px; line-height: 2; }
-.crow { display: flex; gap: 8px; margin-bottom: 2px; }
-.ckey { color: var(--text-light); min-width: 140px; flex-shrink: 0; }
+.confirm-body { font-size: 13px; line-height: 1.9; }
+.crow { display: flex; gap: 6px; margin-bottom: 4px; flex-wrap: wrap; }
+.ckey { color: var(--text-light); min-width: 100px; flex-shrink: 0; }
+@media(min-width:480px){ .ckey { min-width: 140px; } }
 .cval { font-weight: 600; }
 .tag {
   display: inline-block; background: var(--blue); color: white;
