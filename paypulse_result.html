@@ -113,6 +113,19 @@ header{display:flex;justify-content:space-between;align-items:center;padding:10p
 .card-subtitle{font-size:12px;color:var(--muted);font-weight:400;margin-top:-14px;margin-bottom:16px;line-height:1.6}
 @media(min-width:480px){.card-subtitle{font-size:13px;margin-top:-16px;margin-bottom:20px}}
 
+/* condition tags */
+.cond-tags{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:0 0 20px}
+@media(min-width:480px){.cond-tags{gap:8px;margin:0 0 28px}}
+.cond-tag{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);color:#e2e8f0;font-size:11px;font-weight:600;padding:3px 10px;border-radius:99px}
+@media(min-width:480px){.cond-tag{font-size:12px;padding:4px 12px}}
+.cond-tag-relaxed{background:rgba(245,158,11,.15);border-color:rgba(245,158,11,.3);color:#fbbf24}
+.cond-relax-note{font-size:11px;color:#64748b;margin:-10px 0 18px}
+
+/* data nudge */
+.data-nudge{margin:28px auto 0;max-width:480px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:14px 18px;font-size:12px;color:#94a3b8;line-height:1.8;text-align:center}
+@media(min-width:480px){.data-nudge{font-size:13px;padding:16px 24px}}
+.data-nudge strong{color:#e2e8f0;display:block;margin-bottom:4px}
+
 /* footer */
 footer{text-align:center;padding:24px;font-size:12px;color:var(--muted);border-top:1px solid #e2e8f0}
 </style>
@@ -361,14 +374,39 @@ function getMessage(pct) {
 // ── ヒーロー描画 ──
 function renderHero(d) {
   const isUpper = d.userPctile >= 50;
-  // 上位・下位ともに「自分より上の人が何%いるか」で統一表示
-  // 上位20% = 20人が自分より上 / 下位80% = 80人が自分より上
   const displayPct = (100 - d.userPctile).toFixed(1);
   const direction  = isUpper ? '上位' : '下位';
   const gaugeLeft  = Math.min(Math.max(d.userPctile, 2), 98);
 
+  // 年代バンドを算出
+  const ageBand = a => a < 30 ? '20代' : a < 40 ? '30代' : a < 50 ? '40代' : '50代以上';
+  const band = d.userAge ? ageBand(d.userAge) : null;
+
+  // どの条件が緩和されたかを判定
+  const relaxed     = d.relaxApplied || [];
+  const roleRelaxed = relaxed.some(r => r.includes('position'));
+  const typeRelaxed = relaxed.some(r => r.includes('constructionType'));
+  const prefRelaxed = relaxed.some(r => r.includes('prefecture'));
+  const ageRelaxed  = relaxed.some(r => r.includes('age_band') || r.includes('全データ'));
+
+  // 比較条件タグを生成（緩和された条件は薄くマーク）
+  const tag = (label, isRelaxed) =>
+    label ? `<span class="cond-tag${isRelaxed ? ' cond-tag-relaxed' : ''}">${isRelaxed ? '〜' : ''}${label}</span>` : '';
+  const condTagsHtml = [
+    tag(band,        ageRelaxed),
+    tag(d.userType,  typeRelaxed),
+    tag(d.userPref,  prefRelaxed),
+    tag(d.userRole,  roleRelaxed),
+  ].filter(Boolean).join('');
+
+  const relaxNote = relaxed.length
+    ? `<p class="cond-relax-note">＊データ不足のため一部条件を緩和して比較しています</p>`
+    : '';
+
   document.getElementById('hero').innerHTML = `
     <div class="hero-peer">同条件の <strong>${d.peerCount}人</strong> と比較</div>
+    <div class="cond-tags">${condTagsHtml}</div>
+    ${relaxNote}
     <div class="hero-direction">${direction}</div>
     <div class="hero-pct">${displayPct}<sup>%</sup></div>
     <div class="hero-msg">${getMessage(d.userPctile)}</div>
@@ -393,6 +431,11 @@ function renderHero(d) {
         <div class="income-label">中央値</div>
         <div class="income-val">${d.median ? d.median.toLocaleString() : '—'}<span>万円</span></div>
       </div>
+    </div>
+
+    <div class="data-nudge">
+      <strong>📊 データが増えるほど、比較の精度が上がります</strong>
+      同じ現場で働く仲間にも共有して、業界全体の情報格差をなくしていきましょう。
     </div>
   `;
 }
