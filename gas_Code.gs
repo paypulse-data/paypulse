@@ -11,6 +11,7 @@
 // ── 定数（変更不要）──
 const MIN_DATA    = 5;   // パーセンタイル表示の最低件数
 const MIN_DATA_99 = 50;  // 99%ile 解放の最低件数
+const SITE_URL    = 'https://paypulse-data.github.io/paypulse'; // 公開URL
 
 // ────────────────────────────────────────────────────────────
 // 設定管理（PropertiesService）
@@ -84,6 +85,19 @@ function doPost(e) {
     const body = JSON.parse(e.postData.contents);
     if (body.action === 'submit') {
       saveResponse(body.id, body.payload);
+
+      // ── メール送信（メールアドレスが入力されている場合のみ）──
+      // メール失敗しても回答保存は成功扱いにする（サイレントエラー）
+      const email = body.payload && body.payload.email;
+      if (email) {
+        try {
+          const result = getResult(body.id);
+          if (result.success) sendResultEmail(body.id, email, result);
+        } catch (mailErr) {
+          Logger.log('メール送信エラー (無視): ' + mailErr.message);
+        }
+      }
+
       return respond({ success: true, id: body.id });
     }
     return respond({ success: false, error: 'Unknown action' });
@@ -338,6 +352,102 @@ function getResponseCount() {
   } catch (err) {
     return { success: false, error: err.message };
   }
+}
+
+// ────────────────────────────────────────────────────────────
+// 診断結果メールを送信
+// 呼び出し元: doPost() — 回答保存直後、メールアドレスがある場合のみ
+//
+// MailApp の送信上限:
+//   一般Googleアカウント: 100通/日
+//   Google Workspace: 1,500通/日
+// ────────────────────────────────────────────────────────────
+function sendResultEmail(id, email, d) {
+  if (!email || !email.includes('@')) return;
+
+  const isUpper    = d.userPctile >= 50;
+  const displayPct = (100 - d.userPctile).toFixed(1);
+  const direction  = isUpper ? '上位' : '下位';
+  const resultUrl  = `${SITE_URL}/paypulse_result.html?id=${encodeURIComponent(id)}`;
+
+  const subject = `【PayPulse】あなたは同条件の${direction}${displayPct}%でした`;
+
+  // ── HTML メール本文 ──
+  const html = `
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+</head>
+<body style="margin:0;padding:0;background:#f8fafc;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">
+<div style="max-width:520px;margin:32px auto;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.08)">
+
+  <!-- ヘッダー -->
+  <div style="background:#1e293b;padding:18px 28px">
+    <span style="font-family:'Courier New',monospace;font-size:18px;font-weight:900;letter-spacing:2px;color:#fff;border-bottom:2px solid #3b82f6;padding-bottom:2px">PAYPULSE</span>
+  </div>
+
+  <!-- 結果ヒーロー -->
+  <div style="background:#1e293b;padding:32px 20px;text-align:center">
+    <p style="margin:0 0 8px;font-size:13px;color:#94a3b8">
+      同条件の <strong style="color:#fff;font-size:15px">${d.peerCount}人</strong> と比較
+    </p>
+    <p style="margin:0 0 2px;font-size:16px;font-weight:700;color:#94a3b8">${direction}</p>
+    <p style="margin:0;font-size:72px;font-weight:900;line-height:1;letter-spacing:-3px;color:#fff">
+      ${displayPct}<sup style="font-size:26px;font-weight:700;vertical-align:super">%</sup>
+    </p>
+
+    <!-- 年収ボックス -->
+    <table style="margin:20px auto 0;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:14px 24px" cellpadding="0" cellspacing="0">
+      <tr>
+        <td style="text-align:center;padding:4px 20px">
+          <div style="font-size:11px;color:#94a3b8;margin-bottom:4px">あなたの年収</div>
+          <div style="font-size:26px;font-weight:700;color:#fff">
+            ${d.userIncome.toLocaleString()}<span style="font-size:14px;color:#94a3b8;margin-left:2px">万円</span>
+          </div>
+        </td>
+        <td style="width:1px;background:rgba(255,255,255,.1)"></td>
+        <td style="text-align:center;padding:4px 20px">
+          <div style="font-size:11px;color:#94a3b8;margin-bottom:4px">中央値</div>
+          <div style="font-size:26px;font-weight:700;color:#fff">
+            ${d.median ? d.median.toLocaleString() : '—'}<span style="font-size:14px;color:#94a3b8;margin-left:2px">万円</span>
+          </div>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- CTA -->
+  <div style="padding:28px 24px;text-align:center">
+    <p style="margin:0 0 20px;font-size:14px;color:#475569;line-height:1.8">
+      ヒストグラム・キャリア年次別グラフなど<br>
+      詳細な結果はこちらからご確認いただけます。
+    </p>
+    <a href="${resultUrl}" style="display:inline-block;background:#3b82f6;color:#fff;text-decoration:none;font-weight:700;font-size:15px;padding:14px 36px;border-radius:8px;letter-spacing:.5px">
+      詳細な結果を見る &rarr;
+    </a>
+    <p style="margin:16px 0 0;font-size:11px;color:#94a3b8">
+      このURLはあなた専用です。ブックマークしておくといつでも確認できます。
+    </p>
+  </div>
+
+  <!-- フッター -->
+  <div style="border-top:1px solid #e2e8f0;padding:14px 24px;text-align:center;font-size:11px;color:#94a3b8">
+    PayPulse 年収調査 &copy; 2026 &nbsp;|&nbsp;
+    <a href="${SITE_URL}/privacy.html" style="color:#94a3b8;text-decoration:underline">プライバシーポリシー</a>
+  </div>
+
+</div>
+</body>
+</html>
+  `.trim();
+
+  MailApp.sendEmail({
+    to      : email,
+    subject : subject,
+    htmlBody: html
+  });
 }
 
 // ────────────────────────────────────────────────────────────
