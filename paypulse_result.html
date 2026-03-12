@@ -132,10 +132,17 @@ footer{text-align:center;padding:24px;font-size:12px;color:var(--muted);border-t
 </head>
 <body>
 
-<header>
+<header id="main-header">
   <a href="index.html" class="logo">PAYPULSE</a>
   <a href="index.html" class="back-link">← ホームへ戻る</a>
 </header>
+<script>
+// ?embed=1 のときはヘッダーを非表示（HOME プレビュー用 iframe 用）
+if (new URLSearchParams(window.location.search).get('embed') === '1') {
+  document.getElementById('main-header').style.display = 'none';
+  document.querySelector('footer') && (document.querySelector('footer').style.display = 'none');
+}
+</script>
 
 <!-- Loading -->
 <div id="screen-loading" class="state-screen">
