@@ -208,11 +208,10 @@ footer{text-align:center;padding:24px;font-size:12px;color:var(--muted);border-t
   <a href="privacy.html" style="color:inherit;text-decoration:underline;opacity:0.7">プライバシーポリシー</a>
 </footer>
 
+<!-- GAS_URL は config.js で定義 -->
+<script src="config.js"></script>
 <script>
-// ============================================================
-// ★ GASデプロイ後にこのURLを書き換えてください
-// ============================================================
-const GAS_URL = 'https://script.google.com/macros/s/AKfycbyb_pPzQQ_6IxVJALU_ry3Q_uVmCpIbMxPNA-axOL1St86uRuKxTHumASg43PPsVGdp/exec';
+// GAS_URL は config.js で一元管理されています。URLの更新は config.js のみ変更してください。
 
 // ── URLからIDを取得 ──
 const id = new URLSearchParams(window.location.search).get('id');

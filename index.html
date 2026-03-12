@@ -510,9 +510,10 @@ footer a{color:inherit;opacity:.7;text-decoration:underline}
 </div>
 
 <!-- ── 蓄積回答数をGASから動的取得（JSONP） ── -->
+<!-- GAS_URL は config.js で定義 -->
+<script src="config.js"></script>
 <script>
 (function () {
-  const GAS_URL = 'https://script.google.com/macros/s/AKfycbyb_pPzQQ_6IxVJALU_ry3Q_uVmCpIbMxPNA-axOL1St86uRuKxTHumASg43PPsVGdp/exec';
   const el = document.getElementById('stat-count');
   if (!el) return;
 

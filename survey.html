@@ -774,12 +774,12 @@ footer {
   <span id="admin-link" style="display:none">　|　<span onclick="showSection('dashboard')" style="cursor:pointer;opacity:0.4;font-size:11px">管理</span></span>
 </footer>
 
+<!-- GAS_URL は config.js で定義 -->
+<script src="config.js"></script>
 <script>
-// ============================================================
-// ★ GASデプロイ後にこのURLを書き換えてください
-// ============================================================
-const GAS_URL = 'https://script.google.com/macros/s/AKfycbyb_pPzQQ_6IxVJALU_ry3Q_uVmCpIbMxPNA-axOL1St86uRuKxTHumASg43PPsVGdp/exec';
-const GAS_CONFIGURED = GAS_URL !== 'YOUR_GAS_URL_HERE' && GAS_URL.startsWith('https://');
+// GAS_URL は config.js で一元管理されています。URLの更新は config.js のみ変更してください。
+// eslint-disable-next-line no-undef
+const GAS_CONFIGURED = typeof GAS_URL !== 'undefined' && GAS_URL !== 'YOUR_GAS_URL_HERE' && GAS_URL.startsWith('https://');
 
 // ============================================================
 // DEBUG MODE: ?debug=true の時のみTESTボタン・管理リンクを表示
