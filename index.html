@@ -413,7 +413,7 @@ footer a{color:inherit;opacity:.7;text-decoration:underline}
   <p class="cta-note">© 2026 PayPulse運営事務局　|　<a href="privacy.html">プライバシーポリシー</a>　|　<a href="mailto:contact.fairbase@gmail.com">お問い合わせ</a></p>
 </div>
 
-<!-- ── 蓄積回答数をGASから動的取得（JSONP） ── -->
+<!-- ── 蓄積回答数をGASから動的取得（JSONP + 10分キャッシュ） ── -->
 <!-- GAS_URL は config.js で定義 -->
 <script src="config.js"></script>
 <script>
@@ -421,6 +421,20 @@ footer a{color:inherit;opacity:.7;text-decoration:underline}
   const el = document.getElementById('stat-count');
   if (!el) return;
 
+  // ── 10分キャッシュ（GASへのリクエスト頻度を抑える）──
+  // 同じユーザーが10分以内に再訪した場合はキャッシュ値を使う
+  const CACHE_KEY = 'pp_count_cache';
+  const CACHE_TTL = 10 * 60 * 1000; // 10分（ミリ秒）
+
+  try {
+    const cached = JSON.parse(localStorage.getItem(CACHE_KEY) || 'null');
+    if (cached && (Date.now() - cached.ts) < CACHE_TTL && cached.count > 0) {
+      el.innerHTML = cached.count + '<span style="font-size:20px">+</span>';
+      return; // キャッシュがあればGASを叩かずに終了
+    }
+  } catch (_) { /* localStorage 無効時は無視 */ }
+
+  // ── キャッシュなし → GASから取得 ──
   const cb = 'pp_count_' + Date.now();
   const timer = setTimeout(function () { cleanup(); }, 5000); // 5秒でタイムアウト
 
@@ -433,6 +447,10 @@ footer a{color:inherit;opacity:.7;text-decoration:underline}
     cleanup();
     if (data && data.success && typeof data.count === 'number' && data.count > 0) {
       el.innerHTML = data.count + '<span style="font-size:20px">+</span>';
+      // キャッシュに保存
+      try {
+        localStorage.setItem(CACHE_KEY, JSON.stringify({ count: data.count, ts: Date.now() }));
+      } catch (_) { /* localStorage 容量超過時は無視 */ }
     }
     // 取得失敗またはcount=0の場合はデフォルト値（16+）を維持
   };
