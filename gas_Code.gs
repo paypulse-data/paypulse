@@ -201,7 +201,8 @@ function getResult(id) {
       type   : r[h('案件1_工事分類')],
       pref   : r[h('基本_勤務地')],
       age    : parseInt(r[h('基本_年齢')]) || 0,
-      band   : ageBand(parseInt(r[h('基本_年齢')]) || 0)
+      band   : ageBand(parseInt(r[h('基本_年齢')]) || 0),
+      date   : r[h('送信日時')] ? new Date(r[h('送信日時')]) : null
     }));
 
   // ── 自動緩和ロジック ──
@@ -287,12 +288,37 @@ function getResult(id) {
     };
   });
 
+  // ── データ鮮度ラベルを算出 ──
+  const now         = new Date();
+  const ago6m       = new Date(now.getFullYear(), now.getMonth() - 6,  now.getDate());
+  const ago12m      = new Date(now.getFullYear() - 1, now.getMonth(),  now.getDate());
+  const ago24m      = new Date(now.getFullYear() - 2, now.getMonth(),  now.getDate());
+
+  const validDates  = peerGroup.map(e => e.date).filter(d => d && !isNaN(d.getTime()));
+  const count6m     = validDates.filter(d => d >= ago6m).length;
+  const count12m    = validDates.filter(d => d >= ago12m).length;
+  const count24m    = validDates.filter(d => d >= ago24m).length;
+  const total       = peerGroup.length;
+
+  const fmtYM = d => `${d.getFullYear()}年${d.getMonth() + 1}月`;
+  let freshnessLabel = null;
+  if (total >= MIN_DATA) {
+    if      (count6m  / total >= 0.8) freshnessLabel = '直近6ヶ月';
+    else if (count12m / total >= 0.8) freshnessLabel = '直近1年';
+    else if (count24m / total >= 0.8) freshnessLabel = '直近2年';
+    else if (validDates.length >= 2) {
+      const oldest = validDates.slice().sort((a,b) => a-b)[0];
+      freshnessLabel = fmtYM(oldest) + '〜';
+    }
+  }
+
   return {
     success      : true,
     userIncome, userPctile,
     peerCount    : peerIncomes.length,
     totalCount   : entries.length,
     relaxApplied,
+    freshnessLabel,
     median       : peerIncomes.length ? Math.round(pct(peerIncomes,50)) : null,
     pctTable, histogram, careerTrend,
     userCareerYears: userAge - 22,

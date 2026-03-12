@@ -392,11 +392,15 @@ function renderHero(d) {
   // 比較条件タグを生成（緩和された条件は薄くマーク）
   const tag = (label, isRelaxed) =>
     label ? `<span class="cond-tag${isRelaxed ? ' cond-tag-relaxed' : ''}">${isRelaxed ? '〜' : ''}${label}</span>` : '';
+  const freshnessTag = d.freshnessLabel
+    ? `<span class="cond-tag" style="background:rgba(34,197,94,.15);border-color:rgba(34,197,94,.3);color:#86efac">📅 ${d.freshnessLabel}</span>`
+    : '';
   const condTagsHtml = [
     tag(band,        ageRelaxed),
     tag(d.userType,  typeRelaxed),
     tag(d.userPref,  prefRelaxed),
     tag(d.userRole,  roleRelaxed),
+    freshnessTag,
   ].filter(Boolean).join('');
 
   const relaxNote = relaxed.length
@@ -623,6 +627,7 @@ function getDemoData() {
     userRole: '主任・係長クラス',
     userType: '建築（A工事）',
     userPref: '東京都',
+    freshnessLabel: '直近1年',
     pctTable: [
       { pct: 99, label: 'TOP 1%',  crown: true,  value: null, unlocked: false, needed: 38 },
       { pct: 90, label: 'TOP 10%', crown: true,  value: 860,  unlocked: true,  needed: 0  },
