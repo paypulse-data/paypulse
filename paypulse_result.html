@@ -401,11 +401,16 @@ function renderHero(d) {
   const freshnessTag = d.freshnessLabel
     ? `<span class="cond-tag" style="background:rgba(34,197,94,.15);border-color:rgba(34,197,94,.3);color:#86efac">📅 ${d.freshnessLabel}</span>`
     : '';
+  // 案件規模タグ（役職は会社依存のため、規模で補完表示）
+  const scaleTag = d.userScale
+    ? `<span class="cond-tag" style="background:rgba(139,92,246,.15);border-color:rgba(139,92,246,.3);color:#c4b5fd">🏗 ${d.userScale}</span>`
+    : '';
   const condTagsHtml = [
     tag(band,        ageRelaxed),
     tag(d.userType,  typeRelaxed),
     tag(d.userPref,  prefRelaxed),
     tag(d.userRole,  roleRelaxed),
+    scaleTag,
     freshnessTag,
   ].filter(Boolean).join('');
 
@@ -633,6 +638,7 @@ function getDemoData() {
     userRole: '主任・係長クラス',
     userType: '建築（A工事）',
     userPref: '東京都',
+    userScale: '30〜100億規模',
     freshnessLabel: '直近1年',
     pctTable: [
       { pct: 99, label: 'TOP 1%',  crown: true,  value: null, unlocked: false, needed: 38 },

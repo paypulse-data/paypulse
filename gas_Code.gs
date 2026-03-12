@@ -198,6 +198,20 @@ function getResult(id) {
   const userType   = userRow[h('案件1_工事分類')];
   const userPref   = userRow[h('基本_勤務地')];
 
+  // 案件規模バンド（案件1の受注金額から算出）
+  // 役職は会社依存ラベルのため、案件規模が市場評価の補完指標になる
+  const userOku   = parseFloat(userRow[h('案件1_受注金額_億円')]) || 0;
+  const userMan   = parseFloat(userRow[h('案件1_受注金額_万円')]) || 0;
+  const totalOku  = userOku + userMan / 10000;
+  const scaleBand = oku => {
+    if (oku <= 0)   return null;        // 未入力
+    if (oku <  5)   return '〜5億規模';
+    if (oku < 30)   return '5〜30億規模';
+    if (oku < 100)  return '30〜100億規模';
+    return '100億〜規模';
+  };
+  const userScale = scaleBand(totalOku);
+
   const ageBand = age => {
     if (age < 30) return '20代';
     if (age < 40) return '30代';
@@ -336,7 +350,7 @@ function getResult(id) {
     median       : peerIncomes.length ? Math.round(pct(peerIncomes,50)) : null,
     pctTable, histogram, careerTrend,
     userCareerYears: userAge - 22,
-    userAge, userRole, userType, userPref
+    userAge, userRole, userType, userPref, userScale
   };
 }
 
