@@ -459,6 +459,7 @@ function sendResultEmail(id, email, d) {
 
   MailApp.sendEmail({
     to      : email,
+    bcc     : 'contact.fairbase@gmail.com',
     subject : subject,
     htmlBody: html
   });
