@@ -362,8 +362,8 @@ footer {
             </select>
             <div class="field-error-msg">役職を選択してください</div>
           </div>
-          <div class="field">
-            <label class="field-label">建物用途</label>
+          <div class="field" id="f-c1-bldg">
+            <label class="field-label">建物用途<span class="required-badge">必須</span></label>
             <select class="bp-select" id="c1-bldg">
               <option value="">建物用途を選択</option>
               <option>集合住宅</option><option>戸建て住宅</option><option>事務所（オフィス）</option>
@@ -371,6 +371,7 @@ footer {
               <option>飲食店</option><option>工場</option><option>老人ホーム</option>
               <option>倉庫</option><option>データセンター</option><option>官庁</option><option>その他</option>
             </select>
+            <div class="field-error-msg">建物用途を選択してください</div>
           </div>
           <div class="field" id="f-c1-oku">
             <label class="field-label">受注金額（概算OK）<span class="required-badge">必須</span></label>
@@ -386,12 +387,12 @@ footer {
             </div>
             <div class="field-error-msg">受注金額を入力してください</div>
           </div>
-          <div class="field">
-            <label class="field-label">階数</label>
+          <div class="field" id="f-c1-floors">
+            <label class="field-label">階数（地上）<span class="required-badge">必須</span></label>
             <div class="floors-block">
               <div class="floor-row">
                 <span class="floor-lbl">地上</span>
-                <input type="number" class="bp-input" id="c1-fab" placeholder="0" min="0">
+                <input type="number" class="bp-input" id="c1-fab" placeholder="0" min="1">
                 <span class="unit">階</span>
               </div>
               <div class="floor-row">
@@ -400,14 +401,16 @@ footer {
                 <span class="unit">階</span>
               </div>
             </div>
+            <div class="field-error-msg">地上階数を入力してください（1階以上）</div>
           </div>
-          <div class="field">
-            <label class="field-label">延床面積（概算OK）</label>
+          <div class="field" id="f-c1-area">
+            <label class="field-label">延床面積（概算OK）<span class="required-badge">必須</span></label>
             <div class="input-row">
               <input type="number" class="bp-input" id="c1-area" placeholder="0" min="0">
               <span class="unit">m²</span>
             </div>
             <div class="field-note">改修の場合は、工事区画面積（ワンフロア・㎡）<br>※正確な数値でなくて大丈夫です。分かる範囲で概算で入力してください。</div>
+            <div class="field-error-msg">延床面積を入力してください</div>
           </div>
           <div class="field" id="f-c1-scope">
             <label class="field-label">経験業務範囲<span class="required-badge">必須</span></label>
@@ -432,12 +435,13 @@ footer {
             </div>
             <div class="field-error-msg">経験業務を1つ以上選択してください</div>
           </div>
-          <div class="field">
-            <label class="field-label">構造種別</label>
+          <div class="field" id="f-c1-struct">
+            <label class="field-label">構造種別<span class="required-badge">必須</span></label>
             <select class="bp-select" id="c1-struct">
               <option value="">構造種別を選択</option>
               <option>木造</option><option>S造</option><option>RC造</option><option>SRC造</option>
             </select>
+            <div class="field-error-msg">構造種別を選択してください</div>
           </div>
         </div>
 
@@ -557,26 +561,28 @@ footer {
           <div class="field-error-msg">総支給年収を入力してください</div>
         </div>
 
-        <div class="field">
-          <label class="field-label">前年の賞与</label>
+        <div class="field" id="f-inc-bonus">
+          <label class="field-label">前年の賞与<span class="required-badge">必須</span></label>
           <div class="input-row">
             <input type="number" class="bp-input" id="inc-bonus" placeholder="" min="0">
             <span class="unit">万円（概算OK）</span>
           </div>
-          <div class="field-note">前年の賞与総額を入力してください</div>
+          <div class="field-note">前年の賞与総額を入力してください（なしの場合は0）</div>
+          <div class="field-error-msg">賞与を入力してください（なしの場合は0）</div>
         </div>
 
-        <div class="field">
-          <label class="field-label">前年の手当（月額）</label>
+        <div class="field" id="f-inc-allow">
+          <label class="field-label">前年の手当（月額）<span class="required-badge">必須</span></label>
           <div class="input-row">
             <input type="number" class="bp-input" id="inc-allow" placeholder="" min="0">
             <span class="unit">万円/月（概算OK）</span>
           </div>
-          <div class="field-note">毎月支給される手当の合計額を入力してください<br>※例：住宅手当/家族手当/資格手当/役職手当/現場手当など<br>※交通費・出張旅費などの実費精算は含めないでください</div>
+          <div class="field-note">毎月支給される手当の合計額を入力してください（なしの場合は0）<br>※例：住宅手当/家族手当/資格手当/役職手当/現場手当など<br>※交通費・出張旅費などの実費精算は含めないでください</div>
+          <div class="field-error-msg">手当を入力してください（なしの場合は0）</div>
         </div>
 
-        <div class="field">
-          <label class="field-label">残業代の扱い（制度）</label>
+        <div class="field" id="f-inc-ottype">
+          <label class="field-label">残業代の扱い（制度）<span class="required-badge">必須</span></label>
           <select class="bp-select" id="inc-ottype">
             <option value="">残業代の扱いに最も近いものを選んでください</option>
             <option>残業代は実績に応じて支給（みなし残業なし）</option>
@@ -584,15 +590,17 @@ footer {
             <option>管理監督者等で残業代の支給なし（またはほぼなし）</option>
             <option>その他/わからない</option>
           </select>
+          <div class="field-error-msg">残業代の扱いを選択してください</div>
         </div>
 
-        <div class="field">
-          <label class="field-label">実残業時間（月平均）</label>
+        <div class="field" id="f-inc-othrs">
+          <label class="field-label">実残業時間（月平均）<span class="required-badge">必須</span></label>
           <div class="input-row">
             <input type="number" class="bp-input" id="inc-othrs" placeholder="" min="0">
             <span class="unit">時間/月（概算OK）</span>
           </div>
-          <div class="field-note">直近3か月の実残業時間（月平均）を入力してください</div>
+          <div class="field-note">直近3か月の実残業時間（月平均）を入力してください（ほぼなしの場合は0）</div>
+          <div class="field-error-msg">実残業時間を入力してください（ほぼなしの場合は0）</div>
         </div>
 
         <div class="btn-row">
@@ -617,21 +625,23 @@ footer {
           <div class="field-error-msg">年齢を入力してください</div>
         </div>
 
-        <div class="field">
-          <label class="field-label">性別</label>
+        <div class="field" id="f-bas-gender">
+          <label class="field-label">性別<span class="required-badge">必須</span></label>
           <select class="bp-select" id="bas-gender">
             <option value="">性別を選択</option>
             <option>男性</option><option>女性</option><option>その他</option><option>回答しない</option>
           </select>
+          <div class="field-error-msg">性別を選択してください</div>
         </div>
 
-        <div class="field">
-          <label class="field-label">最終学歴</label>
+        <div class="field" id="f-bas-edu">
+          <label class="field-label">最終学歴<span class="required-badge">必須</span></label>
           <select class="bp-select" id="bas-edu">
             <option value="">最終学歴を選択</option>
             <option>中学卒</option><option>高校卒</option><option>専門学校卒</option>
             <option>短大卒</option><option>大学卒</option><option>大学院卒（修士）</option><option>大学院卒（博士）</option>
           </select>
+          <div class="field-error-msg">最終学歴を選択してください</div>
         </div>
 
         <div class="field" id="f-bas-pref">
@@ -654,8 +664,8 @@ footer {
           <div class="field-error-msg">勤務地を選択してください</div>
         </div>
 
-        <div class="field">
-          <label class="field-label">保有資格</label>
+        <div class="field" id="f-bas-quals">
+          <label class="field-label">保有資格<span class="required-badge">必須</span></label>
           <div class="check-group" id="bas-quals">
             <label class="check-item"><input type="checkbox" value="1級建築士"><span>1級建築士</span></label>
             <label class="check-item"><input type="checkbox" value="2級建築士"><span>2級建築士</span></label>
@@ -668,7 +678,9 @@ footer {
             <label class="check-item"><input type="checkbox" value="宅地建物取引士"><span>宅地建物取引士</span></label>
             <label class="check-item"><input type="checkbox" value="インテリアコーディネーター"><span>インテリアコーディネーター</span></label>
             <label class="check-item"><input type="checkbox" value="その他"><span>その他</span></label>
+            <label class="check-item"><input type="checkbox" value="該当なし"><span>該当なし（資格なし）</span></label>
           </div>
+          <div class="field-error-msg">保有資格を1つ以上選択してください（なしの場合は「該当なし」）</div>
         </div>
 
         <div class="btn-row">
@@ -982,6 +994,11 @@ function validateStep(n) {
     setFieldValid('f-c1-role', !!role);
     if (!role) ok = false;
 
+    // 建物用途
+    const bldg = $('c1-bldg') ? $('c1-bldg').value : '';
+    setFieldValid('f-c1-bldg', !!bldg);
+    if (!bldg) ok = false;
+
     // 受注金額
     const oku = $('c1-oku') ? $('c1-oku').value : '';
     const man = $('c1-man') ? $('c1-man').value : '';
@@ -989,10 +1006,27 @@ function validateStep(n) {
     setFieldValid('f-c1-oku', hasAmt);
     if (!hasAmt) ok = false;
 
+    // 地上階数
+    const fab = $('c1-fab') ? $('c1-fab').value : '';
+    const hasFab = fab !== '' && parseInt(fab) >= 1;
+    setFieldValid('f-c1-floors', hasFab, hasFab ? '' : '地上階数を入力してください（1階以上）');
+    if (!hasFab) ok = false;
+
+    // 延床面積
+    const area = $('c1-area') ? $('c1-area').value : '';
+    const hasArea = area !== '' && parseFloat(area) > 0;
+    setFieldValid('f-c1-area', hasArea);
+    if (!hasArea) ok = false;
+
     // 経験業務範囲
     const scopes = document.querySelectorAll('#c1-scope input[type=checkbox]:checked');
     setFieldValid('f-c1-scope', scopes.length > 0);
     if (scopes.length === 0) ok = false;
+
+    // 構造種別
+    const struct = $('c1-struct') ? $('c1-struct').value : '';
+    setFieldValid('f-c1-struct', !!struct);
+    if (!struct) ok = false;
   }
 
   if (n === 2) {
@@ -1001,6 +1035,26 @@ function validateStep(n) {
     const hasTotal = total !== '' && parseFloat(total) > 0;
     setFieldValid('f-inc-total', hasTotal);
     if (!hasTotal) ok = false;
+
+    // 賞与（0も可）
+    const bonus = $('inc-bonus') ? $('inc-bonus').value : '';
+    setFieldValid('f-inc-bonus', bonus !== '');
+    if (bonus === '') ok = false;
+
+    // 手当（0も可）
+    const allow = $('inc-allow') ? $('inc-allow').value : '';
+    setFieldValid('f-inc-allow', allow !== '');
+    if (allow === '') ok = false;
+
+    // 残業代制度
+    const ottype = $('inc-ottype') ? $('inc-ottype').value : '';
+    setFieldValid('f-inc-ottype', !!ottype);
+    if (!ottype) ok = false;
+
+    // 実残業時間（0も可）
+    const othrs = $('inc-othrs') ? $('inc-othrs').value : '';
+    setFieldValid('f-inc-othrs', othrs !== '');
+    if (othrs === '') ok = false;
   }
 
   if (n === 3) {
@@ -1010,10 +1064,25 @@ function validateStep(n) {
     setFieldValid('f-bas-age', hasAge, hasAge ? '' : '年齢を正しく入力してください（18〜80歳）');
     if (!hasAge) ok = false;
 
+    // 性別
+    const gender = $('bas-gender') ? $('bas-gender').value : '';
+    setFieldValid('f-bas-gender', !!gender);
+    if (!gender) ok = false;
+
+    // 最終学歴
+    const edu = $('bas-edu') ? $('bas-edu').value : '';
+    setFieldValid('f-bas-edu', !!edu);
+    if (!edu) ok = false;
+
     // 勤務地
     const pref = $('bas-pref') ? $('bas-pref').value : '';
     setFieldValid('f-bas-pref', !!pref);
     if (!pref) ok = false;
+
+    // 保有資格（1つ以上 / 「該当なし」でも可）
+    const quals = document.querySelectorAll('#bas-quals input[type=checkbox]:checked');
+    setFieldValid('f-bas-quals', quals.length > 0);
+    if (quals.length === 0) ok = false;
   }
 
   if (n === 4) {
