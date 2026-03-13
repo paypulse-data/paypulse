@@ -157,6 +157,32 @@ body {
 .floor-lbl { font-size: 12px; color: var(--text-light); min-width: 28px; }
 .field-note { font-size: 11px; color: var(--text-light); margin-top: 6px; line-height: 1.6; }
 
+/* ---- 必須バッジ・バリデーションエラー ---- */
+.required-badge {
+  display: inline-block;
+  background: #ef4444; color: #fff;
+  font-size: 10px; font-weight: 700;
+  padding: 1px 5px; border-radius: 3px;
+  margin-left: 6px; vertical-align: middle;
+  letter-spacing: .5px;
+}
+.field-error-msg {
+  font-size: 11px; color: #ef4444;
+  margin-top: 5px; display: none;
+}
+.field-invalid .bp-input,
+.field-invalid .bp-select {
+  border-color: #ef4444 !important;
+  background: #fff5f5;
+}
+.field-invalid .check-group {
+  outline: 2px solid #ef4444;
+  border-radius: 4px;
+  padding: 6px;
+}
+.field-invalid .field-error-msg { display: block; }
+.field-invalid.email-box { border-color: #ef4444; background: #fff5f5; }
+
 /* ---- CHECKBOXES ---- */
 .check-group { display: flex; flex-direction: column; gap: 10px; margin-top: 8px; }
 .check-item { display: flex; align-items: center; gap: 10px; cursor: pointer; font-size: 13px; }
@@ -320,19 +346,21 @@ footer {
         <!-- 案件1 -->
         <div class="sub-card">
           <div class="sub-title">案件1</div>
-          <div class="field">
-            <label class="field-label">工事分類</label>
+          <div class="field" id="f-c1-type">
+            <label class="field-label">工事分類<span class="required-badge">必須</span></label>
             <select class="bp-select" id="c1-type">
               <option value="">工事分類を選択</option>
               <option>新築</option><option>改修</option>
             </select>
+            <div class="field-error-msg">工事分類を選択してください</div>
           </div>
-          <div class="field">
-            <label class="field-label">役職</label>
+          <div class="field" id="f-c1-role">
+            <label class="field-label">役職<span class="required-badge">必須</span></label>
             <select class="bp-select" id="c1-role">
               <option value="">役職を選択</option>
               <option>係員</option><option>主任</option><option>所長</option>
             </select>
+            <div class="field-error-msg">役職を選択してください</div>
           </div>
           <div class="field">
             <label class="field-label">建物用途</label>
@@ -344,8 +372,8 @@ footer {
               <option>倉庫</option><option>データセンター</option><option>官庁</option><option>その他</option>
             </select>
           </div>
-          <div class="field">
-            <label class="field-label">受注金額（概算OK）</label>
+          <div class="field" id="f-c1-oku">
+            <label class="field-label">受注金額（概算OK）<span class="required-badge">必須</span></label>
             <div class="double-field">
               <div class="input-row">
                 <input type="number" class="bp-input" id="c1-oku" placeholder="0" min="0">
@@ -356,6 +384,7 @@ footer {
                 <span class="unit">万円</span>
               </div>
             </div>
+            <div class="field-error-msg">受注金額を入力してください</div>
           </div>
           <div class="field">
             <label class="field-label">階数</label>
@@ -380,8 +409,8 @@ footer {
             </div>
             <div class="field-note">改修の場合は、工事区画面積（ワンフロア・㎡）<br>※正確な数値でなくて大丈夫です。分かる範囲で概算で入力してください。</div>
           </div>
-          <div class="field">
-            <label class="field-label">経験業務範囲</label>
+          <div class="field" id="f-c1-scope">
+            <label class="field-label">経験業務範囲<span class="required-badge">必須</span></label>
             <div class="check-group" id="c1-scope">
               <label class="check-item"><input type="checkbox" value="工程表作成"><span>工程表作成</span></label>
               <label class="check-item"><input type="checkbox" value="工程表進捗確認兼調整"><span>工程表進捗確認兼調整</span></label>
@@ -401,6 +430,7 @@ footer {
               <label class="check-item"><input type="checkbox" value="協力業者との工事打合せ"><span>協力業者との工事打合せ</span></label>
               <label class="check-item"><input type="checkbox" value="施主・設計者との打合わせ"><span>施主・設計者との打合わせ</span></label>
             </div>
+            <div class="field-error-msg">経験業務を1つ以上選択してください</div>
           </div>
           <div class="field">
             <label class="field-label">構造種別</label>
@@ -517,13 +547,14 @@ footer {
         <div class="card-title">年収・働き方</div>
         <div class="card-subtitle">ステップ 2 / 4</div>
 
-        <div class="field">
-          <label class="field-label">前年の総支給年収</label>
+        <div class="field" id="f-inc-total">
+          <label class="field-label">前年の総支給年収<span class="required-badge">必須</span></label>
           <div class="input-row">
             <input type="number" class="bp-input" id="inc-total" placeholder="" min="0">
             <span class="unit">万円（概算OK）</span>
           </div>
           <div class="field-note">前年の総支給年収を入力してください（賞与・手当・残業代を含む）<br>※交通費・出張旅費などの実費精算は含めないでください</div>
+          <div class="field-error-msg">総支給年収を入力してください</div>
         </div>
 
         <div class="field">
@@ -577,12 +608,13 @@ footer {
         <div class="card-title">基本情報</div>
         <div class="card-subtitle">ステップ 3 / 4</div>
 
-        <div class="field">
-          <label class="field-label">年齢</label>
+        <div class="field" id="f-bas-age">
+          <label class="field-label">年齢<span class="required-badge">必須</span></label>
           <div class="input-row">
             <input type="number" class="bp-input" id="bas-age" placeholder="" min="18" max="80" style="max-width:120px">
             <span class="unit">歳</span>
           </div>
+          <div class="field-error-msg">年齢を入力してください</div>
         </div>
 
         <div class="field">
@@ -602,8 +634,8 @@ footer {
           </select>
         </div>
 
-        <div class="field">
-          <label class="field-label">勤務地</label>
+        <div class="field" id="f-bas-pref">
+          <label class="field-label">勤務地<span class="required-badge">必須</span></label>
           <select class="bp-select" id="bas-pref">
             <option value="">都道府県を選択</option>
             <option>北海道</option><option>青森県</option><option>岩手県</option><option>宮城県</option>
@@ -619,6 +651,7 @@ footer {
             <option>佐賀県</option><option>長崎県</option><option>熊本県</option><option>大分県</option>
             <option>宮崎県</option><option>鹿児島県</option><option>沖縄県</option>
           </select>
+          <div class="field-error-msg">勤務地を選択してください</div>
         </div>
 
         <div class="field">
@@ -651,10 +684,11 @@ footer {
         <div class="card-title">確認</div>
         <div class="card-subtitle">ステップ 4 / 4</div>
 
-        <div class="email-box">
-          <div class="email-note">📩 診断結果をメールで受け取る（任意）</div>
+        <div class="email-box" id="f-conf-email">
+          <div class="email-note">📩 診断結果をメールで受け取る<span class="required-badge" style="margin-left:8px">必須</span></div>
           <input type="email" class="bp-input" id="conf-email" placeholder="example@email.com">
           <div style="font-size:11px;color:var(--text-light);margin-top:6px;line-height:1.6">送信後すぐに、パーセンタイル結果と詳細URLをお送りします。</div>
+          <div class="field-error-msg">メールアドレスを入力してください</div>
         </div>
 
         <div class="sub-card">
@@ -921,7 +955,87 @@ function showSection(s) {
   window.scrollTo(0, 0);
 }
 
+// ============================
+// VALIDATION
+// ============================
+function setFieldValid(id, valid, msg) {
+  const el = $(id);
+  if (!el) return;
+  el.classList.toggle('field-invalid', !valid);
+  if (msg) {
+    const errEl = el.querySelector('.field-error-msg');
+    if (errEl) errEl.textContent = msg;
+  }
+}
+
+function validateStep(n) {
+  let ok = true;
+
+  if (n === 1) {
+    // 工事分類
+    const type = $('c1-type') ? $('c1-type').value : '';
+    setFieldValid('f-c1-type', !!type);
+    if (!type) ok = false;
+
+    // 役職
+    const role = $('c1-role') ? $('c1-role').value : '';
+    setFieldValid('f-c1-role', !!role);
+    if (!role) ok = false;
+
+    // 受注金額
+    const oku = $('c1-oku') ? $('c1-oku').value : '';
+    const man = $('c1-man') ? $('c1-man').value : '';
+    const hasAmt = (oku && parseFloat(oku) > 0) || (man && parseFloat(man) > 0);
+    setFieldValid('f-c1-oku', hasAmt);
+    if (!hasAmt) ok = false;
+
+    // 経験業務範囲
+    const scopes = document.querySelectorAll('#c1-scope input[type=checkbox]:checked');
+    setFieldValid('f-c1-scope', scopes.length > 0);
+    if (scopes.length === 0) ok = false;
+  }
+
+  if (n === 2) {
+    // 総支給年収
+    const total = $('inc-total') ? $('inc-total').value : '';
+    const hasTotal = total !== '' && parseFloat(total) > 0;
+    setFieldValid('f-inc-total', hasTotal);
+    if (!hasTotal) ok = false;
+  }
+
+  if (n === 3) {
+    // 年齢
+    const age = $('bas-age') ? $('bas-age').value : '';
+    const hasAge = age !== '' && parseInt(age) >= 18 && parseInt(age) <= 80;
+    setFieldValid('f-bas-age', hasAge, hasAge ? '' : '年齢を正しく入力してください（18〜80歳）');
+    if (!hasAge) ok = false;
+
+    // 勤務地
+    const pref = $('bas-pref') ? $('bas-pref').value : '';
+    setFieldValid('f-bas-pref', !!pref);
+    if (!pref) ok = false;
+  }
+
+  if (n === 4) {
+    // メールアドレス
+    const email = $('conf-email') ? $('conf-email').value.trim() : '';
+    const validEmail = email !== '' && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    setFieldValid('f-conf-email', validEmail, validEmail ? '' : 'メールアドレスを正しく入力してください');
+    if (!validEmail) ok = false;
+  }
+
+  return ok;
+}
+
 function goStep(n) {
+  // Validate current step before advancing (but allow going back)
+  if (n > currentStep && !validateStep(currentStep)) {
+    // Scroll to first error
+    const firstErr = document.querySelector('.field-invalid');
+    if (firstErr) firstErr.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return;
+  }
+
   // Hide all step containers
   [$('step-1'),$('step-2'),$('step-3'),$('step-4'),$('step-done')].forEach(el => {
     if (el) el.style.display = 'none';
@@ -1030,6 +1144,12 @@ function buildConfirmation() {
 // SUBMIT
 // ============================
 function submitWithCheck() {
+  // Validate Step 4 (email)
+  if (!validateStep(4)) {
+    const firstErr = document.querySelector('.field-invalid');
+    if (firstErr) firstErr.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return;
+  }
   const cb  = document.getElementById('agree-privacy');
   const err = document.getElementById('agree-error');
   if (!cb.checked) {
