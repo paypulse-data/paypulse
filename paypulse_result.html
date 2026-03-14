@@ -465,20 +465,12 @@ function renderPctTable(d) {
   let inserted = false;
   let html = '';
 
-  rows.forEach((row, i) => {
-    // ユーザー行の挿入タイミング
-    const nextRow = rows[i + 1];
-    const userAbove = !inserted && row.pct >= userPct && (!nextRow || nextRow.pct < userPct);
-    if (userAbove && row.pct !== userPct) {
-      html += `<tr class="user-row">
-        <td class="pct-pos">${userPct}%ile</td>
-        <td><div class="pct-label">👤 あなたの位置</div></td>
-        <td>—</td>
-        <td>${d.userIncome.toLocaleString()} 万円</td>
-      </tr>`;
-      inserted = true;
-    }
+  // ユーザーの「上位X%」表示ラベルを生成（%ileより直感的）
+  const upperPct = Math.round(100 - userPct);
+  const userPosLabel = upperPct <= 1 ? 'トップ1%' : `上位${upperPct}%`;
 
+  rows.forEach((row, i) => {
+    const nextRow = rows[i + 1];
     const isUserPct = Math.round(row.pct) === userPct;
     const crowns    = row.crown ? `<span class="crown">🏆</span> ` : '';
     let valueCell;
@@ -497,11 +489,26 @@ function renderPctTable(d) {
       <td>${row.unlocked ? '—' : `<span class="lock-badge">あと${row.needed}件</span>`}</td>
       <td>${!row.unlocked ? '<span class="locked-val">🔒 未開放</span>' : row.value ? `${row.value.toLocaleString()} 万円` : '—'}</td>
     </tr>`;
+
+    // ベンチマーク行を描画した後、ユーザーの位置を正しい場所に挿入
+    // （現在行のpctがユーザーより上、次の行のpctがユーザーより下のタイミング）
+    const shouldInsert = !inserted && !isUserPct
+      && row.pct > userPct
+      && (!nextRow || nextRow.pct < userPct);
+    if (shouldInsert) {
+      html += `<tr class="user-row">
+        <td class="pct-pos" style="font-weight:800">${userPosLabel}</td>
+        <td><div class="pct-label">👤 あなたの位置</div></td>
+        <td>—</td>
+        <td>${d.userIncome.toLocaleString()} 万円</td>
+      </tr>`;
+      inserted = true;
+    }
   });
 
   if (!inserted) {
     html += `<tr class="user-row">
-      <td class="pct-pos">${userPct}%ile</td>
+      <td class="pct-pos" style="font-weight:800">${userPosLabel}</td>
       <td><div class="pct-label">👤 あなたの位置</div></td>
       <td>—</td>
       <td>${d.userIncome.toLocaleString()} 万円</td>
