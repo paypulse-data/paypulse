@@ -128,21 +128,6 @@ header{display:flex;justify-content:space-between;align-items:center;padding:10p
 
 /* footer */
 footer{text-align:center;padding:24px;font-size:12px;color:var(--muted);border-top:1px solid #e2e8f0}
-
-/* ── SHARE GATE ── */
-#share-gate{background:var(--white);border-top:3px solid var(--blue);padding:28px 20px 32px;text-align:center;max-width:720px;margin:0 auto}
-.share-gate-title{font-size:17px;font-weight:800;color:var(--text);margin-bottom:6px}
-@media(min-width:480px){.share-gate-title{font-size:19px}}
-.share-gate-sub{font-size:13px;color:var(--muted);margin-bottom:20px;line-height:1.7}
-@media(min-width:480px){.share-gate-sub{font-size:14px}}
-.share-btn{display:inline-flex;align-items:center;gap:10px;background:#1a1a1a;color:#fff;border:none;padding:15px 32px;font-size:15px;font-weight:700;border-radius:10px;cursor:pointer;letter-spacing:.3px;transition:opacity .2s}
-.share-btn:hover{opacity:.85}
-.share-btn-icon{font-size:20px}
-.share-gate-note{font-size:11px;color:#94a3b8;margin-top:12px}
-
-/* ── RESULT BLUR ── */
-.result-blur{filter:blur(6px);pointer-events:none;user-select:none;transition:filter .4s ease}
-.result-unlocked{filter:none;pointer-events:auto;user-select:auto}
 </style>
 </head>
 <body>
@@ -183,18 +168,7 @@ if (new URLSearchParams(window.location.search).get('embed') === '1') {
   <!-- CONTENT -->
   <div class="content">
 
-    <!-- Share gate (shown before share, hidden after) -->
-    <div id="share-gate" style="display:none">
-      <div class="share-gate-title">📊 詳細データを確認する</div>
-      <div class="share-gate-sub">年収ランキング・分布グラフ・年代別トレンドを見るには<br>Threadsでシェアしてください</div>
-      <button class="share-btn" onclick="onShareClick()">
-        <span class="share-btn-icon">🧵</span>Threadsでシェアして全結果を見る
-      </button>
-      <div class="share-gate-note">シェア後、このページに戻ると自動的に解除されます</div>
-    </div>
-
     <!-- Percentile table -->
-    <div id="result-details">
     <div class="card">
       <div class="card-title">同条件グループ内での年収ランキング</div>
       <div class="card-subtitle">同じ条件のプロが100人いたら、あなたは何番目？ 上位ほど高収入です。</div>
@@ -233,8 +207,6 @@ if (new URLSearchParams(window.location.search).get('embed') === '1') {
       <span id="relax-steps"></span>
     </div>
 
-    </div><!-- /#result-details -->
-
   </div>
 </div>
 
@@ -250,62 +222,6 @@ if (new URLSearchParams(window.location.search).get('embed') === '1') {
 
 // ── URLからIDを取得 ──
 const id = new URLSearchParams(window.location.search).get('id');
-
-// ── シェアゲート ──
-let _shareData = null; // renderされたデータを保持（シェアテキスト生成に使用）
-
-function initShareGate(d) {
-  // デモモードはゲートなし
-  if (d.isDemo) return;
-
-  _shareData = d;
-  const gate    = document.getElementById('share-gate');
-  const details = document.getElementById('result-details');
-
-  // ページ読み込み時：シェア済みなら即解除
-  if (localStorage.getItem('paypulse-shared') === 'true') {
-    unlockResults();
-  } else {
-    // 未シェア：ブラー＋ゲート表示
-    if (details) details.classList.add('result-blur');
-    if (gate)    gate.style.display = '';
-  }
-}
-
-function onShareClick() {
-  const d = _shareData;
-  const years   = d && d.userCareerYears != null ? Math.max(1, Math.round(d.userCareerYears)) : '？';
-  const diff    = d && d.median ? Math.abs(Math.round(d.userIncome - d.median)) : null;
-  const dir     = d && d.median ? (d.userIncome >= d.median ? '高かった' : '低かった') : '高かった';
-  const diffStr = diff != null ? `${diff}万円${dir}` : `上位${(100 - d.userPctile).toFixed(0)}%だった`;
-
-  const shareText =
-`施工管理${years}年目。無料で年収診断してみたら、同条件の中央値より${diffStr}。
-
-同じ現場経験の人と比べられるのが面白い。
-
-▼ 無料・登録不要・5分
-https://paypulse-data.github.io/paypulse/
-
-#施工管理 #年収 #ゼネコン #キャリア`;
-
-  const threadsUrl = `https://www.threads.net/intent/post?text=${encodeURIComponent(shareText)}`;
-  window.open(threadsUrl, '_blank');
-
-  // フラグ保存 → 即解除
-  localStorage.setItem('paypulse-shared', 'true');
-  unlockResults();
-}
-
-function unlockResults() {
-  const details = document.getElementById('result-details');
-  const gate    = document.getElementById('share-gate');
-  if (details) {
-    details.classList.remove('result-blur');
-    details.classList.add('result-unlocked');
-  }
-  if (gate) gate.style.display = 'none';
-}
 
 // ── GAS fetch（credentials:omit でマルチアカウントリダイレクトを回避）──
 async function fetchFromGAS(id) {
@@ -778,7 +694,6 @@ async function init() {
     renderPctTable(demoData);
     renderHistogram(demoData);
     renderCareerTrend(demoData);
-    initShareGate(demoData); // デモはゲートなし（内部でスキップ）
     return;
   }
 
@@ -793,7 +708,6 @@ async function init() {
     renderHistogram(data);
     renderCareerTrend(data);
     renderRelax(data);
-    initShareGate(data);
   } catch (e) {
     // GAS接続失敗 → localStorageのキャッシュでローカル計算を試みる
     try {
@@ -808,7 +722,6 @@ async function init() {
         renderHistogram(localData);
         renderCareerTrend(localData);
         renderRelax(localData);
-        initShareGate(localData);
       } else {
         showError(e.message || '結果を取得できませんでした');
       }
