@@ -272,12 +272,12 @@ function getResult(id) {
 
   // パーセンタイルテーブル
   const pctTable = [
-    { pct: 99, label: 'TOP 1%',  crown: true  },
-    { pct: 90, label: 'TOP 10%', crown: true  },
-    { pct: 75, label: 'TOP 25%', crown: true  },
+    { pct: 99, label: '上位1%',  crown: true  },
+    { pct: 90, label: '上位10%', crown: true  },
+    { pct: 75, label: '上位25%', crown: true  },
     { pct: 50, label: '中央値',  crown: false },
-    { pct: 25, label: '上位75%付近', crown: false },
-    { pct: 10, label: '上位90%付近', crown: false }
+    { pct: 25, label: '下位25%付近', crown: false },
+    { pct: 10, label: '下位10%付近', crown: false }
   ].map(row => {
     const val      = pct(peerIncomes, row.pct);
     const unlocked = row.pct === 99

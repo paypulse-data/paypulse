@@ -303,12 +303,12 @@ function computeLocalResult(submittedId, payload) {
   const userPctile = peerRaw.length ? Math.round((below/peerRaw.length)*1000)/10 : 50;
 
   const pctTable = [
-    {pct:99,label:'TOP 1%', crown:true},
-    {pct:90,label:'TOP 10%',crown:true},
-    {pct:75,label:'TOP 25%',crown:true},
+    {pct:99,label:'上位1%',  crown:true},
+    {pct:90,label:'上位10%', crown:true},
+    {pct:75,label:'上位25%', crown:true},
     {pct:50,label:'中央値',  crown:false},
-    {pct:25,label:'上位75%付近', crown:false},
-    {pct:10,label:'上位90%付近', crown:false}
+    {pct:25,label:'下位25%付近', crown:false},
+    {pct:10,label:'下位10%付近', crown:false}
   ].map(row => ({
     ...row,
     value: Math.round(pct(peerRaw, row.pct)),
@@ -569,8 +569,8 @@ function renderCareerTrend(d) {
     data: {
       labels,
       datasets: [
-        make('p10', '上位90%のライン',  '#cbd5e1'),
-        make('p25', '上位75%のライン',  '#93c5fd'),
+        make('p10', '下位10%のライン',  '#cbd5e1'),
+        make('p25', '下位25%のライン',  '#93c5fd'),
         make('p50', '中央値',           '#3b82f6', 2.5),
         make('p75', '上位25%のライン',  '#64748b'),
         make('p90', '上位10%のライン',  '#1e293b'),
@@ -640,12 +640,12 @@ function getDemoData() {
     userScale: '30〜100億規模',
     freshnessLabel: '直近1年',
     pctTable: [
-      { pct: 99, label: 'TOP 1%',  crown: true,  value: null, unlocked: false, needed: 38 },
-      { pct: 90, label: 'TOP 10%', crown: true,  value: 860,  unlocked: true,  needed: 0  },
-      { pct: 75, label: 'TOP 25%', crown: true,  value: 760,  unlocked: true,  needed: 0  },
-      { pct: 50, label: '中央値',   crown: false, value: 620,  unlocked: true,  needed: 0  },
-      { pct: 25, label: '上位75%付近', crown: false, value: 510,  unlocked: true,  needed: 0  },
-      { pct: 10, label: '上位90%付近', crown: false, value: 430,  unlocked: true,  needed: 0  }
+      { pct: 99, label: '上位1%',  crown: true,  value: null, unlocked: false, needed: 38 },
+      { pct: 90, label: '上位10%', crown: true,  value: 860,  unlocked: true,  needed: 0  },
+      { pct: 75, label: '上位25%', crown: true,  value: 760,  unlocked: true,  needed: 0  },
+      { pct: 50, label: '中央値',  crown: false, value: 620,  unlocked: true,  needed: 0  },
+      { pct: 25, label: '下位25%付近', crown: false, value: 510,  unlocked: true,  needed: 0  },
+      { pct: 10, label: '下位10%付近', crown: false, value: 430,  unlocked: true,  needed: 0  }
     ],
     histogram: [
       { label: '〜299',    count: 0, isUser: false },
