@@ -91,8 +91,12 @@ function doPost(e) {
       const email = body.payload && body.payload.email;
       if (email) {
         try {
+          // flush() で書き込みを強制コミットしてから読み込む
+          // （flush なしだと appendRow が未コミットのまま getResult が走り ID not found になる）
+          SpreadsheetApp.flush();
           const result = getResult(body.id);
           if (result.success) sendResultEmail(body.id, email, result);
+          else Logger.log('メール送信スキップ: getResult failed - ' + JSON.stringify(result));
         } catch (mailErr) {
           Logger.log('メール送信エラー (無視): ' + mailErr.message);
         }
@@ -272,8 +276,8 @@ function getResult(id) {
     { pct: 90, label: 'TOP 10%', crown: true  },
     { pct: 75, label: 'TOP 25%', crown: true  },
     { pct: 50, label: '中央値',  crown: false },
-    { pct: 25, label: '25%ile',  crown: false },
-    { pct: 10, label: '10%ile',  crown: false }
+    { pct: 25, label: '上位75%付近', crown: false },
+    { pct: 10, label: '上位90%付近', crown: false }
   ].map(row => {
     const val      = pct(peerIncomes, row.pct);
     const unlocked = row.pct === 99

@@ -310,8 +310,8 @@ function computeLocalResult(submittedId, payload) {
     {pct:90,label:'TOP 10%',crown:true},
     {pct:75,label:'TOP 25%',crown:true},
     {pct:50,label:'中央値',  crown:false},
-    {pct:25,label:'25%ile', crown:false},
-    {pct:10,label:'10%ile', crown:false}
+    {pct:25,label:'上位75%付近', crown:false},
+    {pct:10,label:'上位90%付近', crown:false}
   ].map(row => ({
     ...row,
     value: Math.round(pct(peerRaw, row.pct)),
@@ -465,7 +465,13 @@ function renderPctTable(d) {
   let inserted = false;
   let html = '';
 
-  // ユーザーの「上位X%」表示ラベルを生成（%ileより直感的）
+  // パーセンタイル数値 → 直感的な日本語ラベルに変換（%ile表記を使わない）
+  function pctToLabel(pct) {
+    const upper = 100 - pct;
+    if (upper <= 1)  return 'トップ1%のライン';
+    if (pct === 50)  return '真ん中のライン';
+    return `上位${upper}%のライン`;
+  }
   const upperPct = Math.round(100 - userPct);
   const userPosLabel = upperPct <= 1 ? 'トップ1%' : `上位${upperPct}%`;
 
@@ -484,7 +490,7 @@ function renderPctTable(d) {
     }
 
     html += `<tr ${isUserPct ? 'class="user-row"' : ''}>
-      <td class="pct-pos">${row.pct}%ile</td>
+      <td class="pct-pos">${pctToLabel(row.pct)}</td>
       <td><div class="pct-label">${crowns}${row.label}${isUserPct ? ' <span style="font-size:12px;color:var(--blue)">← あなた</span>' : ''}</div></td>
       <td>${row.unlocked ? '—' : `<span class="lock-badge">あと${row.needed}件</span>`}</td>
       <td>${!row.unlocked ? '<span class="locked-val">🔒 未開放</span>' : row.value ? `${row.value.toLocaleString()} 万円` : '—'}</td>
@@ -577,11 +583,11 @@ function renderCareerTrend(d) {
     data: {
       labels,
       datasets: [
-        make('p10', '10%ile',  '#cbd5e1'),
-        make('p25', '25%ile',  '#93c5fd'),
-        make('p50', '中央値',  '#3b82f6', 2.5),
-        make('p75', '75%ile',  '#64748b'),
-        make('p90', '90%ile',  '#1e293b'),
+        make('p10', '上位90%のライン',  '#cbd5e1'),
+        make('p25', '上位75%のライン',  '#93c5fd'),
+        make('p50', '中央値',           '#3b82f6', 2.5),
+        make('p75', '上位25%のライン',  '#64748b'),
+        make('p90', '上位10%のライン',  '#1e293b'),
         {
           label: 'あなたの年収',
           data: d.careerTrend.map(() => d.userIncome),
@@ -652,8 +658,8 @@ function getDemoData() {
       { pct: 90, label: 'TOP 10%', crown: true,  value: 860,  unlocked: true,  needed: 0  },
       { pct: 75, label: 'TOP 25%', crown: true,  value: 760,  unlocked: true,  needed: 0  },
       { pct: 50, label: '中央値',   crown: false, value: 620,  unlocked: true,  needed: 0  },
-      { pct: 25, label: '25%ile',  crown: false, value: 510,  unlocked: true,  needed: 0  },
-      { pct: 10, label: '10%ile',  crown: false, value: 430,  unlocked: true,  needed: 0  }
+      { pct: 25, label: '上位75%付近', crown: false, value: 510,  unlocked: true,  needed: 0  },
+      { pct: 10, label: '上位90%付近', crown: false, value: 430,  unlocked: true,  needed: 0  }
     ],
     histogram: [
       { label: '〜299',    count: 0, isUser: false },
