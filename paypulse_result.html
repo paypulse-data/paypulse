@@ -307,8 +307,8 @@ function computeLocalResult(submittedId, payload) {
     {pct:90,label:'上位10%', crown:true},
     {pct:75,label:'上位25%', crown:true},
     {pct:50,label:'中央値',  crown:false},
-    {pct:25,label:'下位25%付近', crown:false},
-    {pct:10,label:'下位10%付近', crown:false}
+    {pct:25,label:'下位25%', crown:false},
+    {pct:10,label:'下位10%', crown:false}
   ].map(row => ({
     ...row,
     value: Math.round(pct(peerRaw, row.pct)),
@@ -644,8 +644,8 @@ function getDemoData() {
       { pct: 90, label: '上位10%', crown: true,  value: 860,  unlocked: true,  needed: 0  },
       { pct: 75, label: '上位25%', crown: true,  value: 760,  unlocked: true,  needed: 0  },
       { pct: 50, label: '中央値',  crown: false, value: 620,  unlocked: true,  needed: 0  },
-      { pct: 25, label: '下位25%付近', crown: false, value: 510,  unlocked: true,  needed: 0  },
-      { pct: 10, label: '下位10%付近', crown: false, value: 430,  unlocked: true,  needed: 0  }
+      { pct: 25, label: '下位25%', crown: false, value: 510,  unlocked: true,  needed: 0  },
+      { pct: 10, label: '下位10%', crown: false, value: 430,  unlocked: true,  needed: 0  }
     ],
     histogram: [
       { label: '〜299',    count: 0, isUser: false },
