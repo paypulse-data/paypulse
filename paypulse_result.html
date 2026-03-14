@@ -78,12 +78,10 @@ header{display:flex;justify-content:space-between;align-items:center;padding:10p
 .pct-table th{text-align:left;font-size:11px;color:var(--muted);font-weight:500;padding:6px 6px;border-bottom:1px solid #e2e8f0;white-space:nowrap}
 @media(min-width:480px){.pct-table th{font-size:12px;padding:8px 12px}}
 .pct-table th:last-child{text-align:right}
-/* ラベル列・解除必要数列はモバイルで非表示 */
+/* 解除必要数列はモバイルで非表示 */
 .pct-table th:nth-child(2),.pct-table td:nth-child(2){display:none}
-.pct-table th:nth-child(3),.pct-table td:nth-child(3){display:none}
 @media(min-width:540px){
   .pct-table th:nth-child(2),.pct-table td:nth-child(2){display:table-cell}
-  .pct-table th:nth-child(3),.pct-table td:nth-child(3){display:table-cell}
 }
 .pct-table td{padding:10px 6px;border-bottom:1px solid #f1f5f9;vertical-align:middle;white-space:nowrap}
 @media(min-width:480px){.pct-table td{padding:12px 10px}}
@@ -175,8 +173,7 @@ if (new URLSearchParams(window.location.search).get('embed') === '1') {
       <table class="pct-table">
         <thead>
           <tr>
-            <th style="width:80px">グループ内の位置</th>
-            <th></th>
+            <th>グループ内の位置</th>
             <th style="width:120px">表示に必要な回答数</th>
             <th style="width:110px">目安の年収</th>
           </tr>
@@ -465,24 +462,17 @@ function renderPctTable(d) {
   let inserted = false;
   let html = '';
 
-  // パーセンタイル数値 → 直感的な日本語ラベルに変換（%ile表記を使わない）
-  function pctToLabel(pct) {
-    const upper = 100 - pct;
-    if (upper <= 1)  return 'トップ1%のライン';
-    if (pct === 50)  return '真ん中のライン';
-    return `上位${upper}%のライン`;
-  }
-  const upperPct = Math.round(100 - userPct);
+  const upperPct     = Math.round(100 - userPct);
   const userPosLabel = upperPct <= 1 ? 'トップ1%' : `上位${upperPct}%`;
 
   rows.forEach((row, i) => {
-    const nextRow = rows[i + 1];
+    const nextRow  = rows[i + 1];
     const isUserPct = Math.round(row.pct) === userPct;
     const crowns    = row.crown ? `<span class="crown">🏆</span> ` : '';
     let valueCell;
 
     if (!row.unlocked) {
-      valueCell = `<span class="lock-badge">あと${row.needed}件 🔒</span>`;
+      valueCell = `<span class="locked-val">🔒 未開放</span>`;
     } else if (!row.value) {
       valueCell = '—';
     } else {
@@ -490,21 +480,18 @@ function renderPctTable(d) {
     }
 
     html += `<tr ${isUserPct ? 'class="user-row"' : ''}>
-      <td class="pct-pos">${pctToLabel(row.pct)}</td>
       <td><div class="pct-label">${crowns}${row.label}${isUserPct ? ' <span style="font-size:12px;color:var(--blue)">← あなた</span>' : ''}</div></td>
       <td>${row.unlocked ? '—' : `<span class="lock-badge">あと${row.needed}件</span>`}</td>
-      <td>${!row.unlocked ? '<span class="locked-val">🔒 未開放</span>' : row.value ? `${row.value.toLocaleString()} 万円` : '—'}</td>
+      <td>${valueCell}</td>
     </tr>`;
 
     // ベンチマーク行を描画した後、ユーザーの位置を正しい場所に挿入
-    // （現在行のpctがユーザーより上、次の行のpctがユーザーより下のタイミング）
     const shouldInsert = !inserted && !isUserPct
       && row.pct > userPct
       && (!nextRow || nextRow.pct < userPct);
     if (shouldInsert) {
       html += `<tr class="user-row">
-        <td class="pct-pos" style="font-weight:800">${userPosLabel}</td>
-        <td><div class="pct-label">👤 あなたの位置</div></td>
+        <td><div class="pct-label">👤 あなたの位置（${userPosLabel}）</div></td>
         <td>—</td>
         <td>${d.userIncome.toLocaleString()} 万円</td>
       </tr>`;
@@ -514,8 +501,7 @@ function renderPctTable(d) {
 
   if (!inserted) {
     html += `<tr class="user-row">
-      <td class="pct-pos" style="font-weight:800">${userPosLabel}</td>
-      <td><div class="pct-label">👤 あなたの位置</div></td>
+      <td><div class="pct-label">👤 あなたの位置（${userPosLabel}）</div></td>
       <td>—</td>
       <td>${d.userIncome.toLocaleString()} 万円</td>
     </tr>`;
