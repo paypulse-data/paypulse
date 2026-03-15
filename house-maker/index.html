@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PayPulse — ゼネコン建築施工管理者のための年収診断</title>
-<meta name="description" content="同じ案件規模・経験業務の施工管理者と年収を比較。あなたの年収が上位何%かがわかる、ゼネコン建築施工管理者向け年収比較サービス。">
-<link rel="stylesheet" href="brand.css">
+<title>PayPulse — ハウスメーカー施工管理者のための年収診断</title>
+<meta name="description" content="同じ規模・経験のハウスメーカー施工管理者と年収を比較。あなたの年収が上位何%かがわかる、ハウスメーカー建築施工管理者向け年収比較サービス。">
+<link rel="stylesheet" href="../brand.css">
 <style>
 body{
   background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
@@ -58,7 +58,7 @@ section{padding:48px 16px}
 .step-desc{font-size:14px;color:var(--text-light);line-height:1.7}
 .step-time{display:inline-block;background:rgba(249,115,22,.1);color:var(--orange);font-size:11px;font-weight:700;padding:2px 8px;border-radius:4px;margin-bottom:8px}
 
-/* ── WHAT YOU GET (V2: rich illustration) ── */
+/* ── WHAT YOU GET ── */
 .results-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:28px}
 @media(min-width:640px){.results-grid{grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:16px;margin-top:36px}}
 .result-card{
@@ -81,7 +81,6 @@ section{padding:48px 16px}
 .preview-bg .section-title{color:#fff}
 .preview-bg .section-desc{color:#94a3b8}
 
-/* モックアップ外枠 */
 .mockup-frame{
   max-width:680px;margin:32px auto 0;
   border-radius:12px;overflow:hidden;
@@ -100,7 +99,6 @@ section{padding:48px 16px}
   flex:1;background:rgba(255,255,255,.08);border-radius:4px;
   padding:4px 12px;font-size:11px;color:#64748b;margin-left:8px;
 }
-/* mock-* クラスは iframe 化により不要になりました（2026-03削除） */
 
 /* ── TRUST ── */
 .trust-bg{background:rgba(26,95,173,.04);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
@@ -131,8 +129,6 @@ footer a{color:inherit;opacity:.7;text-decoration:underline}
   .section-title{font-size:clamp(20px,5vw,28px)}
   .cta-sub{font-size:14px}
   .cta-sub br{display:none}
-  .mock-gauge-wrap{max-width:100%}
-  .mock-income-val{font-size:20px}
 }
 </style>
 </head>
@@ -140,24 +136,24 @@ footer a{color:inherit;opacity:.7;text-decoration:underline}
 
 <!-- HEADER -->
 <header>
-  <a class="logo" href="index.html">PAYPULSE</a>
+  <a class="logo" href="../index.html">PAYPULSE</a>
   <div class="nav-group">
-    <a class="nav-text-link" href="about.html">About</a>
-    <a class="header-cta" href="survey.html?seg=zenecon">診断を始める →</a>
+    <a class="nav-text-link" href="../about.html">About</a>
+    <a class="header-cta" href="../survey.html?seg=house-maker">診断を始める →</a>
   </div>
 </header>
 
 <!-- HERO -->
 <div class="hero">
-  <div class="hero-badge">ゼネコン建築施工管理者 専用 年収診断</div>
+  <div class="hero-badge">ハウスメーカー施工管理者 専用 年収診断</div>
   <h1 class="hero-title">
-    同じ経験の施工管理者と、<br><span>年収を比べてみる。</span>
+    同じ経験のHM施工管理者と、<br><span>年収を比べてみる。</span>
   </h1>
   <p class="hero-sub">
-    案件規模・経験業務が近い施工管理者のデータと比べて、あなたの年収が上位何%かがわかります。
+    戸建・マンション・規格住宅など、担当した住宅工事の種別・規模が近いハウスメーカー施工管理者のデータと比べて、あなたの年収が上位何%かがわかります。
   </p>
   <div class="hero-btns">
-    <a class="btn-primary" href="survey.html?seg=zenecon">無料で診断する（約5分）</a>
+    <a class="btn-primary" href="../survey.html?seg=house-maker">無料で診断する（約5分）</a>
     <a class="btn-secondary" href="#how">3ステップで完了 ↓</a>
   </div>
   <p class="hero-note">✓ 無料　✓ 登録不要　✓ 匿名OK</p>
@@ -167,7 +163,7 @@ footer a{color:inherit;opacity:.7;text-decoration:underline}
 <div class="stats-wrap">
   <div class="stats-inner">
     <div>
-      <div class="stat-num" id="stat-count">16<span style="font-size:20px">+</span></div>
+      <div class="stat-num" id="stat-count">—</div>
       <div class="stat-label">蓄積済み回答数<br>（随時更新）</div>
     </div>
     <div>
@@ -193,7 +189,7 @@ footer a{color:inherit;opacity:.7;text-decoration:underline}
         <div class="step-content">
           <span class="step-time">約2分</span>
           <div class="step-title">担当した案件を入力</div>
-          <p class="step-desc">代表的な工事を2件入力。工事分類・役職・建物用途・受注金額・延床面積などを入力します。ゼネコン元請（A工事）の施工管理経験が対象です。</p>
+          <p class="step-desc">代表的な住宅工事を2件入力。工事種別（戸建・集合住宅・リフォームなど）・役職・棟数・延床面積などを入力します。ハウスメーカー・工務店の施工管理経験が対象です。</p>
         </div>
       </div>
       <div class="step-item">
@@ -216,31 +212,27 @@ footer a{color:inherit;opacity:.7;text-decoration:underline}
   </div>
 </section>
 
-<!-- WHAT YOU GET (V2: SVG illustrations) -->
+<!-- WHAT YOU GET -->
 <section>
   <div class="section-inner">
     <div class="section-badge">診断結果でわかること</div>
     <h2 class="section-title">あなたの年収の<br>リアルな立ち位置</h2>
     <div class="results-grid">
 
-      <!-- R1: パーセンタイル順位 — ゲージ -->
+      <!-- R1: パーセンタイル順位 -->
       <div class="result-card">
         <div class="result-illus">
           <svg width="72" height="72" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
             <rect width="80" height="80" rx="20" fill="#dbeafe"/>
-            <!-- Background semicircle arc -->
             <path d="M 14 58 A 26 26 0 0 1 66 58" stroke="#bfdbfe" stroke-width="8" fill="none" stroke-linecap="round"/>
-            <!-- Filled arc (75%) -->
-            <path d="M 14 58 A 26 26 0 0 1 58 40" stroke="url(#g1)" stroke-width="8" fill="none" stroke-linecap="round"/>
+            <path d="M 14 58 A 26 26 0 0 1 58 40" stroke="url(#g1hm)" stroke-width="8" fill="none" stroke-linecap="round"/>
             <defs>
-              <linearGradient id="g1" x1="14" y1="58" x2="58" y2="40" gradientUnits="userSpaceOnUse">
+              <linearGradient id="g1hm" x1="14" y1="58" x2="58" y2="40" gradientUnits="userSpaceOnUse">
                 <stop offset="0%" stop-color="#60a5fa"/>
                 <stop offset="100%" stop-color="#f97316"/>
               </linearGradient>
             </defs>
-            <!-- Needle tip circle -->
             <circle cx="58" cy="40" r="6" fill="#f97316" stroke="white" stroke-width="2"/>
-            <!-- Center label -->
             <text x="40" y="54" text-anchor="middle" font-size="15" font-weight="900" fill="#1d4ed8" font-family="-apple-system,sans-serif">22%</text>
             <text x="40" y="66" text-anchor="middle" font-size="10" fill="#64748b" font-family="-apple-system,sans-serif">上位</text>
           </svg>
@@ -249,12 +241,11 @@ footer a{color:inherit;opacity:.7;text-decoration:underline}
         <div class="desc">同条件グループで上位/下位何%かを表示</div>
       </div>
 
-      <!-- R2: 年収分布グラフ — ベル曲線 -->
+      <!-- R2: 年収分布グラフ -->
       <div class="result-card">
         <div class="result-illus">
           <svg width="72" height="72" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
             <rect width="80" height="80" rx="20" fill="#dbeafe"/>
-            <!-- Histogram bars approximating bell curve -->
             <rect x="8"  y="64" width="8" height="6"  rx="2" fill="#bfdbfe"/>
             <rect x="18" y="56" width="8" height="14" rx="2" fill="#93c5fd"/>
             <rect x="28" y="42" width="8" height="28" rx="2" fill="#60a5fa"/>
@@ -262,10 +253,8 @@ footer a{color:inherit;opacity:.7;text-decoration:underline}
             <rect x="48" y="40" width="8" height="30" rx="2" fill="#60a5fa"/>
             <rect x="58" y="54" width="8" height="16" rx="2" fill="#93c5fd"/>
             <rect x="68" y="62" width="8" height="8"  rx="2" fill="#bfdbfe"/>
-            <!-- Your position marker -->
             <line x1="52" y1="16" x2="52" y2="72" stroke="#f97316" stroke-width="2.5" stroke-dasharray="3,2"/>
             <circle cx="52" cy="15" r="5" fill="#f97316" stroke="white" stroke-width="2"/>
-            <!-- Base line -->
             <line x1="6" y1="72" x2="74" y2="72" stroke="#bfdbfe" stroke-width="1.5"/>
           </svg>
         </div>
@@ -273,30 +262,24 @@ footer a{color:inherit;opacity:.7;text-decoration:underline}
         <div class="desc">ピアグループの分布と自分の位置をヒストグラムで可視化</div>
       </div>
 
-      <!-- R3: 年代別トレンド — 折れ線グラフ -->
+      <!-- R3: 年代別トレンド -->
       <div class="result-card">
         <div class="result-illus">
           <svg width="72" height="72" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
             <rect width="80" height="80" rx="20" fill="#dbeafe"/>
-            <!-- Faint grid -->
             <line x1="12" y1="22" x2="72" y2="22" stroke="#bfdbfe" stroke-width="1"/>
             <line x1="12" y1="38" x2="72" y2="38" stroke="#bfdbfe" stroke-width="1"/>
             <line x1="12" y1="54" x2="72" y2="54" stroke="#bfdbfe" stroke-width="1"/>
-            <!-- Area fill -->
             <path d="M18 60 L32 50 L48 38 L64 22 L64 66 L18 66 Z" fill="#dbeafe" opacity="0.7"/>
-            <!-- Trend line -->
             <path d="M18 60 L32 50 L48 38 L64 22" stroke="#3b82f6" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-            <!-- Data points -->
             <circle cx="18" cy="60" r="4" fill="#3b82f6" stroke="white" stroke-width="2"/>
             <circle cx="32" cy="50" r="4" fill="#3b82f6" stroke="white" stroke-width="2"/>
             <circle cx="48" cy="38" r="4" fill="#3b82f6" stroke="white" stroke-width="2"/>
             <circle cx="64" cy="22" r="5" fill="#f97316" stroke="white" stroke-width="2"/>
-            <!-- Age labels -->
             <text x="18" y="76" text-anchor="middle" font-size="8" fill="#64748b" font-family="-apple-system,sans-serif">20代</text>
             <text x="32" y="76" text-anchor="middle" font-size="8" fill="#64748b" font-family="-apple-system,sans-serif">30代</text>
             <text x="48" y="76" text-anchor="middle" font-size="8" fill="#64748b" font-family="-apple-system,sans-serif">40代</text>
             <text x="64" y="76" text-anchor="middle" font-size="8" fill="#64748b" font-family="-apple-system,sans-serif">50代</text>
-            <!-- Base line -->
             <line x1="10" y1="66" x2="74" y2="66" stroke="#bfdbfe" stroke-width="1.5"/>
           </svg>
         </div>
@@ -304,24 +287,19 @@ footer a{color:inherit;opacity:.7;text-decoration:underline}
         <div class="desc">20代〜50代の年収推移でキャリアの見通しを確認</div>
       </div>
 
-      <!-- R4: パーセンタイル詳細 — 表彰台 -->
+      <!-- R4: パーセンタイル詳細 -->
       <div class="result-card">
         <div class="result-illus">
           <svg width="72" height="72" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
             <rect width="80" height="80" rx="20" fill="#dbeafe"/>
-            <!-- Podium base line -->
             <line x1="6" y1="70" x2="74" y2="70" stroke="#bfdbfe" stroke-width="1.5"/>
-            <!-- 2nd place (silver) -->
             <rect x="8" y="50" width="19" height="20" rx="3" fill="#94a3b8"/>
             <circle cx="17" cy="42" r="9" fill="#94a3b8"/>
             <text x="17" y="46" text-anchor="middle" font-size="11" font-weight="900" fill="white" font-family="-apple-system,sans-serif">2</text>
-            <!-- 1st place (gold) — tallest -->
             <rect x="30" y="34" width="20" height="36" rx="3" fill="#f59e0b"/>
             <circle cx="40" cy="24" r="11" fill="#f59e0b"/>
-            <!-- Crown on 1st -->
             <path d="M33 22 L36 16 L40 20 L44 16 L47 22" stroke="#fff7" stroke-width="1.5" fill="none" stroke-linejoin="round"/>
             <text x="40" y="29" text-anchor="middle" font-size="13" font-weight="900" fill="white" font-family="-apple-system,sans-serif">1</text>
-            <!-- 3rd place (bronze) -->
             <rect x="53" y="56" width="19" height="14" rx="3" fill="#b45309"/>
             <circle cx="62" cy="48" r="9" fill="#b45309"/>
             <text x="62" y="52" text-anchor="middle" font-size="11" font-weight="900" fill="white" font-family="-apple-system,sans-serif">3</text>
@@ -342,7 +320,6 @@ footer a{color:inherit;opacity:.7;text-decoration:underline}
     <h2 class="section-title">診断結果はこんな画面で表示されます</h2>
     <p class="section-desc" style="margin:0 auto">回答後すぐに確認できる診断結果のサンプルです。<br>同条件グループとのリアルな比較データが一目でわかります。</p>
 
-    <!-- ブラウザフレーム -->
     <div class="mockup-frame">
       <div class="mockup-bar">
         <div class="mockup-dot" style="background:#ef4444"></div>
@@ -350,15 +327,9 @@ footer a{color:inherit;opacity:.7;text-decoration:underline}
         <div class="mockup-dot" style="background:#22c55e"></div>
         <div class="mockup-url">paypulse.github.io/paypulse_result.html?demo=1</div>
       </div>
-
-      <!--
-        ★ 結果ページの実物を 50% 縮小表示（embed=1 でヘッダー非表示）
-           結果ページを更新すればこのプレビューも自動的に反映されます。
-           手動でこのファイルを触る必要はありません。
-      -->
       <div style="position:relative;overflow:hidden;height:480px;background:#f8fafc">
         <iframe
-          src="paypulse_result.html?demo=1&embed=1"
+          src="../paypulse_result.html?demo=1&embed=1"
           style="width:200%;height:960px;border:none;transform:scale(0.5);transform-origin:0 0;pointer-events:none"
           scrolling="no"
           title="診断結果サンプル"
@@ -368,7 +339,7 @@ footer a{color:inherit;opacity:.7;text-decoration:underline}
     </div>
 
     <div style="margin-top:32px">
-      <a class="btn-primary" href="survey.html?seg=zenecon">自分の結果を見る →</a>
+      <a class="btn-primary" href="../survey.html?seg=house-maker">自分の結果を見る →</a>
     </div>
   </div>
 </section>
@@ -392,8 +363,8 @@ footer a{color:inherit;opacity:.7;text-decoration:underline}
         <div class="trust-text"><strong>第三者提供なし</strong>収集データを外部企業や広告目的で提供することは一切ありません</div>
       </div>
       <div class="trust-item">
-        <div class="trust-icon">🏗️</div>
-        <div class="trust-text"><strong>業界特化データ</strong>ゼネコン建築施工管理者（A工事）に絞った精度の高い比較を実現</div>
+        <div class="trust-icon">🏠</div>
+        <div class="trust-text"><strong>住宅業界特化データ</strong>ハウスメーカー・工務店施工管理者に絞った精度の高い比較を実現</div>
       </div>
     </div>
   </div>
@@ -401,42 +372,38 @@ footer a{color:inherit;opacity:.7;text-decoration:underline}
 
 <!-- CTA BOTTOM -->
 <div class="cta-bottom">
-  <h2 class="cta-title">同じ経験の人と比べて、<br>今の年収は高い？低い？</h2>
+  <h2 class="cta-title">同じ経験のHM施工管理者と比べて、<br>今の年収は高い？低い？</h2>
   <p class="cta-sub">
     登録不要・無料・約5分。<br>
-    案件規模・経験業務が近い施工管理者のデータと比べて、<br>
+    住宅工事の規模・経験業務が近いハウスメーカー施工管理者のデータと比べて、<br>
     あなたの年収が上位何%かがわかります。
   </p>
-  <a class="btn-primary" href="survey.html?seg=zenecon" style="font-size:17px;padding:18px 44px">
+  <a class="btn-primary" href="../survey.html?seg=house-maker" style="font-size:17px;padding:18px 44px">
     無料で診断を始める →
   </a>
-  <p class="cta-note">© 2026 PayPulse運営事務局　|　<a href="privacy.html">プライバシーポリシー</a>　|　<a href="mailto:contact.fairbase@gmail.com">お問い合わせ</a></p>
+  <p class="cta-note">© 2026 PayPulse運営事務局　|　<a href="../privacy.html">プライバシーポリシー</a>　|　<a href="mailto:contact.fairbase@gmail.com">お問い合わせ</a></p>
 </div>
 
-<!-- ── 蓄積回答数をGASから動的取得（JSONP + 10分キャッシュ） ── -->
 <!-- GAS_URL は config.js で定義 -->
-<script src="config.js"></script>
+<script src="../config.js"></script>
 <script>
 (function () {
   const el = document.getElementById('stat-count');
   if (!el) return;
 
-  // ── 10分キャッシュ（GASへのリクエスト頻度を抑える）──
-  // 同じユーザーが10分以内に再訪した場合はキャッシュ値を使う
-  const CACHE_KEY = 'pp_count_cache';
-  const CACHE_TTL = 10 * 60 * 1000; // 10分（ミリ秒）
+  const CACHE_KEY = 'pp_count_hm_cache';
+  const CACHE_TTL = 10 * 60 * 1000;
 
   try {
     const cached = JSON.parse(localStorage.getItem(CACHE_KEY) || 'null');
     if (cached && (Date.now() - cached.ts) < CACHE_TTL && cached.count > 0) {
       el.innerHTML = cached.count + '<span style="font-size:20px">+</span>';
-      return; // キャッシュがあればGASを叩かずに終了
+      return;
     }
-  } catch (_) { /* localStorage 無効時は無視 */ }
+  } catch (_) {}
 
-  // ── キャッシュなし → GASから取得 ──
-  const cb = 'pp_count_' + Date.now();
-  const timer = setTimeout(function () { cleanup(); }, 5000); // 5秒でタイムアウト
+  const cb = 'pp_hm_count_' + Date.now();
+  const timer = setTimeout(function () { cleanup(); }, 5000);
 
   function cleanup() {
     clearTimeout(timer);
@@ -447,16 +414,14 @@ footer a{color:inherit;opacity:.7;text-decoration:underline}
     cleanup();
     if (data && data.success && typeof data.count === 'number' && data.count > 0) {
       el.innerHTML = data.count + '<span style="font-size:20px">+</span>';
-      // キャッシュに保存
       try {
         localStorage.setItem(CACHE_KEY, JSON.stringify({ count: data.count, ts: Date.now() }));
-      } catch (_) { /* localStorage 容量超過時は無視 */ }
+      } catch (_) {}
     }
-    // 取得失敗またはcount=0の場合はデフォルト値（16+）を維持
   };
 
   const s = document.createElement('script');
-  s.src = GAS_URL + '?action=count&callback=' + cb;
+  s.src = GAS_URL + '?action=count&seg=house-maker&callback=' + cb;
   s.onerror = cleanup;
   document.head.appendChild(s);
 })();

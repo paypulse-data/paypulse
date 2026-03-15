@@ -4,6 +4,20 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PayPulse - 年収診断アンケート</title>
+<script>
+// ── セグメント自動取得 ──────────────────────────────────
+// URLパス（/house-maker/）またはクエリパラメータ（?seg=house-maker）から取得
+(function(){
+  var seg = 'zenecon'; // デフォルト
+  if (window.location.pathname.includes('house-maker')) {
+    seg = 'house-maker';
+  } else {
+    var m = window.location.search.match(/[?&]seg=([^&]+)/);
+    if (m) seg = decodeURIComponent(m[1]);
+  }
+  window.__PP_SEGMENT = seg;
+})();
+</script>
 <link rel="stylesheet" href="brand.css">
 <style>
 /* ── HEADER / リセット / 変数 は brand.css に統合 ── */
@@ -1234,6 +1248,7 @@ async function submitForm() {
   const id = generateUUID();
   const payload = {
     email: val('conf-email'),
+    segment: window.__PP_SEGMENT || 'zenecon',
     case1: readCase('c1'), case2: readCase('c2'),
     income: readIncome(), basic: readBasic()
   };
@@ -1263,7 +1278,7 @@ async function submitForm() {
 
     // 2秒後に診断結果ページへ
     setTimeout(() => {
-      window.location.href = 'paypulse_result.html?id=' + encodeURIComponent(id);
+      window.location.href = 'paypulse_result.html?id=' + encodeURIComponent(id) + '&seg=' + encodeURIComponent(window.__PP_SEGMENT || 'zenecon');
     }, 2000);
 
   } else {

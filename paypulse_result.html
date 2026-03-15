@@ -217,8 +217,13 @@ if (new URLSearchParams(window.location.search).get('embed') === '1') {
 <script>
 // GAS_URL は config.js で一元管理されています。URLの更新は config.js のみ変更してください。
 
-// ── URLからIDを取得 ──
-const id = new URLSearchParams(window.location.search).get('id');
+// ── URLからIDとセグメントを取得 ──
+const id  = new URLSearchParams(window.location.search).get('id');
+const seg = new URLSearchParams(window.location.search).get('seg') || 'zenecon';
+const SEGMENT_LABELS_LOCAL = {
+  'zenecon'    : 'ゼネコン施工管理者',
+  'house-maker': 'ハウスメーカー施工管理者',
+};
 
 // ── GAS fetch（credentials:omit でマルチアカウントリダイレクトを回避）──
 async function fetchFromGAS(id) {
@@ -415,10 +420,31 @@ function renderHero(d) {
     ? `<p class="cond-relax-note">＊データ不足のため一部条件を緩和して比較しています</p>`
     : '';
 
+  // セグメントラベルと cold start バッジ
+  const segLabel = d.segmentLabel || SEGMENT_LABELS_LOCAL[seg] || '施工管理者';
+  const coldStage = (d.coldStartStage !== undefined) ? d.coldStartStage : 2;
+  const coldBadgeHtml = coldStage === 1
+    ? `<span style="display:inline-block;background:rgba(59,130,246,.25);border:1px solid rgba(59,130,246,.4);color:#93c5fd;font-size:11px;font-weight:700;padding:2px 10px;border-radius:99px;margin-left:6px;letter-spacing:.5px">β版</span>`
+    : coldStage === 0
+    ? `<span style="display:inline-block;background:rgba(245,158,11,.25);border:1px solid rgba(245,158,11,.4);color:#fbbf24;font-size:11px;font-weight:700;padding:2px 10px;border-radius:99px;margin-left:6px;letter-spacing:.5px">参考値</span>`
+    : '';
+  const coldNoticeHtml = coldStage === 0
+    ? `<div style="background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.25);border-radius:8px;padding:10px 16px;margin:0 auto 20px;max-width:520px;font-size:12px;color:#fbbf24;line-height:1.7;text-align:left">
+        ⚠️ <strong>データ収集中（参考値モード）</strong><br>
+        ${segLabel}の回答がまだ${d.betaThreshold || 20}件未満のため、現在は全セグメントの合算データを参考値として表示しています。<br>
+        回答が増えると${segLabel}専用の比較に切り替わります。
+       </div>`
+    : coldStage === 1
+    ? `<div style="background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.2);border-radius:8px;padding:10px 16px;margin:0 auto 20px;max-width:520px;font-size:12px;color:#93c5fd;line-height:1.7;text-align:left">
+        📊 <strong>β版</strong> — ${segLabel}の回答データ（${d.segmentCount}件）で算出しています。データが${d.fullThreshold || 50}件を超えると精度が向上します。
+       </div>`
+    : '';
+
   document.getElementById('hero').innerHTML = `
-    <div class="hero-peer">同条件の <strong>${d.peerCount}人</strong> と比較</div>
+    <div class="hero-peer">${segLabel}${coldBadgeHtml}<br>同条件の <strong>${d.peerCount}人</strong> と比較</div>
     <div class="cond-tags">${condTagsHtml}</div>
     ${relaxNote}
+    ${coldNoticeHtml}
     <div class="hero-direction">${direction}</div>
     <div class="hero-pct">${displayPct}<sup>%</sup></div>
     <div class="hero-msg">${getMessage(d.userPctile)}</div>
@@ -447,7 +473,7 @@ function renderHero(d) {
 
     <div class="data-nudge">
       <strong>📊 データが増えるほど、比較の精度が上がります</strong>
-      同じ現場で働く仲間にも共有して、業界全体の情報格差をなくしていきましょう。
+      同じ${segLabel}の仲間にも共有して、業界全体の情報格差をなくしていきましょう。
     </div>
   `;
 }
